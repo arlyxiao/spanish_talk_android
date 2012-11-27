@@ -13,8 +13,8 @@
 
 	<LinearLayout
 	    style="@style/padding_10_body"
-	    android:layout_width="match_parent" >
-
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
  
         <EditText
             android:id="@+id/register_edittext_email"
@@ -26,7 +26,7 @@
 
         
         <EditText
-           android:id="@+id/register_edittext_name"
+           android:id="@+id/register_edittext_username"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
            android:textColorHint="#000"
@@ -49,7 +49,7 @@
         
         
         <EditText
-           android:id="@+id/register_edittext_affirm_password"
+           android:id="@+id/register_edittext_confirm_password"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
            android:textColorHint="#000"
@@ -67,6 +67,53 @@
 
  
 	    
+	</LinearLayout>
+	
+	
+	
+	<LinearLayout
+	    android:id="@+id/register_tv_error_show"
+	    style="@style/padding_10_body"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+
+		<TextView
+		    android:id="@+id/register_network_notice"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/disconnect_network" 
+		    android:visibility="gone" />
+		
+		<TextView
+		    android:id="@+id/register_email_notice"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/incorrect_email" 
+		    android:visibility="gone" />
+		
+		
+		<TextView
+		    android:id="@+id/register_username_notice"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/incorrect_username" 
+		    android:visibility="gone" />
+		
+		
+		<TextView
+		    android:id="@+id/register_password_notice"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/incorrect_password" 
+		    android:visibility="gone" />
+		
+		<TextView
+		    android:id="@+id/register_confirm_password_notice"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/incorrect_confirm_password" 
+		    android:visibility="gone" />
+    
 	</LinearLayout>
 
 </LinearLayout>
