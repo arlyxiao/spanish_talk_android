@@ -63,7 +63,8 @@
         <Button
             android:id="@+id/register_button"
             style="@style/login_layout_button"
-            android:text="@string/click_register_button" />
+            android:text="@string/click_register_button"
+            android:onClick="click_register_button" />
 
  
 	    
