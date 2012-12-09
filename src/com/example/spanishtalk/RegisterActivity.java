@@ -8,16 +8,15 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -29,14 +28,12 @@ import com.example.base.utils.BaseUtils;
 
 
 
-
 public class RegisterActivity extends SpanishTalkBaseActivity {
 	private EditText et_email,et_username,et_password,et_confirm_password;
 	private TextView tv_notice_email, tv_notice_username, tv_notice_password, tv_notice_confirm_password, tv_notice_network;
 	private LinearLayout ll_show;
 	String email, username, password, confirm_password;
 	
-	final String TAG_STRING = "TAG"; 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +67,17 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     
     public void click_register_button(View view){     	
     	new TestTask().execute();
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage("×¢²á³É¹¦")
+    	       .setCancelable(false)
+    	       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	                //do things
+    	           }
+    	       });
+    	AlertDialog alert = builder.create();
+    	alert.show();
     }
     
     	 
