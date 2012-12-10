@@ -19,18 +19,18 @@ public final class R {
         public static final int button1=0x7f070002;
         public static final int editText1=0x7f070001;
         public static final int editText2=0x7f070000;
+        public static final int link_to_register=0x7f070007;
         public static final int menu_settings=0x7f07000e;
-        public static final int register_button=0x7f070007;
-        public static final int register_confirm_password_notice=0x7f07000d;
-        public static final int register_edittext_confirm_password=0x7f070006;
-        public static final int register_edittext_email=0x7f070003;
-        public static final int register_edittext_password=0x7f070005;
-        public static final int register_edittext_username=0x7f070004;
-        public static final int register_email_notice=0x7f07000a;
-        public static final int register_network_notice=0x7f070009;
-        public static final int register_password_notice=0x7f07000c;
-        public static final int register_tv_error_show=0x7f070008;
-        public static final int register_username_notice=0x7f07000b;
+        public static final int reg_confirm_password=0x7f070006;
+        public static final int reg_confirm_password_error=0x7f07000d;
+        public static final int reg_email=0x7f070003;
+        public static final int reg_email_error=0x7f07000a;
+        public static final int reg_error_show=0x7f070008;
+        public static final int reg_network_error=0x7f070009;
+        public static final int reg_password=0x7f070005;
+        public static final int reg_password_error=0x7f07000c;
+        public static final int reg_username=0x7f070004;
+        public static final int reg_username_error=0x7f07000b;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
