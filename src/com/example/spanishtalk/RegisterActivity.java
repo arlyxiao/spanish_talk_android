@@ -15,6 +15,7 @@ import org.apache.http.protocol.HTTP;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,6 +34,8 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	private TextView email_error, username_error, password_error, confirm_password_error, network_error;
 	private LinearLayout error_list;
 	String email, username, password, confirm_password;
+	
+	
 	
 
     @Override
@@ -67,9 +70,8 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     
     public void do_register(View view){
     	if (validateRegister()) {
-    		
+
     		clearErrorList();
-    		
     		
 	    	new TestTask().execute();
 	    	
@@ -78,15 +80,18 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	    	       .setCancelable(false)
 	    	       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	    	           public void onClick(DialogInterface dialog, int id) {
-	    	                //do things
+	    	        	   Intent intent = new Intent(RegisterActivity.this, QuestionActivity.class);
+	    	        	   startActivity(intent);
 	    	           }
 	    	       });
 	    	AlertDialog alert = builder.create();
 	    	alert.show();
+	    	
+	    	
     	}
     }
     
-
+ 
 	
     
 
