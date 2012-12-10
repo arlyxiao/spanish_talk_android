@@ -31,7 +31,7 @@ import com.example.base.utils.BaseUtils;
 public class RegisterActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_username, edit_text_password, edit_text_confirm_password;
 	private TextView email_error, username_error, password_error, confirm_password_error, network_error;
-	private LinearLayout error_message_list;
+	private LinearLayout error_list;
 	String email, username, password, confirm_password;
 	
 
@@ -54,7 +54,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		edit_text_password = (EditText)findViewById(R.id.reg_password);
 		edit_text_confirm_password = (EditText)findViewById(R.id.reg_confirm_password);
 		
-		error_message_list = (LinearLayout)findViewById(R.id.reg_error_show);
+		error_list = (LinearLayout)findViewById(R.id.reg_error_show);
 		email_error = (TextView)findViewById(R.id.reg_email_error);
 		username_error = (TextView)findViewById(R.id.reg_username_error);
 		password_error = (TextView)findViewById(R.id.reg_password_error);
@@ -91,7 +91,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     
 
     public void clearErrorList(){
-    	error_message_list.setVisibility(View.GONE);
+    	error_list.setVisibility(View.GONE);
     	email_error.setVisibility(View.GONE);
     	username_error.setVisibility(View.GONE);
     	password_error.setVisibility(View.GONE);
@@ -137,7 +137,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 			confirm_password_error.setVisibility(View.GONE);
 		}
 		if(!checked){
-			error_message_list.setVisibility(View.VISIBLE);
+			error_list.setVisibility(View.VISIBLE);
 		}
 		return checked;
 	}
