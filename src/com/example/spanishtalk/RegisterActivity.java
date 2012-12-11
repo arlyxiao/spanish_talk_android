@@ -13,7 +13,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,12 +24,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.base.activity.SpanishTalkBaseActivity;
+import com.example.base.utils.BaseUtils;
 
 
 
 
-
-public class RegisteryActivity  extends Activity {
+public class RegisterActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_username, edit_text_password, edit_text_confirm_password;
 	private TextView email_error, username_error, password_error, confirm_password_error, network_error;
 	private LinearLayout error_list;
@@ -81,7 +81,7 @@ public class RegisteryActivity  extends Activity {
 	    	       .setCancelable(false)
 	    	       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	    	           public void onClick(DialogInterface dialog, int id) {
-	    	        	   Intent intent = new Intent(RegisteryActivity.this, QuestionActivity.class);
+	    	        	   Intent intent = new Intent(RegisterActivity.this, QuestionActivity.class);
 	    	        	   startActivity(intent);
 	    	           }
 	    	       });
@@ -118,33 +118,33 @@ public class RegisteryActivity  extends Activity {
 			network_error.setVisibility(View.GONE);
 //		}
 		
-//		if(BaseUtils.is_str_blank(email)){
-//			email_error.setVisibility(View.VISIBLE);
-//			checked = false;
-//		}else{
-//			email_error.setVisibility(View.GONE);
-//		}
-//		if(BaseUtils.is_str_blank(username)){
-//			username_error.setVisibility(View.VISIBLE);
-//			checked = false;
-//		}else{
-//			username_error.setVisibility(View.GONE);
-//		}
-//		if(BaseUtils.is_str_blank(password)){
-//			password_error.setVisibility(View.VISIBLE);
-//			checked = false;
-//		}else{
-//			password_error.setVisibility(View.GONE);
-//		}
-//		if(BaseUtils.is_str_blank(confirm_password)){
-//			confirm_password_error.setVisibility(View.VISIBLE);
-//			checked = false;
-//		}else{
-//			confirm_password_error.setVisibility(View.GONE);
-//		}
-//		if(!checked){
-//			error_list.setVisibility(View.VISIBLE);
-//		}
+		if(BaseUtils.is_str_blank(email)){
+			email_error.setVisibility(View.VISIBLE);
+			checked = false;
+		}else{
+			email_error.setVisibility(View.GONE);
+		}
+		if(BaseUtils.is_str_blank(username)){
+			username_error.setVisibility(View.VISIBLE);
+			checked = false;
+		}else{
+			username_error.setVisibility(View.GONE);
+		}
+		if(BaseUtils.is_str_blank(password)){
+			password_error.setVisibility(View.VISIBLE);
+			checked = false;
+		}else{
+			password_error.setVisibility(View.GONE);
+		}
+		if(BaseUtils.is_str_blank(confirm_password)){
+			confirm_password_error.setVisibility(View.VISIBLE);
+			checked = false;
+		}else{
+			confirm_password_error.setVisibility(View.GONE);
+		}
+		if(!checked){
+			error_list.setVisibility(View.VISIBLE);
+		}
 		return checked;
 	}
 	
