@@ -29,6 +29,9 @@ import com.example.base.utils.BaseUtils;
 
 
 
+
+
+
 public class RegisterActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_username, edit_text_password, edit_text_confirm_password;
 	private TextView email_error, username_error, password_error, confirm_password_error, network_error;

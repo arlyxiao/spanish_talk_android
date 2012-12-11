@@ -48,28 +48,5 @@
 	    
 	</LinearLayout>
 	
-	<LinearLayout
-	    android:id="@+id/reg_error_show"
-	    style="@style/padding_10_body"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" >
-
-	    <TextView
-	        android:id="@+id/reg_network_error"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/disconnect_network"
-	        android:visibility="gone" />
-
-	    <TextView
-	        android:id="@+id/reg_email_error"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/incorrect_email"
-	        android:visibility="gone" />
-
-	    
-
-	</LinearLayout>
 
 </LinearLayout>
