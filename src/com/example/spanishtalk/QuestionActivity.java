@@ -1,13 +1,19 @@
 package com.example.spanishtalk;
 
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.tables.Question;
+import com.example.tables.QuestionsHandler;
 
 public class QuestionActivity extends Activity {
 
@@ -43,5 +49,28 @@ public class QuestionActivity extends Activity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
     	}
+    	
+    	
+    	QuestionsHandler db = new QuestionsHandler(this);
+    	 
+        /**
+         * CRUD Operations
+         * */
+        // Inserting Questions
+        Log.d("Insert: ", "Inserting ..");
+        db.addQuestion(new Question("Ravi", "9100000000"));
+        db.addQuestion(new Question("Srinivas", "9199999999"));
+        db.addQuestion(new Question("Tommy", "9522222222"));
+        db.addQuestion(new Question("Karthik", "9533333333"));
+ 
+        // Reading all questions
+        Log.d("Reading: ", "Reading all questions..");
+        List<Question> questions = db.getAllQuestions();      
+ 
+        for (Question cn : questions) {
+            String log = "Id: "+cn.getID()+" ,Name: " + cn.getTitle() + " ,Content: " + cn.getContent();
+                // Writing Questions to log
+            Log.d("Title: ", log);
+        }
     }
 }
