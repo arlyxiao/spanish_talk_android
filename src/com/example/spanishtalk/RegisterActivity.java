@@ -77,9 +77,9 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	    	new TestTask().execute();
 	    	
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	builder.setMessage("×¢²á³É¹¦")
+	    	builder.setMessage("注册成功")
 	    	       .setCancelable(false)
-	    	       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 	    	           public void onClick(DialogInterface dialog, int id) {
 	    	        	   Intent intent = new Intent(RegisterActivity.this, QuestionActivity.class);
 	    	        	   startActivity(intent);

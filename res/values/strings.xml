@@ -12,6 +12,7 @@
     <string name="password">密码</string>
     <string name="confirm_password">确认密码</string>
     <string name="click_register_button">注册</string>
+    <string name="click_login_button">登录</string>
     <string name="disconnect_network">网络连接不上</string>
     <string name="incorrect_email">请填写正确 Email</string>
     <string name="incorrect_username">请填写正确的用户名</string>

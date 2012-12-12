@@ -5,7 +5,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +17,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.base.utils.BaseDialogs;
 import com.example.tables.Question;
 import com.example.tables.QuestionsHandler;
 
@@ -26,7 +27,7 @@ import com.example.tables.QuestionsHandler;
 
 public class QuestionActivity extends Activity {
 	
-	protected Timer net_time;
+	// protected Timer net_time;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,10 +43,7 @@ public class QuestionActivity extends Activity {
         return true;
     }
     
-    @Override
-    protected void onPause() {
-    	new TestTask().cancel(true);
-    }
+
 
     
     public void post_question(View view) {
@@ -83,10 +81,25 @@ public class QuestionActivity extends Activity {
         db.addQuestion(new Question("Karthik", "9533333333"));
         
         if (hasConnected()) {
-        	BaseDialogs.showSingleAlert("问题发送成功", this);
-        	finish();
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	builder.setMessage("发送成功")
+        	       .setCancelable(false)
+        	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        	           public void onClick(DialogInterface dialog, int id) {
+        	           }
+        	       });
+        	AlertDialog alert = builder.create();
+        	alert.show();
         } else {
-        	BaseDialogs.showSingleAlert("网络没连接成功", this);
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	builder.setMessage("网络连接有问题")
+        	       .setCancelable(false)
+        	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        	           public void onClick(DialogInterface dialog, int id) {
+        	           }
+        	       });
+        	AlertDialog alert = builder.create();
+        	alert.show();
         }
         
  
@@ -128,8 +141,7 @@ public class QuestionActivity extends Activity {
 		
 		@Override
 	    protected Void doInBackground(Void... arg0) {
-			net_time = new Timer();
-			net_time.schedule(new TimerTask() {          
+			new Timer().schedule(new TimerTask() {          
 		        @Override
 		        public void run() {
 		        	if (hasConnected()) {
@@ -143,6 +155,7 @@ public class QuestionActivity extends Activity {
 			return null;
 	    }
 		
+
 		
 
 	 }
