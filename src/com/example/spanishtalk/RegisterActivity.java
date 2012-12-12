@@ -1,9 +1,12 @@
 package com.example.spanishtalk;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -12,6 +15,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,7 +31,7 @@ import android.widget.TextView;
 
 import com.example.base.activity.SpanishTalkBaseActivity;
 import com.example.base.utils.BaseUtils;
-
+import com.example.lib.SessionManagement;
 
 
 
@@ -35,8 +40,6 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	private TextView email_error, username_error, password_error, confirm_password_error, network_error;
 	private LinearLayout error_list;
 	String email, username, password, confirm_password;
-	
-	
 	
 
     @Override
@@ -74,21 +77,20 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 
     		clearErrorList();
     		
-	    	new TestTask().execute();
+	    	new HttpTask().execute();
 	    	
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    	builder.setMessage("注册成功")
 	    	       .setCancelable(false)
 	    	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-	    	           public void onClick(DialogInterface dialog, int id) {
-	    	        	   Intent intent = new Intent(RegisterActivity.this, QuestionActivity.class);
+	    	           public void onClick(DialogInterface dialog, int id) {	    	    
+	    	        	   Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
 	    	        	   startActivity(intent);
+	    	        	   // finish();
 	    	           }
 	    	       });
 	    	AlertDialog alert = builder.create();
 	    	alert.show();
-	    	
-	    	
     	}
     }
     
@@ -151,7 +153,9 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	
 	
 	
-	public class TestTask extends AsyncTask<Void, Void, Void>{
+	
+	
+	public class HttpTask extends AsyncTask<Void, Void, Void>{
 		
 		@Override
 	    protected Void doInBackground(Void... arg0) {
@@ -163,6 +167,9 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	    	
 	    	HttpClient httpclient = new DefaultHttpClient();
 		    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users");
+		    
+		    StringBuilder builder = new StringBuilder();
+		    SessionManagement session = new SessionManagement(getApplicationContext());
 
 		    try {
 		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
@@ -173,14 +180,34 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		        // httppost.setHeader("Accept", "application/json");
 		        httppost.setEntity(new UrlEncodedFormEntity (nameValuePairs, HTTP.UTF_8));
 
-		        httpclient.execute(httppost);
+		        HttpResponse response = httpclient.execute(httppost);
+		        
+		        if (response.getStatusLine().getStatusCode() == 200) {
+			        BufferedReader reader = new BufferedReader(new InputStreamReader(
+	        		response.getEntity().getContent()));
+	        		for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+	        			builder.append(s);
+	        		}
+	        		JSONObject jsonObject = new JSONObject(builder.toString());
+	        		String username = jsonObject.getString("username");
+	        		String user_id = jsonObject.getString("user_id");
+	        		session.createLoginSession(user_id, username);
+//	        		Log.d("url username", username);
+//	        		Log.d("url user_id", Integer.toString(user_id));
+		        }
+		        
+
 		        
 		    } catch (ClientProtocolException e) {
 		    } catch (IOException e) {
-		    }
+		    } catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	
 			return null;
 	    }
+		
 		
 		
 
