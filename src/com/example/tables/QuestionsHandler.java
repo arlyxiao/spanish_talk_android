@@ -88,6 +88,7 @@ public class QuestionsHandler extends SQLiteOpenHelper {
         Question question = new Question(Integer.parseInt(cursor.getString(0)),
         		Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
         
+        
         return question;
     }
  
@@ -113,7 +114,8 @@ public class QuestionsHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
  
-        // return question list
+        db.close();
+        
         return questionList;
     }
  
