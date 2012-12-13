@@ -73,7 +73,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     
     
     public void do_register(View view){
-    	if (validateRegister()) {
+    	if (validateRegisterForm()) {
 
     		clearErrorList();
     		
@@ -106,7 +106,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     	network_error.setVisibility(View.GONE);
     }
     
-	public boolean validateRegister(){
+	public boolean validateRegisterForm(){
 		 boolean checked = true;
 		 email = edit_text_email.getText().toString();
 		 username = edit_text_username.getText().toString();

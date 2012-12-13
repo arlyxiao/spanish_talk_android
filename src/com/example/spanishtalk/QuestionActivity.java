@@ -17,22 +17,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.base.utils.BaseUtils;
 import com.example.tables.Question;
 import com.example.tables.QuestionsHandler;
 
 
 
-
-
-
 public class QuestionActivity extends Activity {
 	
-	// protected Timer net_time;
+	private EditText edit_text_title, edit_text_content;
+	String title, content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+        
+        load_ui();
         
         new TestTask().execute();
     }
@@ -43,42 +44,43 @@ public class QuestionActivity extends Activity {
         return true;
     }
     
-
-
+    
+    private void load_ui(){
+		edit_text_title = (EditText)findViewById(R.id.question_title);
+		edit_text_content = (EditText)findViewById(R.id.question_content);
+		
+		title = edit_text_title.getText().toString();
+		content = edit_text_content.getText().toString();
+	}
+    
+    public boolean validateQuestionForm() {
+    	Boolean checked = true;
+    	
+    	if (BaseUtils.is_str_blank(title)) {
+    		Context context = getApplicationContext();
+            Toast toast = Toast.makeText(context, "«ÎÃÓ–¥±ÍÃ‚", Toast.LENGTH_SHORT);
+            toast.show();
+            
+            checked = false;
+    	}
+    	
+    	if (BaseUtils.is_str_blank(content)) {
+    		Context context = getApplicationContext();
+            Toast toast = Toast.makeText(context, "«ÎÃÓ–¥ƒ⁄»›", Toast.LENGTH_SHORT);
+            toast.show();
+            
+            checked = false;
+    	}
+    	
+    	return checked;
+    }
     
     public void post_question(View view) {
-    	EditText title = (EditText)findViewById(R.id.question_title);
-    	EditText content = (EditText)findViewById(R.id.question_content);
-    	if(title.getText().length() == 0){
-    		Context context = getApplicationContext();
-            CharSequence text = "«ÎÃÓ–¥±ÍÃ‚";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-    	}
-    	
-    	if(content.getText().length() == 0){
-    		Context context = getApplicationContext();
-            CharSequence text = "«ÎÃÓ–¥ƒ⁄»›";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-    	}
-    	
-    	
     	QuestionsHandler db = new QuestionsHandler(this);
-    	 
-        /**
-         * CRUD Operations
-         * */
-        // Inserting Questions
-        Log.d("Insert: ", "Inserting ..");
-        db.addQuestion(new Question("Ravi", "9100000000"));
-        db.addQuestion(new Question("Srinivas", "9199999999"));
-        db.addQuestion(new Question("Tommy", "9522222222"));
-        db.addQuestion(new Question("Karthik", "9533333333"));
+    	
+		if (validateQuestionForm()) {
+	        db.addQuestion(new Question(title, content));
+		}
         
         if (hasConnected()) {
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);

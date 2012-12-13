@@ -60,12 +60,11 @@ public class QuestionsHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, question.getTitle()); // Question Title
-        values.put(KEY_CONTENT, question.getContent()); // Question Content
+        values.put(KEY_TITLE, question.getTitle());
+        values.put(KEY_CONTENT, question.getContent());
  
-        // Inserting Row
         db.insert(TABLE_QUESTIONS, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
  
     // Getting single question
