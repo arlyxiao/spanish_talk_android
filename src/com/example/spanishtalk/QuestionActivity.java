@@ -1,8 +1,22 @@
 package com.example.spanishtalk;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,15 +32,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.base.utils.BaseUtils;
+import com.example.lib.SessionManagement;
 import com.example.tables.Question;
 import com.example.tables.QuestionsHandler;
+
+
 
 
 
 public class QuestionActivity extends Activity {
 	
 	private EditText edit_text_title, edit_text_content;
-	String title, content;
+	String user_id, title, content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +90,41 @@ public class QuestionActivity extends Activity {
     	}
     	
     	return checked;
+    }
+    
+    public void sendHttpRequest() {
+    	SessionManagement session = new SessionManagement(getApplicationContext());
+    	HashMap<String, String> user = session.getUserDetails();
+        
+        user_id = user.get(SessionManagement.KEY_USER_ID);
+    	
+    	HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users");
+	    
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("question[creator_id]", user_id));
+        nameValuePairs.add(new BasicNameValuePair("question[title]", title));
+        nameValuePairs.add(new BasicNameValuePair("question[content]", content));
+        
+        try {
+			httppost.setEntity(new UrlEncodedFormEntity (nameValuePairs, HTTP.UTF_8));
+			HttpResponse response = httpclient.execute(httppost);
+			
+			if (response.getStatusLine().getStatusCode() == 200) {
+
+	        }
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
     
     public void post_question(View view) {
