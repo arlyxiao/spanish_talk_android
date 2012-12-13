@@ -25,14 +25,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.lib.SessionManagement;
+
+
 
 
 
 public class LoginActivity extends Activity {
 	private EditText edit_text_email, edit_text_password;
 	String user_id, email, username, password;
+	private TextView login_error;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,22 +56,22 @@ public class LoginActivity extends Activity {
 		edit_text_email = (EditText)findViewById(R.id.login_email);
 		edit_text_password = (EditText)findViewById(R.id.login_password);
 		
-		email = edit_text_email.getText().toString();
-		password = edit_text_password.getText().toString();
+		login_error = (TextView)findViewById(R.id.login_error);
 	}
 
     
     public void doLogin(View view) {
     	new HttpTask().execute();
-    	Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);    	
+    	login_error.setVisibility(View.VISIBLE);
     }
     
     public class HttpTask extends AsyncTask<Void, Void, Void>{
 		
 		@Override
 	    protected Void doInBackground(Void... arg0) {
-	    	
+			email = edit_text_email.getText().toString();
+			password = edit_text_password.getText().toString();
+			
 	    	HttpClient httpclient = new DefaultHttpClient();
 		    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users/do_login");
 		    
@@ -93,10 +97,14 @@ public class LoginActivity extends Activity {
 	        		String username = jsonObject.getString("username");
 	        		String user_id = jsonObject.getString("user_id");
 	        		session.createLoginSession(user_id, username);
+	        		
+	        		Intent i = new Intent(getApplicationContext(), QuestionActivity.class);
+	                startActivity(i);
+	                finish();
 		        }
 		        
 
-		        
+		        return null;
 		    } catch (ClientProtocolException e) {
 		    } catch (IOException e) {
 		    } catch (JSONException e) {
@@ -105,6 +113,7 @@ public class LoginActivity extends Activity {
 	    	
 			return null;
 	    }
+		
 
 	 }
 }

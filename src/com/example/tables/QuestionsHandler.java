@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 
@@ -25,8 +26,10 @@ public class QuestionsHandler extends SQLiteOpenHelper {
  
     // Questions Table Columns names
     private static final String KEY_ID = "id";
+    private static final String KEY_CREATOR_ID = "creator_id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_CONTENT = "content";
+    
  
     public QuestionsHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +39,7 @@ public class QuestionsHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_QUESTIONS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT,"
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_CREATOR_ID + " INTEGER, " + KEY_TITLE + " TEXT,"
                 + KEY_CONTENT + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -56,30 +59,35 @@ public class QuestionsHandler extends SQLiteOpenHelper {
      */
  
     // Adding new question
-    public void addQuestion(Question question) {
+    public Integer addQuestion(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
+        values.put(KEY_CREATOR_ID, question.getCreatorId());
         values.put(KEY_TITLE, question.getTitle());
         values.put(KEY_CONTENT, question.getContent());
  
-        db.insert(TABLE_QUESTIONS, null, values);
+        Integer id = (int) db.insert(TABLE_QUESTIONS, null, values);
         db.close();
+        
+        Log.d("DDDDDD ID: ", Integer.toString(id));
+        
+        return id;
     }
  
     // Getting single question
-    Question getQuestion(int id) {
+    public Question getQuestion(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
  
-        Cursor cursor = db.query(TABLE_QUESTIONS, new String[] { KEY_ID,
+        Cursor cursor = db.query(TABLE_QUESTIONS, new String[] { KEY_ID, KEY_CREATOR_ID,
                 KEY_TITLE, KEY_CONTENT }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
  
         Question question = new Question(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
-        // return question
+        		Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
+        
         return question;
     }
  
@@ -97,8 +105,9 @@ public class QuestionsHandler extends SQLiteOpenHelper {
             do {
                 Question question = new Question();
                 question.setID(Integer.parseInt(cursor.getString(0)));
-                question.setTitle(cursor.getString(1));
-                question.setContent(cursor.getString(2));
+                question.setCreatorId(Integer.parseInt(cursor.getString(1)));
+                question.setTitle(cursor.getString(2));
+                question.setContent(cursor.getString(3));
                 // Adding question to list
                 questionList.add(question);
             } while (cursor.moveToNext());

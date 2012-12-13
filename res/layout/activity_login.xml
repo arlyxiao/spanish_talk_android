@@ -48,5 +48,22 @@
 	    
 	</LinearLayout>
 	
+	
+	<LinearLayout
+	    android:id="@+id/login_error_show"
+	    style="@style/padding_10_body"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+
+		<TextView
+		    android:id="@+id/login_error"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/incorrect_login_info" 
+		    android:visibility="gone" />
+		
+    
+	</LinearLayout>
+	
 
 </LinearLayout>

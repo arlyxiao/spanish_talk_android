@@ -2,6 +2,7 @@ package com.example.tables;
 
 public class Question {
 	int _id;
+	int _creator_id;
     String _title;
     String _content;
     
@@ -9,8 +10,19 @@ public class Question {
     	
     }
     
-    public Question(int id, String title, String content) {
+    public Question(Integer id) {
     	this._id = id;
+    }
+    
+    public Question(int id, int creator_id, String title, String content) {
+    	this._id = id;
+    	this._creator_id = creator_id;
+    	this._title = title;
+    	this._content = content;
+    }
+    
+    public Question(int creator_id, String title, String content) {
+    	this._creator_id = creator_id;
     	this._title = title;
     	this._content = content;
     }
@@ -28,6 +40,16 @@ public class Question {
     // setting id
     public void setID(int id){
         this._id = id;
+    }
+    
+    // getting user_id
+    public int getCreatorId(){
+        return this._creator_id;
+    }
+ 
+    // setting user_id
+    public void setCreatorId(int creator_id){
+        this._creator_id = creator_id;
     }
  
     // getting title
