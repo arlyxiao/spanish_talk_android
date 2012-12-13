@@ -21,11 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.base.activity.SpanishTalkBaseActivity;
+import com.example.lib.BaseDialog;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-
-
 
 
 
@@ -72,24 +71,28 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     		clearErrorList();
     		
 	    	new PostRegisterTask().execute();
-	    	
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	builder.setMessage("注册成功")
-	    	       .setCancelable(false)
-	    	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-	    	           public void onClick(DialogInterface dialog, int id) {	    	    
-	    	        	   Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-	    	        	   startActivity(intent);
-	    	        	   // finish();
-	    	           }
-	    	       });
-	    	AlertDialog alert = builder.create();
-	    	alert.show();
+
+	        if (SessionManagement.getUserId(getApplicationContext()) == null) {
+	        	BaseDialog.showSingleAlert("请填写正确的注册信息", this);
+	        } else {
+	        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    	builder.setMessage("注册成功")
+		    	       .setCancelable(false)
+		    	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		    	           public void onClick(DialogInterface dialog, int id) {	    	    
+		    	        	   Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+		    	        	   startActivity(intent);
+		    	        	   finish();
+		    	           }
+		    	       });
+		    	builder.create().show();
+		    	
+	        	Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+	        	startActivity(intent);
+	        }
     	}
     }
-    
- 
-	
+
     
 
     public void clearErrorList(){
@@ -144,7 +147,18 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		return checked;
 	}
 	
-
+	
+	public void saveInSession(JSONObject user) {
+		try {
+			String username = user.getString("username");
+			String user_id = user.getString("user_id");
+			
+			SessionManagement session = new SessionManagement(getApplicationContext());
+			session.createLoginSession(user_id, username);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public class PostRegisterTask extends AsyncTask<Void, Void, Void>{
@@ -153,35 +167,20 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	    protected Void doInBackground(Void... arg0) {
 	    			    
 		    Map<String, String> params = new HashMap<String, String>();
-		    params.put("user[username]", edit_text_email.getText().toString());
-		    params.put("user[email]", edit_text_username.getText().toString());
+		    params.put("user[username]", edit_text_username.getText().toString());
+		    params.put("user[email]", edit_text_email.getText().toString());
 		    params.put("user[password]", edit_text_password.getText().toString());
 		    
 	        List<NameValuePair> user_pairs = HttpPack.buildParams(params);
 	        String url = "http://192.168.1.17:3000/users";
 	        HttpResponse response = HttpPack.sendPost(url, user_pairs);
 		    
-	        if (response.getStatusLine().getStatusCode() == 200) {
-	        	JSONObject jsonObject = HttpPack.getJsonByResponse(response);
-	        	
-				try {
-					String username = jsonObject.getString("username");
-					String user_id = jsonObject.getString("user_id");
-					
-					SessionManagement session = new SessionManagement(getApplicationContext());
-					session.createLoginSession(user_id, username);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-	    		
-	    		
+	        if (response.getStatusLine().getStatusCode() == 200) {       	
+	        	saveInSession( HttpPack.getJsonByResponse(response) );
 	        }
 	        
 			return null;
 	    }
-		
-		
-		
 
 	 }
 }

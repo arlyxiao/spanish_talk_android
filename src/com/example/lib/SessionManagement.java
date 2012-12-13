@@ -95,6 +95,11 @@ public class SessionManagement {
     public static Integer getUserId(Context context) {
     	SessionManagement session = new SessionManagement(context);
     	HashMap<String, String> user = session.getUserDetails();
-        return Integer.parseInt(user.get(SessionManagement.KEY_USER_ID));
+    	String user_id = user.get(SessionManagement.KEY_USER_ID);
+    	if (user_id != null) {
+    		return Integer.parseInt(user_id);
+    	}
+    	return null;
     }
+   
 }
