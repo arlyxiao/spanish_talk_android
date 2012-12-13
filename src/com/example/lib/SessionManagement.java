@@ -90,4 +90,11 @@ public class SessionManagement {
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
     }
+    
+    
+    public static Integer getUserId(Context context) {
+    	SessionManagement session = new SessionManagement(context);
+    	HashMap<String, String> user = session.getUserDetails();
+        return Integer.parseInt(user.get(SessionManagement.KEY_USER_ID));
+    }
 }

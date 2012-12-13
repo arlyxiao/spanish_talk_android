@@ -1,4 +1,4 @@
-package com.example.base.utils;
+package com.example.lib;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 
 
 
-public class BaseDialogs {
+public class BaseDialog {
 	public static void showSingleAlert(String message, Activity t) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(t);
     	builder.setMessage(message)
