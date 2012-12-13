@@ -158,7 +158,8 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		    params.put("user[password]", edit_text_password.getText().toString());
 		    
 	        List<NameValuePair> user_pairs = HttpPack.buildParams(params);
-	        HttpResponse response = HttpPack.sendPost(user_pairs);
+	        String url = "http://192.168.1.17:3000/users";
+	        HttpResponse response = HttpPack.sendPost(url, user_pairs);
 		    
 	        if (response.getStatusLine().getStatusCode() == 200) {
 	        	JSONObject jsonObject = HttpPack.getJsonByResponse(response);

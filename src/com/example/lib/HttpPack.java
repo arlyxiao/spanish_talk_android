@@ -80,9 +80,9 @@ public class HttpPack {
 		return params;
 	}
 	
-	public static HttpResponse sendPost(List<NameValuePair> params) {
+	public static HttpResponse sendPost(String url, List<NameValuePair> params) {
 		HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users");
+	    HttpPost httppost = new HttpPost(url);
 	    
 	    // httppost.setHeader("Accept", "application/json");
         try {
