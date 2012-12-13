@@ -1,8 +1,6 @@
 package com.example.spanishtalk;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.base.activity.SpanishTalkBaseActivity;
-import com.example.base.utils.BaseUtils;
+import com.example.lib.BaseUtils;
+import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 
 
@@ -168,7 +167,6 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	    	HttpClient httpclient = new DefaultHttpClient();
 		    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users");
 		    
-		    StringBuilder builder = new StringBuilder();
 		    SessionManagement session = new SessionManagement(getApplicationContext());
 
 		    try {
@@ -183,17 +181,11 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		        HttpResponse response = httpclient.execute(httppost);
 		        
 		        if (response.getStatusLine().getStatusCode() == 200) {
-			        BufferedReader reader = new BufferedReader(new InputStreamReader(
-	        		response.getEntity().getContent()));
-	        		for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-	        			builder.append(s);
-	        		}
-	        		JSONObject jsonObject = new JSONObject(builder.toString());
+		        	JSONObject jsonObject = HttpPack.getJsonByResponse(response);
+		        	
 	        		String username = jsonObject.getString("username");
 	        		String user_id = jsonObject.getString("user_id");
 	        		session.createLoginSession(user_id, username);
-//	        		Log.d("url username", username);
-//	        		Log.d("url user_id", Integer.toString(user_id));
 		        }
 		        
 

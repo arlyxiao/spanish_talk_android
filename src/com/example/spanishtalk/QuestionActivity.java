@@ -25,8 +25,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.base.utils.BaseUtils;
 import com.example.lib.BaseDialog;
+import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.lib.SqliteLog;
