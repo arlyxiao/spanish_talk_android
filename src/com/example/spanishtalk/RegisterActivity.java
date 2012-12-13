@@ -1,18 +1,11 @@
 package com.example.spanishtalk;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +24,8 @@ import com.example.base.activity.SpanishTalkBaseActivity;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
+
+
 
 
 
@@ -76,7 +71,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 
     		clearErrorList();
     		
-	    	new HttpTask().execute();
+	    	new PostRegisterTask().execute();
 	    	
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    	builder.setMessage("注册成功")
@@ -149,54 +144,38 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		return checked;
 	}
 	
+
 	
 	
-	
-	
-	
-	public class HttpTask extends AsyncTask<Void, Void, Void>{
+	public class PostRegisterTask extends AsyncTask<Void, Void, Void>{
 		
 		@Override
 	    protected Void doInBackground(Void... arg0) {
-	    	
-	    	email = edit_text_email.getText().toString();
-			username = edit_text_username.getText().toString();
-		    password = edit_text_password.getText().toString();
-	    	
-	    	
-	    	HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users");
+	    			    
+		    Map<String, String> params = new HashMap<String, String>();
+		    params.put("user[username]", edit_text_email.getText().toString());
+		    params.put("user[email]", edit_text_username.getText().toString());
+		    params.put("user[password]", edit_text_password.getText().toString());
 		    
-		    SessionManagement session = new SessionManagement(getApplicationContext());
-
-		    try {
-		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-		        nameValuePairs.add(new BasicNameValuePair("user[username]", username));
-		        nameValuePairs.add(new BasicNameValuePair("user[email]", email));
-		        nameValuePairs.add(new BasicNameValuePair("user[password]", password));
-		        
-		        // httppost.setHeader("Accept", "application/json");
-		        httppost.setEntity(new UrlEncodedFormEntity (nameValuePairs, HTTP.UTF_8));
-
-		        HttpResponse response = httpclient.execute(httppost);
-		        
-		        if (response.getStatusLine().getStatusCode() == 200) {
-		        	JSONObject jsonObject = HttpPack.getJsonByResponse(response);
-		        	
-	        		String username = jsonObject.getString("username");
-	        		String user_id = jsonObject.getString("user_id");
-	        		session.createLoginSession(user_id, username);
-		        }
-		        
-
-		        
-		    } catch (ClientProtocolException e) {
-		    } catch (IOException e) {
-		    } catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	
+	        List<NameValuePair> user_pairs = HttpPack.buildParams(params);
+	        HttpResponse response = HttpPack.sendPost(user_pairs);
+		    
+	        if (response.getStatusLine().getStatusCode() == 200) {
+	        	JSONObject jsonObject = HttpPack.getJsonByResponse(response);
+	        	
+				try {
+					String username = jsonObject.getString("username");
+					String user_id = jsonObject.getString("user_id");
+					
+					SessionManagement session = new SessionManagement(getApplicationContext());
+					session.createLoginSession(user_id, username);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+	    		
+	    		
+	        }
+	        
 			return null;
 	    }
 		
