@@ -50,7 +50,7 @@ public class QuestionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         
-        load_ui();
+        loadUi();
         
         new TestTask().execute();
     }
@@ -62,7 +62,7 @@ public class QuestionActivity extends Activity {
     }
     
     
-    private void load_ui(){
+    private void loadUi(){
 		edit_text_title = (EditText)findViewById(R.id.question_title);
 		edit_text_content = (EditText)findViewById(R.id.question_content);
 		

@@ -72,7 +72,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
     
     
     
-    public void do_register(View view){
+    public void doRegister(View view){
     	if (validateRegisterForm()) {
 
     		clearErrorList();

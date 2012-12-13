@@ -24,8 +24,6 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
-
-        
         
         <EditText
            android:id="@+id/login_password"
@@ -44,7 +42,7 @@
             android:id="@+id/link_to_login"
             style="@style/login_layout_button"
             android:text="@string/click_login_button"
-            android:onClick="do_login" />
+            android:onClick="doLogin" />
 
  
 	    
