@@ -17,7 +17,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,7 +28,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.lib.BaseDialog;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
@@ -49,6 +51,8 @@ public class QuestionNewActivity extends Activity {
         loadUi();
         
         new PostQuestionTask().execute();
+        
+        
     }
 
     @Override
@@ -83,7 +87,17 @@ public class QuestionNewActivity extends Activity {
 		
     	if (validateQuestionForm(title, content)) {
 			new QuestionsHandler(this).addQuestion(new Question(user_id, title, content));
-			BaseDialog.showSingleAlert("发送成功", this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    	builder.setMessage("发送成功")
+	    	       .setCancelable(false)
+	    	       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+	    	           public void onClick(DialogInterface dialog, int id) {
+	    	        	   Intent i = new Intent(getApplicationContext(), QuestionShowActivity.class);
+	    	        	   startActivity(i);
+	    	           }
+	    	       });
+	    	AlertDialog alert = builder.create();
+	    	alert.show();
 		}
     }
     
@@ -137,6 +151,11 @@ public class QuestionNewActivity extends Activity {
 
 		    }, 0, 5000);
 			return null;
+	    }
+		
+		
+		protected void onPostExecute(Long result) {
+			
 	    }
 		
 		

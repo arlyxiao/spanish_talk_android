@@ -40,7 +40,7 @@
         
         <Button
             android:id="@+id/link_to_question"
-            style="@style/login_layout_button"
+            style="@style/general_layout_button"
             android:text="@string/click_question_button"
             android:onClick="postQuestion" />
 
