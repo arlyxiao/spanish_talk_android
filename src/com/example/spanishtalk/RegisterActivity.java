@@ -1,11 +1,9 @@
 package com.example.spanishtalk;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -170,10 +168,9 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		    params.put("user[username]", edit_text_username.getText().toString());
 		    params.put("user[email]", edit_text_email.getText().toString());
 		    params.put("user[password]", edit_text_password.getText().toString());
-		    
-	        List<NameValuePair> user_pairs = HttpPack.buildParams(params);
+
 	        String url = "http://192.168.1.17:3000/users";
-	        HttpResponse response = HttpPack.sendPost(url, user_pairs);
+	        HttpResponse response = HttpPack.sendPost(url, params);
 		    
 	        if (response.getStatusLine().getStatusCode() == 200) {       	
 	        	saveInSession( HttpPack.getJsonByResponse(response) );

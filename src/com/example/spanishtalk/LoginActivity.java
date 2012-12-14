@@ -1,20 +1,9 @@
 package com.example.spanishtalk;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-
 
 
 
@@ -58,62 +47,50 @@ public class LoginActivity extends Activity {
 		
 		login_error = (TextView)findViewById(R.id.login_error);
 	}
+    
+    public void saveInSession(JSONObject user) {
+		try {
+			String username = user.getString("username");
+			String user_id = user.getString("user_id");
+			
+			SessionManagement session = new SessionManagement(getApplicationContext());
+			session.createLoginSession(user_id, username);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 
     
     public void doLogin(View view) {
     	new HttpTask().execute();
-    	login_error.setVisibility(View.VISIBLE);
+    	
+    	if (SessionManagement.getUserId(getApplicationContext()) == null) {
+    		login_error.setVisibility(View.VISIBLE);
+        } else {
+        	Intent i = new Intent(getApplicationContext(), QuestionActivity.class);
+        	startActivity(i);
+        	finish();
+        }
+    	
     }
     
     public class HttpTask extends AsyncTask<Void, Void, Void>{
 		
 		@Override
-	    protected Void doInBackground(Void... arg0) {
-			email = edit_text_email.getText().toString();
-			password = edit_text_password.getText().toString();
-			
-	    	HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/users/do_login");
+	    protected Void doInBackground(Void... arg0) {			
+			Map<String, String> params = new HashMap<String, String>();
+		    params.put("user[email]", edit_text_email.getText().toString());
+		    params.put("user[password]", edit_text_password.getText().toString());
+
+	        String url = "http://192.168.1.17:3000/users/do_login";
+	        HttpResponse response = HttpPack.sendPost(url, params);
 		    
-		    StringBuilder builder = new StringBuilder();
-		    SessionManagement session = new SessionManagement(getApplicationContext());
-
-		    try {
-		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-		        nameValuePairs.add(new BasicNameValuePair("email", email));
-		        nameValuePairs.add(new BasicNameValuePair("password", password));
-		        
-		        httppost.setEntity(new UrlEncodedFormEntity (nameValuePairs, HTTP.UTF_8));
-
-		        HttpResponse response = httpclient.execute(httppost);
-		        
-		        if (response.getStatusLine().getStatusCode() == 200) {
-			        BufferedReader reader = new BufferedReader(new InputStreamReader(
-	        		response.getEntity().getContent()));
-	        		for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-	        			builder.append(s);
-	        		}
-	        		JSONObject jsonObject = new JSONObject(builder.toString());
-	        		String username = jsonObject.getString("username");
-	        		String user_id = jsonObject.getString("user_id");
-	        		session.createLoginSession(user_id, username);
-	        		
-	        		Intent i = new Intent(getApplicationContext(), QuestionActivity.class);
-	                startActivity(i);
-	                finish();
-		        }
-		        
-
-		        return null;
-		    } catch (ClientProtocolException e) {
-		    } catch (IOException e) {
-		    } catch (JSONException e) {
-				e.printStackTrace();
-			}
+	        if (response.getStatusLine().getStatusCode() == 200) {       	
+	        	saveInSession( HttpPack.getJsonByResponse(response) );
+	        }
 	    	
 			return null;
 	    }
-		
 
 	 }
 }

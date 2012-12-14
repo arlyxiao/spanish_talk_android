@@ -80,13 +80,15 @@ public class HttpPack {
 		return params;
 	}
 	
-	public static HttpResponse sendPost(String url, List<NameValuePair> params) {
+	public static HttpResponse sendPost(String url, Map<String, String> params) {
+		List<NameValuePair> user_pairs = HttpPack.buildParams(params);
+		
 		HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(url);
 	    
 	    // httppost.setHeader("Accept", "application/json");
         try {
-			httppost.setEntity(new UrlEncodedFormEntity (params, HTTP.UTF_8));
+			httppost.setEntity(new UrlEncodedFormEntity (user_pairs, HTTP.UTF_8));
 			HttpResponse response = httpclient.execute(httppost);
 			
 			return response;
