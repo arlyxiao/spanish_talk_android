@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
+import com.example.logic.SpanishTalkAction;
 
 
 
@@ -48,17 +47,7 @@ public class LoginActivity extends Activity {
 		login_error = (TextView)findViewById(R.id.login_error);
 	}
     
-    public void saveInSession(JSONObject user) {
-		try {
-			String username = user.getString("username");
-			String user_id = user.getString("user_id");
-			
-			SessionManagement session = new SessionManagement(getApplicationContext());
-			session.createLoginSession(user_id, username);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
+    
 
     
     public void doLogin(View view) {
@@ -82,11 +71,10 @@ public class LoginActivity extends Activity {
 		    params.put("user[email]", edit_text_email.getText().toString());
 		    params.put("user[password]", edit_text_password.getText().toString());
 
-	        String url = "http://192.168.1.17:3000/users/do_login";
-	        HttpResponse response = HttpPack.sendPost(url, params);
+	        HttpResponse response = HttpPack.sendPost(SpanishTalkAction.login_url, params);
 		    
 	        if (response.getStatusLine().getStatusCode() == 200) {       	
-	        	saveInSession( HttpPack.getJsonByResponse(response) );
+	        	SpanishTalkAction.saveInSession(getApplicationContext(), HttpPack.getJsonByResponse(response) );
 	        }
 	    	
 			return null;

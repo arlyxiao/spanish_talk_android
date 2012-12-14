@@ -1,4 +1,4 @@
-package com.example.base.activity;
+package com.example.logic;
 
 import android.app.Activity;
 import android.content.Intent;
