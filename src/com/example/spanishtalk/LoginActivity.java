@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -53,6 +54,8 @@ public class LoginActivity extends Activity {
     public void doLogin(View view) {
     	new HttpTask().execute();
     	
+    	Log.d("Test 1: ", "ddddd");
+    	
     	if (SessionManagement.getUserId(getApplicationContext()) == null) {
     		login_error.setVisibility(View.VISIBLE);
         } else {
@@ -66,14 +69,16 @@ public class LoginActivity extends Activity {
     public class HttpTask extends AsyncTask<Void, Void, Void>{
 		
 		@Override
-	    protected Void doInBackground(Void... arg0) {			
+	    protected Void doInBackground(Void... arg0) {
+			Log.d("Show password: ", edit_text_password.getText().toString());
 			Map<String, String> params = new HashMap<String, String>();
 		    params.put("user[email]", edit_text_email.getText().toString());
 		    params.put("user[password]", edit_text_password.getText().toString());
 
 	        HttpResponse response = HttpPack.sendPost(SpanishTalkAction.login_url, params);
 		    
-	        if (response.getStatusLine().getStatusCode() == 200) {       	
+	        if (response.getStatusLine().getStatusCode() == 200) {
+	        	Log.d("Code: ", "dddddddddddddd");
 	        	SpanishTalkAction.saveInSession(getApplicationContext(), HttpPack.getJsonByResponse(response) );
 	        }
 	    	
