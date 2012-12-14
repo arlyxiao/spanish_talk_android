@@ -1,5 +1,6 @@
 package com.example.application;
 
+
 import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,4 +30,7 @@ public class SpanishTalkApplication extends Application {
 
 	final public static String now_loading = "正在载入…";
 	final public static String now_sending = "正在发送…";
+	
+	
+	
 }

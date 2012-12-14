@@ -5,11 +5,8 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -17,17 +14,21 @@ import android.widget.TextView;
 
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.SpanishTalkAction;
+import com.example.logic.SpanishTalkBaseActivity;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_password;
 	String user_id, email, username, password;
 	private TextView login_error;
+	public SessionManagement session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		session = new SessionManagement(getApplicationContext());
+		session.clear();
 
 		loadUi();
 	}
@@ -48,16 +49,12 @@ public class LoginActivity extends Activity {
 	public void doLogin(View view) {
 		new LoginTask().execute();
 
-		Log.d("Test 1: ", "ddddd");
-
-		if (SessionManagement.getUserId(getApplicationContext()) == null) {
+		if (session.getUserId() == null) {
 			login_error.setVisibility(View.VISIBLE);
-		} else {
-			Intent i = new Intent(getApplicationContext(),
-					QuestionNewActivity.class);
-			startActivity(i);
-			finish();
+			return;
 		}
+		openActivity(QuestionNewActivity.class);
+		finish();
 
 	}
 
@@ -65,19 +62,18 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			Log.d("Show password: ", edit_text_password.getText().toString());
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("user[email]", edit_text_email.getText().toString());
 			params.put("user[password]", edit_text_password.getText()
 					.toString());
-
-			HttpResponse response = HttpPack.sendPost(
-					SpanishTalkAction.login_url, params);
-
+			
+			HttpResponse response = HttpPack.sendPost(login_url, params);
+			
 			if (response.getStatusLine().getStatusCode() == 200) {
-				Log.d("Code: ", "dddddddddddddd");
-				SpanishTalkAction.saveInSession(getApplicationContext(),
-						HttpPack.getJsonByResponse(response));
+				String cookie = HttpPack.getCookieByResponse(response);
+				session.saveCookie(cookie);
+				
+				saveUserSessionByResponse(response);
 			}
 
 			return null;

@@ -62,7 +62,7 @@ public class QuestionNewActivity extends Activity {
 		edit_text_title = (EditText) findViewById(R.id.question_title);
 		edit_text_content = (EditText) findViewById(R.id.question_content);
 
-		user_id = SessionManagement.getUserId(getApplicationContext());
+		user_id = new SessionManagement(getApplicationContext()).getUserId();
 	}
 
 	public boolean validateQuestionForm(String title, String content) {

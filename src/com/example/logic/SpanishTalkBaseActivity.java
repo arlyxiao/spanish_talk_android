@@ -1,11 +1,22 @@
 package com.example.logic;
 
+import org.apache.http.HttpResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.example.lib.HttpPack;
+import com.example.lib.SessionManagement;
+
 abstract public class SpanishTalkBaseActivity extends Activity {
+	public static String login_url = "http://192.168.1.17:3000/users/do_login";
+	public static String register_url = "http://192.168.1.17:3000/users";
+	
+	
 	public class RequestCode {
 		public final static int NEW_TEXT = 9;
 		public final static int FROM_ALBUM = 1;
@@ -19,7 +30,7 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 	}
 
 	// 打开一个新的activity，此方法用来简化调用
-	final public void open_activity(Class<?> cls) {
+	final public void openActivity(Class<?> cls) {
 		startActivity(new Intent(getApplicationContext(), cls));
 	}
 
@@ -33,6 +44,21 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	
+	public void saveUserSessionByResponse(HttpResponse response) {
+		JSONObject user = HttpPack.getJsonByResponse(response);
+		
+		try {
+			String username = user.getString("username");
+			String user_id = user.getString("user_id");
+
+			SessionManagement session = new SessionManagement(getApplicationContext());
+			session.createLoginSession(user_id, username);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -20,7 +20,6 @@ import com.example.lib.BaseDialog;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.SpanishTalkAction;
 import com.example.logic.SpanishTalkBaseActivity;
 
 public class RegisterActivity extends SpanishTalkBaseActivity {
@@ -66,7 +65,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 
 			new PostRegisterTask().execute();
 
-			if (SessionManagement.getUserId(getApplicationContext()) == null) {
+			if (new SessionManagement(getApplicationContext()).getUserId() == null) {
 				BaseDialog.showSingleAlert("请填写正确的注册信息", this);
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -156,12 +155,10 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString());
 
-			HttpResponse response = HttpPack.sendPost(
-					SpanishTalkAction.register_url, params);
+			HttpResponse response = HttpPack.sendPost(register_url, params);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				SpanishTalkAction.saveInSession(getApplicationContext(),
-						HttpPack.getJsonByResponse(response));
+				saveUserSessionByResponse(response);
 			}
 
 			return null;
