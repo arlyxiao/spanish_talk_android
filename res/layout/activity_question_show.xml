@@ -1,43 +1,36 @@
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/body" >
 
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    style="@style/head_bar" >
-	
-	    <Button
-	        android:id="@+id/button1"
-	        style="@style/head_bar_button_go_back_register"
-	        android:onClick="click_headbar_button_back" />
-	
-	</RelativeLayout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/head_bar" >
 
-	<LinearLayout
-	    style="@style/padding_10_body"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	    
-	    
-	    <TextView
-		    android:id="@id/question_title"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" />
-	    
-	    <TextView
-		    android:id="@id/question_content"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" />
-	    
-        
+        <Button
+            android:id="@+id/button1"
+            style="@style/head_bar_button_go_back_register"
+            android:onClick="click_headbar_button_back" />
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/padding_10_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@id/question_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@id/question_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/link_to_answer"
             style="@style/general_layout_button"
-            android:text="@string/click_answer_button"
-            android:onClick="postAnswer" />
-
- 
-	    
-	</LinearLayout>
-	
+            android:onClick="postAnswer"
+            android:text="@string/click_answer_button" />
+    </LinearLayout>
 
 </LinearLayout>

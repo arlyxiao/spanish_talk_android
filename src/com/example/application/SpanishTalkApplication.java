@@ -6,27 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 public class SpanishTalkApplication extends Application {
-	
-    public static Context context;
-    public static LayoutInflater mInflater;
-    public static String current_show_activity;
 
-    public static View inflate(int resource, ViewGroup root, boolean attachToRoot) {
-        return mInflater.inflate(resource, root, attachToRoot);
-    }
+	public static Context context;
+	public static LayoutInflater mInflater;
+	public static String current_show_activity;
 
-    public static View inflate(int resource, ViewGroup root) {
-        return mInflater.inflate(resource, root);
-    }
+	public static View inflate(int resource, ViewGroup root,
+			boolean attachToRoot) {
+		return mInflater.inflate(resource, root, attachToRoot);
+	}
 
-    @Override
-    public void onCreate() {
-        context = getApplicationContext();
-        mInflater = LayoutInflater.from(context);
-    }
+	public static View inflate(int resource, ViewGroup root) {
+		return mInflater.inflate(resource, root);
+	}
 
-    final public static String now_loading = "正在载入…";
-    final public static String now_sending = "正在发送…";
+	@Override
+	public void onCreate() {
+		context = getApplicationContext();
+		mInflater = LayoutInflater.from(context);
+	}
+
+	final public static String now_loading = "正在载入…";
+	final public static String now_sending = "正在发送…";
 }

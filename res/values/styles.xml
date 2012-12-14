@@ -2,7 +2,6 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
-    
     <style name="head_bar">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">44dp</item>
@@ -10,8 +9,7 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:background">#222222</item>
     </style>
-    
-    
+
     <style name="head_bar_button">
         <item name="android:background">@drawable/bg_button_head_bar</item>
         <item name="android:layout_height">32dp</item>
@@ -22,16 +20,13 @@
         <item name="android:paddingLeft">14dp</item>
         <item name="android:paddingRight">14dp</item>
     </style>
-    
-    
-    
+
     <style name="head_bar_button_go_back_register" parent="@style/head_bar_button">
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:text">@string/button_go_back</item>
         <item name="android:layout_marginLeft">9dp</item>
     </style>
-    
-    
+
     <style name="general_layout_button">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">44dp</item>

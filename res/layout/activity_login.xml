@@ -1,21 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/body" >
 
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    style="@style/head_bar" >
-	
-	    <Button
-	        android:id="@+id/button1"
-	        style="@style/head_bar_button_go_back_register"
-	        android:onClick="click_headbar_button_back" />
-	
-	</RelativeLayout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/head_bar" >
 
-	<LinearLayout
-	    style="@style/padding_10_body"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
- 
+        <Button
+            android:id="@+id/button1"
+            style="@style/head_bar_button_go_back_register"
+            android:onClick="click_headbar_button_back" />
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/padding_10_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
         <EditText
             android:id="@+id/login_email"
             android:layout_width="match_parent"
@@ -24,46 +24,35 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
-        
         <EditText
-           android:id="@+id/login_password"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"
-           android:textColorHint="#000"
-           android:hint="@string/password"
-           android:inputType="textPassword"
-           android:layout_marginTop="5dp"
-           android:imeOptions="actionDone"
-       />
-        
-        
-        
+            android:id="@+id/login_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="@string/password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:textColorHint="#000" />
+
         <Button
             android:id="@+id/link_to_login"
             style="@style/general_layout_button"
-            android:text="@string/click_login_button"
-            android:onClick="doLogin" />
+            android:onClick="doLogin"
+            android:text="@string/click_login_button" />
+    </LinearLayout>
 
- 
-	    
-	</LinearLayout>
-	
-	
-	<LinearLayout
-	    android:id="@+id/login_error_show"
-	    style="@style/padding_10_body"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/login_error_show"
+        style="@style/padding_10_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-		<TextView
-		    android:id="@+id/login_error"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:text="@string/incorrect_login_info" 
-		    android:visibility="gone" />
-		
-    
-	</LinearLayout>
-	
+        <TextView
+            android:id="@+id/login_error"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/incorrect_login_info"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </LinearLayout>

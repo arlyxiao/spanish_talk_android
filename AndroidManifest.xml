@@ -21,12 +21,10 @@
         <activity
             android:name=".QuestionNewActivity"
             android:label="@string/title_activity_question" >
-            
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
-            
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -40,7 +38,6 @@
         <activity
             android:name=".QuestionShowActivity"
             android:label="@string/title_activity_question_show" >
-            
         </activity>
     </application>
 

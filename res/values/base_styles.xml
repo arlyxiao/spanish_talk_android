@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="body">
         <item name="android:orientation">vertical</item>
         <item name="android:layout_width">fill_parent</item>
@@ -20,4 +21,5 @@
         <item name="android:padding">10dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
+
 </resources>
