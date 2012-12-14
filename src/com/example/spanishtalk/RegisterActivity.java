@@ -107,12 +107,13 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	     password = edit_text_password.getText().toString();
 	     confirm_password = edit_text_confirm_password.getText().toString();
 		
-//		if( !BaseUtils.is_wifi_active(RegisterActivity.this)){
-//			tv_notice_network.setVisibility(View.VISIBLE);
-//			checked = false;
-//		}else{
+			
+		if (HttpPack.hasConnected(this)) {
 			network_error.setVisibility(View.GONE);
-//		}
+		} else {
+			network_error.setVisibility(View.VISIBLE);
+			checked = false;
+		}
 		
 		if(BaseUtils.is_str_blank(email)){
 			email_error.setVisibility(View.VISIBLE);
