@@ -52,21 +52,21 @@ public class LoginActivity extends Activity {
 
     
     public void doLogin(View view) {
-    	new HttpTask().execute();
+    	new LoginTask().execute();
     	
     	Log.d("Test 1: ", "ddddd");
     	
     	if (SessionManagement.getUserId(getApplicationContext()) == null) {
     		login_error.setVisibility(View.VISIBLE);
         } else {
-        	Intent i = new Intent(getApplicationContext(), QuestionActivity.class);
+        	Intent i = new Intent(getApplicationContext(), QuestionNewActivity.class);
         	startActivity(i);
         	finish();
         }
     	
     }
     
-    public class HttpTask extends AsyncTask<Void, Void, Void>{
+    public class LoginTask extends AsyncTask<Void, Void, Void>{
 		
 		@Override
 	    protected Void doInBackground(Void... arg0) {

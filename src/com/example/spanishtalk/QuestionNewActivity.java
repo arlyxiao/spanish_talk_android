@@ -35,7 +35,7 @@ import com.example.tables.QuestionsHandler;
 
 
 
-public class QuestionActivity extends Activity {
+public class QuestionNewActivity extends Activity {
 	
 	private EditText edit_text_title, edit_text_content;
 	String title, content;
@@ -44,7 +44,7 @@ public class QuestionActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question);
+        setContentView(R.layout.activity_question_new);
         
         loadUi();
         
@@ -98,10 +98,10 @@ public class QuestionActivity extends Activity {
 		        @Override
 		        public void run() {
 	    		    		    		    
-	        		QuestionsHandler db = new QuestionsHandler(QuestionActivity.this);
+	        		QuestionsHandler db = new QuestionsHandler(QuestionNewActivity.this);
 	        		List<Question> questions = db.getAllQuestions();  
 	        		
-		        	if (HttpPack.hasConnected(QuestionActivity.this)) {
+		        	if (HttpPack.hasConnected(QuestionNewActivity.this)) {
 		        		
 		        		HttpClient httpclient = new DefaultHttpClient();
 		    		    HttpPost httppost = new HttpPost("http://192.168.1.17:3000/questions");
@@ -132,7 +132,7 @@ public class QuestionActivity extends Activity {
 		        	}
 		        	
 		        	// 输出目前本地数据库所有记录
-		        	SqliteLog.showAllQuestions(QuestionActivity.this);
+		        	SqliteLog.showAllQuestions(QuestionNewActivity.this);
 		        }
 
 		    }, 0, 5000);
