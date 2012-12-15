@@ -105,7 +105,8 @@ public class HttpPack {
 
 	public static HttpResponse sendPost(String url, Map<String, String> params) {
 		CookieStore cookieStore = new BasicCookieStore();  
-        HttpContext localContext = new BasicHttpContext();  
+        HttpContext localContext = new BasicHttpContext();
+        
         localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 		
 		List<NameValuePair> user_pairs = HttpPack.buildParams(params);

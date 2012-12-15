@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.SpanishTalkBaseActivity;
@@ -19,7 +19,6 @@ import com.example.logic.SpanishTalkBaseActivity;
 public class LoginActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_password;
 	String user_id, email, username, password;
-	private TextView login_error;
 	public SessionManagement session;
 
 	@Override
@@ -43,19 +42,10 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		edit_text_email = (EditText) findViewById(R.id.login_email);
 		edit_text_password = (EditText) findViewById(R.id.login_password);
 
-		login_error = (TextView) findViewById(R.id.login_error);
 	}
 
 	public void doLogin(View view) {
 		new LoginTask().execute();
-
-		if (session.getUserId() == null) {
-			login_error.setVisibility(View.VISIBLE);
-			return;
-		}
-		openActivity(QuestionNewActivity.class);
-		finish();
-
 	}
 
 	public class LoginTask extends AsyncTask<Void, Void, Void> {
@@ -78,6 +68,20 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 
 			return null;
 		}
+		
+	
+		
+		@Override
+	    protected void onPostExecute(Void result) {
+			if (session.getUserId() == null) {
+				BaseDialog.showSingleAlert("请填写正确的用户名或密码", LoginActivity.this);
+				return;
+			}
+			openActivity(QuestionNewActivity.class);
+			finish();
+
+	        super.onPostExecute(result);
+	    }
 
 	}
 }
