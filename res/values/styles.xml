@@ -26,6 +26,12 @@
         <item name="android:text">@string/button_go_back</item>
         <item name="android:layout_marginLeft">9dp</item>
     </style>
+    
+    <style name="head_bar_button_logout" parent="@style/head_bar_button">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:text">@string/button_logout</item>
+        <item name="android:layout_marginRight">9dp</item>
+    </style>
 
     <style name="general_layout_button">
         <item name="android:layout_width">fill_parent</item>

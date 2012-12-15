@@ -30,6 +30,12 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 		on_go_back();
 		this.finish();
 	}
+	
+	// 退出事件
+	public void clickLogout(View view) {
+		SessionManagement session = new SessionManagement(getApplicationContext());
+		session.logoutUser();
+	}
 
 	// 打开一个新的activity，此方法用来简化调用
 	final public void openActivity(Class<?> cls) {

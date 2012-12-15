@@ -9,6 +9,12 @@
             android:id="@+id/button1"
             style="@style/head_bar_button_go_back_register"
             android:onClick="click_headbar_button_back" />
+        
+        <Button
+            android:id="@+id/logout_btn"
+            style="@style/head_bar_button_logout"
+            android:onClick="clickLogout" />
+        
     </RelativeLayout>
 
     <LinearLayout

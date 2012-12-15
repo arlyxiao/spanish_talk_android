@@ -16,7 +16,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,10 +31,11 @@ import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.lib.SqliteLog;
+import com.example.logic.SpanishTalkBaseActivity;
 import com.example.tables.Question;
 import com.example.tables.QuestionsHandler;
 
-public class QuestionNewActivity extends Activity {
+public class QuestionNewActivity extends SpanishTalkBaseActivity {
 
 	private EditText edit_text_title, edit_text_content;
 	String title, content;
