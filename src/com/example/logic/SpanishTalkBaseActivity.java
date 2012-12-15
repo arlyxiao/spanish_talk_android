@@ -6,8 +6,10 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
@@ -32,6 +34,12 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 	// 打开一个新的activity，此方法用来简化调用
 	final public void openActivity(Class<?> cls) {
 		startActivity(new Intent(getApplicationContext(), cls));
+	}
+	
+	final public void showFormNotice(String message) {
+		Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
 	}
 
 	// 钩子，自行重载

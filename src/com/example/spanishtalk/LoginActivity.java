@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.SpanishTalkBaseActivity;
@@ -74,7 +73,7 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		@Override
 	    protected void onPostExecute(Void result) {
 			if (session.getUserId() == null) {
-				BaseDialog.showSingleAlert("请填写正确的用户名或密码", LoginActivity.this);
+				showFormNotice("请填写正确的用户名或密码");
 				return;
 			}
 			openActivity(QuestionNewActivity.class);
