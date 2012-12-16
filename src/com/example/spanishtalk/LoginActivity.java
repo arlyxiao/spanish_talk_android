@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.SpanishTalkBaseActivity;
@@ -27,8 +28,6 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		
 		session = new SessionManagement(getApplicationContext());
 		session.clear();
-
-		loadUi();
 	}
 
 	@Override
@@ -37,20 +36,22 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		return true;
 	}
 
-	private void loadUi() {
-		edit_text_email = (EditText) findViewById(R.id.login_email);
-		edit_text_password = (EditText) findViewById(R.id.login_password);
-
-	}
 
 	public void doLogin(View view) {
-		new LoginTask().execute();
+		if (HttpPack.hasConnected(this)) {
+			new LoginTask().execute();
+			return;
+		}
+		BaseDialog.showSingleAlert("当前网络连接不可用", this);
 	}
 
 	public class LoginTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
+			edit_text_email = (EditText) findViewById(R.id.login_email);
+			edit_text_password = (EditText) findViewById(R.id.login_password);
+			
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("user[email]", edit_text_email.getText().toString());
 			params.put("user[password]", edit_text_password.getText()

@@ -5,12 +5,9 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
@@ -26,9 +23,9 @@ public class QuestionShowActivity extends SpanishTalkBaseActivity {
 		
 		Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
-		Integer intCameFrom = b.getInt("question_id");
+		Integer question_id = b.getInt("question_id");
 		
-		new ShowQuestionTask().execute(intCameFrom);
+		new ShowQuestionTask().execute(question_id);
 	}
 
 	@Override
@@ -37,9 +34,6 @@ public class QuestionShowActivity extends SpanishTalkBaseActivity {
 		return true;
 	}
 	
-	public void showQuestion() {
-		
-	}
 	
 	public class ShowQuestionTask extends AsyncTask<Integer, Void, JSONObject> {
 

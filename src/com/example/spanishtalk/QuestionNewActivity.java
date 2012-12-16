@@ -2,10 +2,7 @@ package com.example.spanishtalk;
 
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -25,10 +22,8 @@ import android.widget.Toast;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.lib.SqliteLog;
 import com.example.logic.SpanishTalkBaseActivity;
-import com.example.tables.Question;
-import com.example.tables.QuestionsHandler;
+
 
 public class QuestionNewActivity extends SpanishTalkBaseActivity {
 
@@ -42,9 +37,6 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 		setContentView(R.layout.activity_question_new);
 
 		loadUi();
-
-		// new PostQuestionTask().execute();
-
 	}
 
 	@Override
