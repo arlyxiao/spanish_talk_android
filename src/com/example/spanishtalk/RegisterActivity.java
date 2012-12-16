@@ -90,6 +90,12 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 			}
 		}
 	}
+	
+	
+	public void showLogin(View view) {
+		openActivity(LoginActivity.class);
+		finish();
+	}
 
 	public void clearErrorList() {
 		error_list.setVisibility(View.GONE);

@@ -44,6 +44,11 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		}
 		BaseDialog.showSingleAlert("当前网络连接不可用", this);
 	}
+	
+	public void showRegister(View view) {
+		openActivity(RegisterActivity.class);
+		finish();
+	}
 
 	public class LoginTask extends AsyncTask<Void, Void, Void> {
 

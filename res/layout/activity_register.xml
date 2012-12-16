@@ -58,6 +58,12 @@
             style="@style/general_layout_button"
             android:onClick="doRegister"
             android:text="@string/click_register_button" />
+        
+        <Button
+            android:id="@+id/link_to_show_login"
+            style="@style/login_layout_button"
+            android:onClick="showLogin"
+            android:text="@string/click_login_button" />
     </LinearLayout>
 
     <LinearLayout

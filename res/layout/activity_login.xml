@@ -37,9 +37,15 @@
 
         <Button
             android:id="@+id/link_to_login"
-            style="@style/general_layout_button"
+            style="@style/login_layout_button"
             android:onClick="doLogin"
             android:text="@string/click_login_button" />
+        
+        <Button
+            android:id="@+id/link_to_show_register"
+            style="@style/general_layout_button"
+            android:onClick="showRegister"
+            android:text="@string/click_register_button" />
     </LinearLayout>
 
 </LinearLayout>
