@@ -24,6 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,6 +67,28 @@ public class HttpPack {
 			}
 
 			return new JSONObject(builder.toString());
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static JSONArray getJsonArrayByResponse(HttpResponse response) {
+		StringBuilder builder = new StringBuilder();
+
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new InputStreamReader(response
+					.getEntity().getContent()));
+			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+				builder.append(s);
+			}
+
+			return new JSONArray(builder.toString());
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -17,6 +17,7 @@ import com.example.lib.SessionManagement;
 abstract public class SpanishTalkBaseActivity extends Activity {
 	public static String login_url = "http://192.168.1.17:3000/users/do_login";
 	public static String register_url = "http://192.168.1.17:3000/users";
+	public static String questions_url = "http://192.168.1.17:3000/questions";
 	public static String question_create_url = "http://192.168.1.17:3000/questions";
 	public static String question_show_url = "http://192.168.1.17:3000/questions";
 	

@@ -26,5 +26,6 @@
     <string name="question_content">请填写提问内容</string>
     <string name="click_question_button">确定</string>
     <string name="title_activity_question_show">QuestionShowActivity</string>
+    <string name="title_activity_question_list">QuestionListActivity</string>
 
 </resources>
