@@ -33,6 +33,8 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		checkLogin();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_new);
 

@@ -124,10 +124,8 @@ public class HttpPack {
 			// httppost.setHeader("Accept", "application/json");
 			httppost.setHeader("User-Agent", "android");
 			httppost.setEntity(new UrlEncodedFormEntity(user_pairs, HTTP.UTF_8));
-			HttpResponse response = httpclient.execute(httppost, localContext);
+			return httpclient.execute(httppost, localContext);
 			
-			return response;
-
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {

@@ -32,6 +32,13 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 		this.finish();
 	}
 	
+	public void checkLogin() {
+		SessionManagement session = new SessionManagement(getApplicationContext());
+		if ((session.getUserId() == null) || (session.getCookie() == null)) {
+			session.logoutUser();
+		}
+	}
+	
 	// ÍË³öÊÂ¼þ
 	public void clickLogout(View view) {
 		SessionManagement session = new SessionManagement(getApplicationContext());
@@ -68,9 +75,11 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 		try {
 			String username = user.getString("username");
 			String user_id = user.getString("user_id");
-
+			String cookie = HttpPack.getCookieByResponse(response);
+			
 			SessionManagement session = new SessionManagement(getApplicationContext());
 			session.createLoginSession(user_id, username);
+			session.saveCookie(cookie);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

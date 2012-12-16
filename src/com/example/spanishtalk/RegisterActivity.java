@@ -5,9 +5,7 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,12 +27,16 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 			confirm_password_error, network_error;
 	private LinearLayout error_list;
 	String email, username, password, confirm_password;
+	private SessionManagement session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		load_ui();
+		
+		session = new SessionManagement(getApplicationContext());
+		session.clear();
 	}
 
 	@Override
@@ -62,33 +64,15 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		if (validateRegisterForm()) {
 
 			clearErrorList();
-
-			new PostRegisterTask().execute();
-
-			if (new SessionManagement(getApplicationContext()).getUserId() == null) {
-				BaseDialog.showSingleAlert("请填写正确的注册信息", this);
-			} else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage("注册成功")
-						.setCancelable(false)
-						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-										Intent intent = new Intent(
-												RegisterActivity.this,
-												MainActivity.class);
-										startActivity(intent);
-										finish();
-									}
-								});
-				builder.create().show();
-
-				Intent intent = new Intent(RegisterActivity.this,
-						MainActivity.class);
-				startActivity(intent);
+			
+			// 先判断网络是否连接正常
+			if (HttpPack.hasConnected(this)) {
+				new PostRegisterTask().execute();
+				return;
 			}
+			BaseDialog.showSingleAlert("当前网络连接不可用", this);
 		}
+
 	}
 	
 	
@@ -156,19 +140,28 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("user[username]", edit_text_username.getText()
-					.toString());
-			params.put("user[email]", edit_text_email.getText().toString());
+					.toString().trim());
+			params.put("user[email]", edit_text_email.getText().toString().trim());
 			params.put("user[password]", edit_text_password.getText()
-					.toString());
+					.toString().trim());
 
 			HttpResponse response = HttpPack.sendPost(getApplicationContext(), register_url, params);
-
+			
 			if (response.getStatusLine().getStatusCode() == 200) {
 				saveUserSessionByResponse(response);
 			}
-
 			return null;
 		}
+		
+		@Override
+	    protected void onPostExecute(Void result) {
+			if (session.getUserId() == null) {
+				BaseDialog.showSingleAlert("请填写正确的注册信息", RegisterActivity.this);
+				return;
+			}
+			openActivity(QuestionNewActivity.class);
+			finish();
+	    }
 
 	}
 }

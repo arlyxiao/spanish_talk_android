@@ -58,16 +58,12 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 			edit_text_password = (EditText) findViewById(R.id.login_password);
 			
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("user[email]", edit_text_email.getText().toString());
-			params.put("user[password]", edit_text_password.getText()
-					.toString());
+			params.put("user[email]", edit_text_email.getText().toString().trim());
+			params.put("user[password]", edit_text_password.getText().toString().trim());
 			
 			HttpResponse response = HttpPack.sendPost(getApplicationContext(), login_url, params);
 			
 			if (response.getStatusLine().getStatusCode() == 200) {
-				String cookie = HttpPack.getCookieByResponse(response);
-				session.saveCookie(cookie);
-
 				saveUserSessionByResponse(response);
 			}
 
