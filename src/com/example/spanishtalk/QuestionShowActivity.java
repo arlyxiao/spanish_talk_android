@@ -1,10 +1,11 @@
 package com.example.spanishtalk;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 
-public class QuestionShowActivity extends Activity {
+import com.example.logic.SpanishTalkBaseActivity;
+
+public class QuestionShowActivity extends SpanishTalkBaseActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
