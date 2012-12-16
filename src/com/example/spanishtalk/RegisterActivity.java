@@ -24,7 +24,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_username, edit_text_password,
 			edit_text_confirm_password;
 	private TextView email_error, username_error, password_error,
-			confirm_password_error, network_error;
+			confirm_password_error;
 	private LinearLayout error_list;
 	String email, username, password, confirm_password;
 	private SessionManagement session;
@@ -56,23 +56,23 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		username_error = (TextView) findViewById(R.id.reg_username_error);
 		password_error = (TextView) findViewById(R.id.reg_password_error);
 		confirm_password_error = (TextView) findViewById(R.id.reg_confirm_password_error);
-		network_error = (TextView) findViewById(R.id.reg_network_error);
 
 	}
 
 	public void doRegister(View view) {
-		if (validateRegisterForm()) {
-
-			clearErrorList();
-			
-			// 先判断网络是否连接正常
-			if (HttpPack.hasConnected(this)) {
+		
+		// 先判断网络是否连接正常
+		if (HttpPack.hasConnected(this)) {
+			if (validateRegisterForm()) {
+				clearErrorList();
+				
 				new PostRegisterTask().execute();
 				return;
 			}
-			BaseDialog.showSingleAlert("当前网络连接不可用", this);
+			
 		}
-
+		BaseDialog.showSingleAlert("当前网络连接不可用", this);
+	
 	}
 	
 	
@@ -86,7 +86,6 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		email_error.setVisibility(View.GONE);
 		username_error.setVisibility(View.GONE);
 		password_error.setVisibility(View.GONE);
-		network_error.setVisibility(View.GONE);
 	}
 
 	public boolean validateRegisterForm() {
@@ -96,12 +95,6 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 		password = edit_text_password.getText().toString();
 		confirm_password = edit_text_confirm_password.getText().toString();
 
-		if (HttpPack.hasConnected(this)) {
-			network_error.setVisibility(View.GONE);
-		} else {
-			network_error.setVisibility(View.VISIBLE);
-			checked = false;
-		}
 
 		if (BaseUtils.is_str_blank(email)) {
 			email_error.setVisibility(View.VISIBLE);
