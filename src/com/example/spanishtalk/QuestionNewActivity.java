@@ -8,11 +8,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.HttpResponse;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,7 +43,7 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 
 		loadUi();
 
-		new PostQuestionTask().execute();
+		// new PostQuestionTask().execute();
 
 	}
 
@@ -74,9 +76,73 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 		content = edit_text_content.getText().toString();
 
 		if (validateQuestionForm(title, content)) {
-			new QuestionsHandler(this).addQuestion(new Question(user_id, title,
-					content));
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			//new QuestionsHandler(this).addQuestion(new Question(user_id, title,
+			//		content));
+			new PostQuestionTask().execute();
+		}
+	}
+
+	public class PostQuestionTask extends AsyncTask<Void, Void, Integer> {
+
+		@Override
+		protected Integer doInBackground(Void... arg0) {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("question[title]", edit_text_title.getText().toString());
+			params.put("question[content]", edit_text_content.getText().toString());
+			
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), question_create_url, params);
+			
+			if (response.getStatusLine().getStatusCode() == 200) {
+
+				JSONObject question = HttpPack.getJsonByResponse(response);
+				
+				try {
+					String question_id = question.getString("question_id");
+					return Integer.parseInt(question_id);
+ 				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+ 			}
+
+			return null;
+
+//			new Timer().schedule(new TimerTask() {
+//				@Override
+//				public void run() {
+//
+//					QuestionsHandler db = new QuestionsHandler(
+//							QuestionNewActivity.this);
+//					List<Question> questions = db.getAllQuestions();
+//
+//					if (HttpPack.hasConnected(QuestionNewActivity.this)) {
+//
+//						for (Question cn : questions) {
+//							Map<String, String> params = new HashMap<String, String>();
+//							params.put("question[title]", cn.getTitle());
+//							params.put("question[content]", cn.getContent());
+//							
+//							HttpResponse response = HttpPack.sendPost(getApplicationContext(), question_create_url, params);
+//
+//							if (response.getStatusLine().getStatusCode() == 200) {
+//								Question question = db.getQuestion(cn.getID());
+//								db.deleteQuestion(question);
+//							}
+//						}
+//
+//					}
+//
+//					// 输出目前本地数据库所有记录
+//					SqliteLog.showAllQuestions(QuestionNewActivity.this);
+//				}
+//
+//			}, 0, 5000);
+//			return null;
+		}
+		
+		@Override
+	    protected void onPostExecute(final Integer question_id) {
+		
+			AlertDialog.Builder builder = new AlertDialog.Builder(QuestionNewActivity.this);
 			builder.setMessage("发送成功")
 					.setCancelable(false)
 					.setPositiveButton("确定",
@@ -84,53 +150,18 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 								public void onClick(DialogInterface dialog,
 										int id) {
 									
-									openActivity(QuestionShowActivity.class);
+									Intent intent = new Intent(getApplicationContext(), QuestionShowActivity.class);
+									intent.putExtra("question_id", question_id);
+									startActivity(intent);
 								}
 							});
 			AlertDialog alert = builder.create();
 			alert.show();
-		}
-	}
 
-	public class PostQuestionTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-
-			new Timer().schedule(new TimerTask() {
-				@Override
-				public void run() {
-
-					QuestionsHandler db = new QuestionsHandler(
-							QuestionNewActivity.this);
-					List<Question> questions = db.getAllQuestions();
-
-					if (HttpPack.hasConnected(QuestionNewActivity.this)) {
-
-						for (Question cn : questions) {
-							Map<String, String> params = new HashMap<String, String>();
-							params.put("question[title]", cn.getTitle());
-							params.put("question[content]", cn.getContent());
-							
-							HttpResponse response = HttpPack.sendPost(getApplicationContext(), question_create_url, params);
-
-							if (response.getStatusLine().getStatusCode() == 200) {
-								Question question = db.getQuestion(cn.getID());
-								db.deleteQuestion(question);
-							}
-						}
-
-					}
-
-					// 输出目前本地数据库所有记录
-					SqliteLog.showAllQuestions(QuestionNewActivity.this);
-				}
-
-			}, 0, 5000);
-			return null;
-		}
-
-
+	        super.onPostExecute(question_id);
+	    }
+		
+		
 	}
 
 }

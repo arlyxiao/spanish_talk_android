@@ -15,6 +15,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -124,6 +125,37 @@ public class HttpPack {
 			httppost.setHeader("User-Agent", "android");
 			httppost.setEntity(new UrlEncodedFormEntity(user_pairs, HTTP.UTF_8));
 			HttpResponse response = httpclient.execute(httppost, localContext);
+			
+			return response;
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
+	
+	public static HttpResponse sendRequest(Context context, String url) {
+        
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpGet httpget = new HttpGet(url);
+		
+		SessionManagement session = new SessionManagement(context);
+		if (session.getCookie() != null) {
+			// Log.d("Test Cookie: ", session.getCookie());
+			httpget.setHeader("Cookie", session.getCookie());
+		}
+		
+		try {
+			httpget.setHeader("Accept", "application/json");
+			httpget.setHeader("User-Agent", "android");
+			HttpResponse response = httpclient.execute(httpget);
 			
 			return response;
 
