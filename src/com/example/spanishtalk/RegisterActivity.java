@@ -155,7 +155,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString());
 
-			HttpResponse response = HttpPack.sendPost(register_url, params);
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), register_url, params);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
 				saveUserSessionByResponse(response);

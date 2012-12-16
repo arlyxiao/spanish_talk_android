@@ -1,25 +1,18 @@
 package com.example.spanishtalk;
 
-import java.io.IOException;
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
+
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -90,10 +83,8 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
-									Intent i = new Intent(
-											getApplicationContext(),
-											QuestionShowActivity.class);
-									startActivity(i);
+									
+									openActivity(QuestionShowActivity.class);
 								}
 							});
 			AlertDialog alert = builder.create();
@@ -116,37 +107,16 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 
 					if (HttpPack.hasConnected(QuestionNewActivity.this)) {
 
-						HttpClient httpclient = new DefaultHttpClient();
-						HttpPost httppost = new HttpPost(
-								"http://192.168.1.17:3000/questions");
-
 						for (Question cn : questions) {
-							try {
+							Map<String, String> params = new HashMap<String, String>();
+							params.put("question[title]", cn.getTitle());
+							params.put("question[content]", cn.getContent());
+							
+							HttpResponse response = HttpPack.sendPost(getApplicationContext(), question_create_url, params);
 
-								List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-										4);
-								nameValuePairs.add(new BasicNameValuePair(
-										"question[creator_id]", Integer
-												.toString(cn.getCreatorId())));
-								nameValuePairs.add(new BasicNameValuePair(
-										"question[title]", cn.getTitle()));
-								nameValuePairs.add(new BasicNameValuePair(
-										"question[content]", cn.getContent()));
-
-								httppost.setEntity(new UrlEncodedFormEntity(
-										nameValuePairs, HTTP.UTF_8));
-
-								HttpResponse response = httpclient
-										.execute(httppost);
-
-								if (response.getStatusLine().getStatusCode() == 200) {
-									Question question = db.getQuestion(cn
-											.getID());
-									db.deleteQuestion(question);
-								}
-
-							} catch (ClientProtocolException e) {
-							} catch (IOException e) {
+							if (response.getStatusLine().getStatusCode() == 200) {
+								Question question = db.getQuestion(cn.getID());
+								db.deleteQuestion(question);
 							}
 						}
 
@@ -160,9 +130,6 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 			return null;
 		}
 
-		protected void onPostExecute(Long result) {
-
-		}
 
 	}
 

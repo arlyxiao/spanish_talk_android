@@ -103,16 +103,21 @@ public class HttpPack {
 		return cookie_store;
 	}
 
-	public static HttpResponse sendPost(String url, Map<String, String> params) {
+	public static HttpResponse sendPost(Context context, String url, Map<String, String> params) {
 		CookieStore cookieStore = new BasicCookieStore();  
         HttpContext localContext = new BasicHttpContext();
         
         localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-		
 		List<NameValuePair> user_pairs = HttpPack.buildParams(params);
 
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
+		
+		SessionManagement session = new SessionManagement(context);
+		if (session.getCookie() != null) {
+			// Log.d("Test Cookie: ", session.getCookie());
+			httppost.setHeader("Cookie", session.getCookie());
+		}
 		
 		try {
 			// httppost.setHeader("Accept", "application/json");

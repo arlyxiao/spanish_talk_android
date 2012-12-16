@@ -56,12 +56,12 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString());
 			
-			HttpResponse response = HttpPack.sendPost(login_url, params);
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), login_url, params);
 			
 			if (response.getStatusLine().getStatusCode() == 200) {
 				String cookie = HttpPack.getCookieByResponse(response);
 				session.saveCookie(cookie);
-				
+
 				saveUserSessionByResponse(response);
 			}
 
