@@ -17,6 +17,7 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 	public final static String login_url = "http://192.168.1.17:3000/users/do_login";
 	public final static String register_url = "http://192.168.1.17:3000/users";
 	public final static String questions_url = "http://192.168.1.17:3000/questions";
+	public final static String my_questions_url = "http://192.168.1.17:3000/my_questions";
 	public final static String question_create_url = "http://192.168.1.17:3000/questions";
 	public final static String question_show_url = "http://192.168.1.17:3000/questions";
 	

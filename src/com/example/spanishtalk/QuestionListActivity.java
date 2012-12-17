@@ -32,7 +32,7 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_list);
         
-        refreshQuestions();
+        refreshQuestions(questions_url);
     }
 
     @Override
@@ -41,27 +41,27 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
         return true;
     }
     
-    public void refreshQuestions() {
+    public void refreshQuestions(String url) {
     	if (HttpPack.hasConnected(this)) {
     		loadingNotice = (LinearLayout) findViewById(R.id.loading_view);
     		loadingNotice.setVisibility(View.VISIBLE);
     		
-			new GetQuestionsTask().execute();
+			new GetQuestionsTask().execute(url);
 			return;
 		}
 		BaseDialog.showSingleAlert("当前网络链接不可用", this);
     }
     
     public void refreshQuestions(View view) {
-    	refreshQuestions();
+    	refreshQuestions(questions_url);
     }
     
     public void clickAskQuestion(View view) {
     	openActivity(QuestionNewActivity.class);
 	}
     
-    public void clickMyQuestion(View view) {
-    	openActivity(QuestionListActivity.class);
+    public void clickMyQuestions(View view) {
+    	refreshQuestions(my_questions_url);
 	}
     
 	public ArrayList<QuestionRows> getQuestions(JSONArray questions) {
@@ -91,11 +91,11 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 	}
    
     
-    public class GetQuestionsTask extends AsyncTask<Void, Void, JSONArray> {
+    public class GetQuestionsTask extends AsyncTask<String, Void, JSONArray> {
 
 		@Override
-		protected JSONArray doInBackground(Void... arg0) {
-			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), questions_url);
+		protected JSONArray doInBackground(String... urls) {
+			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), urls[0]);
 			
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return HttpPack.getJsonArrayByResponse(response);
