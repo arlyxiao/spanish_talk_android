@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -14,11 +15,11 @@ import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 
 abstract public class SpanishTalkBaseActivity extends Activity {
-	public final static String login_url = "http://192.168.1.17:3000/users/do_login";
-	public final static String register_url = "http://192.168.1.17:3000/users";
-	public final static String questions_url = "http://192.168.1.17:3000/questions";
-	public final static String my_questions_url = "http://192.168.1.17:3000/my_questions";
-	public final static String question_create_url = "http://192.168.1.17:3000/questions";
+	public final static String login_url = "http://192.168.1.17:3000/users/do_login.json";
+	public final static String register_url = "http://192.168.1.17:3000/users.json";
+	public final static String questions_url = "http://192.168.1.17:3000/questions.json";
+	public final static String my_questions_url = "http://192.168.1.17:3000/questions/my.json";
+	public final static String question_create_url = "http://192.168.1.17:3000/questions.json";
 	public final static String question_show_url = "http://192.168.1.17:3000/questions";
 	
 
@@ -52,10 +53,9 @@ abstract public class SpanishTalkBaseActivity extends Activity {
 	
 	public void saveUserSessionByResponse(HttpResponse response) {
 		JSONObject user = HttpPack.getJsonByResponse(response);
-		
 		try {
 			String username = user.getString("username");
-			String user_id = user.getString("user_id");
+			String user_id = user.getString("id");
 			String cookie = HttpPack.getCookieByResponse(response);
 			
 			SessionManagement session = new SessionManagement(getApplicationContext());

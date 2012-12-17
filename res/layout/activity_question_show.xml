@@ -17,19 +17,22 @@
     </RelativeLayout>
 
     <LinearLayout
-        style="@style/padding_10_body"
+        android:background="@drawable/nav_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/question_title"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="50dp"
+            android:paddingBottom="8dp"
+            android:textColor="#000" />
 
         <TextView
             android:id="@+id/question_content"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000" />
 
         <Button
             android:id="@+id/link_to_answer"

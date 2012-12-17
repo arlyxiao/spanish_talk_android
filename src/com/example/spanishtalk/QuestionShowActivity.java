@@ -46,7 +46,7 @@ public class QuestionShowActivity extends SpanishTalkBaseActivity {
 
 		@Override
 		protected JSONObject doInBackground(Integer... questions) {
-			String url = question_show_url + "/" + Integer.toString(questions[0]);
+			String url = question_show_url + "/" + Integer.toString(questions[0]) + ".json";
 			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), url);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
