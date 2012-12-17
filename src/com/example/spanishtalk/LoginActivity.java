@@ -78,7 +78,7 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 				showFormNotice("请填写正确的用户名或密码");
 				return;
 			}
-			openActivity(QuestionNewActivity.class);
+			openActivity(QuestionListActivity.class);
 			finish();
 
 	        super.onPostExecute(result);

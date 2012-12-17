@@ -28,11 +28,11 @@ public final class R {
         public static final int link_to_register=0x7f070012;
         public static final int link_to_show_login=0x7f070013;
         public static final int link_to_show_register=0x7f070004;
-        public static final int listView1=0x7f070008;
         public static final int login_email=0x7f070001;
         public static final int login_password=0x7f070002;
         public static final int logout_btn=0x7f070009;
-        public static final int menu_settings=0x7f070019;
+        public static final int menu_settings=0x7f07001b;
+        public static final int questionListView=0x7f070008;
         public static final int question_content=0x7f07000b;
         public static final int question_title=0x7f07000a;
         public static final int reg_confirm_password=0x7f070011;
@@ -44,6 +44,8 @@ public final class R {
         public static final int reg_password_error=0x7f070017;
         public static final int reg_username=0x7f07000f;
         public static final int reg_username_error=0x7f070016;
+        public static final int simple_id=0x7f07001a;
+        public static final int simple_title=0x7f070019;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
@@ -52,6 +54,7 @@ public final class R {
         public static final int activity_question_new=0x7f030003;
         public static final int activity_question_show=0x7f030004;
         public static final int activity_register=0x7f030005;
+        public static final int simple_custom_list=0x7f030006;
     }
     public static final class menu {
         public static final int activity_login=0x7f060000;

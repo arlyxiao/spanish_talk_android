@@ -5,12 +5,12 @@
     android:orientation="vertical"
     android:padding="10dip" >
 
+  
+ 
     <ListView
-        android:id="@+id/listView1"
-        android:layout_width="match_parent"
-        android:layout_height="77dp" >
-
-    </ListView>
+        android:id="@+id/questionListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 
 </LinearLayout>

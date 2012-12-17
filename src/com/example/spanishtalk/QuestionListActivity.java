@@ -1,33 +1,34 @@
 package com.example.spanishtalk;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.lib.BaseDialog;
+import com.example.lib.CustomAdapter;
 import com.example.lib.HttpPack;
+import com.example.logic.QuestionRows;
 import com.example.logic.SpanishTalkBaseActivity;
 
-public class QuestionListActivity extends SpanishTalkBaseActivity {
-	private ListView list_view_questions;
-	
+public class QuestionListActivity extends SpanishTalkBaseActivity {	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_question_list);
         new GetQuestionsTask().execute();
     }
 
@@ -37,7 +38,31 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
         return true;
     }
     
-    
+	public ArrayList<QuestionRows> getQuestions(JSONArray questions) {
+		ArrayList<QuestionRows> questionList = new ArrayList<QuestionRows>();
+		JSONObject json_data;
+
+		try {
+			for (int i = 0; i < questions.length(); i++) {
+				QuestionRows qr = new QuestionRows();
+
+				json_data = questions.getJSONObject(i);
+
+				qr.setId(json_data.getString("id"));
+				qr.setTitle(json_data.getString("title"));
+
+				Log.d("title-------", json_data.getString("title"));
+				Log.d("id-------", json_data.getString("id"));
+
+				questionList.add(qr);
+			}
+			return questionList;
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
    
     
     public class GetQuestionsTask extends AsyncTask<Void, Void, JSONArray> {
@@ -53,34 +78,27 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 		}
 		
 		@Override
-		protected void onPostExecute(JSONArray questions) {
-			List<String> data = new ArrayList<String>();
-			JSONObject json_data;
-			
-			for (int i = 0; i < questions.length(); i++) {
-				try {
-					json_data = questions.getJSONObject(i);
-					data.add(json_data.getString("title"));
-
-				} catch (JSONException e) {
-					e.printStackTrace();
+		protected void onPostExecute(JSONArray questionsJsonArray) {
+			ArrayList<QuestionRows> questionList = getQuestions(questionsJsonArray);
+			final ListView lv = (ListView) findViewById(R.id.questionListView);
+		
+			lv.setAdapter(new CustomAdapter(getApplicationContext(), questionList));
+			lv.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Object o = lv.getItemAtPosition(position);
+					QuestionRows fullObject = (QuestionRows) o;
+					
+					//BaseDialog.showSingleAlert(fullObject.getId(),
+					//		QuestionListActivity.this);
+					
+					Intent intent = new Intent(getApplicationContext(), QuestionShowActivity.class);
+					intent.putExtra("question_id", Integer.parseInt(fullObject.getId()));
+					startActivity(intent);
 				}
-
-			}
-			
-			list_view_questions = new ListView(QuestionListActivity.this);
-			list_view_questions.setOnItemClickListener(new OnItemClickListener() {
-		        public void onItemClick(AdapterView<?> parent, View view,
-		                int position, long id) {
-		        	BaseDialog.showSingleAlert(view.toString(), QuestionListActivity.this);
-		        }
-		    });
+			});
 
 
-			
-	        list_view_questions.setAdapter(new ArrayAdapter<String>(QuestionListActivity.this, android.R.layout.simple_list_item_1, data));
-	        
-	        setContentView(list_view_questions);
 		}
 
 	}
