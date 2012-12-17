@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.logic.SpanishTalkBaseActivity;
 
@@ -23,11 +24,15 @@ public class QuestionShowActivity extends SpanishTalkBaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_show);
 		
-		Intent myIntent = getIntent();
-		Bundle b = myIntent.getExtras();
-		Integer question_id = b.getInt("question_id");
-		
-		new ShowQuestionTask().execute(question_id);
+		if (HttpPack.hasConnected(this)) {
+			Intent myIntent = getIntent();
+			Bundle b = myIntent.getExtras();
+			Integer question_id = b.getInt("question_id");
+			
+			new ShowQuestionTask().execute(question_id);
+			return;
+		}
+		BaseDialog.showSingleAlert("当前网络连接不可用", this);
 	}
 
 	@Override
@@ -41,8 +46,8 @@ public class QuestionShowActivity extends SpanishTalkBaseActivity {
 
 		@Override
 		protected JSONObject doInBackground(Integer... questions) {
-			question_show_url = question_show_url + "/" + Integer.toString(questions[0]);
-			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), question_show_url);
+			String url = question_show_url + "/" + Integer.toString(questions[0]);
+			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), url);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return HttpPack.getJsonByResponse(response);

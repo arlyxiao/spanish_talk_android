@@ -1,16 +1,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dip" >
+    style="@style/body" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-  
- 
-    <ListView
-        android:id="@+id/questionListView"
+        <Button
+            android:id="@+id/Button01"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ask_question"
+            android:onClick="clickAskQuestion" />
+
+        <Button
+            android:id="@+id/Button02"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/my_questions"
+            android:onClick="click_other_question" />
+        
+        <Button
+            android:id="@+id/Button03"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/refresh_questions"
+            android:textColor="#a2a"
+            android:onClick="refreshQuestions" />
+    </LinearLayout>
+
+    
+    <LinearLayout android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:orientation="vertical" 
+        android:background="@drawable/nav_page">
+	    <ListView
+	        android:id="@+id/questionListView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" />
+    </LinearLayout>
 
 
 </LinearLayout>

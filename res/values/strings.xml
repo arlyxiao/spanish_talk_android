@@ -25,7 +25,10 @@
     <string name="question_title">标题</string>
     <string name="question_content">请填写提问内容</string>
     <string name="click_question_button">确定</string>
-    <string name="title_activity_question_show">QuestionShowActivity</string>
-    <string name="title_activity_question_list">QuestionListActivity</string>
+    <string name="title_activity_question_show">当前问题</string>
+    <string name="title_activity_question_list">问题列表</string>
+    <string name="my_questions">我的</string>
+    <string name="refresh_questions">刷新</string>
+    <string name="ask_question">提问</string>
 
 </resources>

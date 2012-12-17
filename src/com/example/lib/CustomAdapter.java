@@ -43,14 +43,17 @@ public class CustomAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.simpleTitle = (TextView) convertView.findViewById(R.id.simple_title);
             holder.simpleId = (TextView) convertView.findViewById(R.id.simple_id);
+            holder.simpleCreatedAt = (TextView) convertView.findViewById(R.id.simple_created_at);
  
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
- 
-        holder.simpleTitle.setText(questionRows.get(position).getTitle());
+
         holder.simpleId.setText(questionRows.get(position).getId());
+        holder.simpleTitle.setText(questionRows.get(position).getTitle());
+        String time = questionRows.get(position).getCreatedAt().substring(0, 10);
+        holder.simpleCreatedAt.setText(time);
  
         return convertView;
     }
@@ -58,6 +61,7 @@ public class CustomAdapter extends BaseAdapter {
     static class ViewHolder {
     	TextView simpleId;
         TextView simpleTitle;
+        TextView simpleCreatedAt;
     }
 
 	

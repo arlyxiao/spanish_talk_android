@@ -40,9 +40,8 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 	public void doLogin(View view) {
 		if (HttpPack.hasConnected(this)) {
 			new LoginTask().execute();
-			return;
 		}
-		BaseDialog.showSingleAlert("当前网络连接不可用", this);
+		BaseDialog.showSingleAlert("当前网络链接不可用", this);
 	}
 	
 	public void showRegister(View view) {

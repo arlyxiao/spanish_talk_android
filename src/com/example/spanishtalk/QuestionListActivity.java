@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,13 +22,19 @@ import com.example.lib.HttpPack;
 import com.example.logic.QuestionRows;
 import com.example.logic.SpanishTalkBaseActivity;
 
+
 public class QuestionListActivity extends SpanishTalkBaseActivity {	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_list);
-        new GetQuestionsTask().execute();
+        
+        if (HttpPack.hasConnected(this)) {
+			new GetQuestionsTask().execute();
+			return;
+		}
+		BaseDialog.showSingleAlert("当前网络链接不可用", this);
     }
 
     @Override
@@ -37,6 +42,22 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
         getMenuInflater().inflate(R.menu.activity_question_list, menu);
         return true;
     }
+    
+    public void refreshQuestions(View view) {
+    	if (HttpPack.hasConnected(this)) {
+			new GetQuestionsTask().execute();
+			return;
+		}
+		BaseDialog.showSingleAlert("当前网络链接不可用", this);
+    }
+    
+    public void clickAskQuestion(View view) {
+    	openActivity(QuestionNewActivity.class);
+	}
+    
+    public void clickMyQuestion(View view) {
+    	openActivity(QuestionListActivity.class);
+	}
     
 	public ArrayList<QuestionRows> getQuestions(JSONArray questions) {
 		ArrayList<QuestionRows> questionList = new ArrayList<QuestionRows>();
@@ -50,9 +71,9 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 
 				qr.setId(json_data.getString("id"));
 				qr.setTitle(json_data.getString("title"));
-
-				Log.d("title-------", json_data.getString("title"));
-				Log.d("id-------", json_data.getString("id"));
+				qr.setCreatedAt(json_data.getString("created_at"));
+				// Log.d("title-------", json_data.getString("title"));
+				// Log.d("id-------", json_data.getString("id"));
 
 				questionList.add(qr);
 			}
@@ -87,13 +108,13 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					Object o = lv.getItemAtPosition(position);
-					QuestionRows fullObject = (QuestionRows) o;
+					QuestionRows row = (QuestionRows) o;
 					
-					//BaseDialog.showSingleAlert(fullObject.getId(),
+					//BaseDialog.showSingleAlert(row.getId(),
 					//		QuestionListActivity.this);
 					
 					Intent intent = new Intent(getApplicationContext(), QuestionShowActivity.class);
-					intent.putExtra("question_id", Integer.parseInt(fullObject.getId()));
+					intent.putExtra("question_id", Integer.parseInt(row.getId()));
 					startActivity(intent);
 				}
 			});
