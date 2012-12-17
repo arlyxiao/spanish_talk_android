@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/body" >
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,38 +12,60 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/ask_question"
-            android:onClick="clickAskQuestion" />
+            android:onClick="clickAskQuestion"
+            android:text="@string/ask_question" />
 
         <Button
             android:id="@+id/Button02"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/my_questions"
-            android:onClick="click_other_question" />
-        
+            android:onClick="click_other_question"
+            android:text="@string/my_questions" />
+
         <Button
             android:id="@+id/Button03"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="refreshQuestions"
             android:text="@string/refresh_questions"
-            android:textColor="#a2a"
-            android:onClick="refreshQuestions" />
+            android:textColor="#a2a" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/loading_view"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@drawable/nav_page"
+        android:orientation="vertical" 
+        android:visibility="gone" >
+        
+    <TextView
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/loading"
+            android:textSize="12dp" />
     </LinearLayout>
 
-    
-    <LinearLayout android:layout_gravity="center"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" 
-        android:background="@drawable/nav_page">
-	    <ListView
-	        android:id="@+id/questionListView"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent" />
-    </LinearLayout>
+        android:layout_gravity="center"
+        android:background="@drawable/nav_page"
+        android:orientation="vertical" >
 
+        
+
+        <ListView
+            android:id="@+id/questionListView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
 
 </LinearLayout>

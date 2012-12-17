@@ -30,5 +30,6 @@
     <string name="my_questions">我的</string>
     <string name="refresh_questions">刷新</string>
     <string name="ask_question">提问</string>
+    <string name="loading">加载中</string>
 
 </resources>

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.lib.BaseDialog;
@@ -23,18 +24,15 @@ import com.example.logic.QuestionRows;
 import com.example.logic.SpanishTalkBaseActivity;
 
 
-public class QuestionListActivity extends SpanishTalkBaseActivity {	
+public class QuestionListActivity extends SpanishTalkBaseActivity {
+	private LinearLayout loadingNotice;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_list);
         
-        if (HttpPack.hasConnected(this)) {
-			new GetQuestionsTask().execute();
-			return;
-		}
-		BaseDialog.showSingleAlert("当前网络链接不可用", this);
+        refreshQuestions();
     }
 
     @Override
@@ -43,12 +41,19 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
         return true;
     }
     
-    public void refreshQuestions(View view) {
+    public void refreshQuestions() {
     	if (HttpPack.hasConnected(this)) {
+    		loadingNotice = (LinearLayout) findViewById(R.id.loading_view);
+    		loadingNotice.setVisibility(View.VISIBLE);
+    		
 			new GetQuestionsTask().execute();
 			return;
 		}
 		BaseDialog.showSingleAlert("当前网络链接不可用", this);
+    }
+    
+    public void refreshQuestions(View view) {
+    	refreshQuestions();
     }
     
     public void clickAskQuestion(View view) {
@@ -100,6 +105,8 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 		
 		@Override
 		protected void onPostExecute(JSONArray questionsJsonArray) {
+    		loadingNotice.setVisibility(View.GONE);
+     		
 			ArrayList<QuestionRows> questionList = getQuestions(questionsJsonArray);
 			final ListView lv = (ListView) findViewById(R.id.questionListView);
 		
