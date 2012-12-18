@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
+import com.example.logic.BaseActivity;
+import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
 import com.example.tables.Question;
 
@@ -37,13 +39,15 @@ public class IndexActivity extends AbstractListViewActivity
 	
 	public QuestionDataSource datasource;
 	
-	private String url = "http://192.168.1.17:3000/questions.json";
+	private String url = BaseUrl.questions;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		BaseActivity.checkLogin(getApplicationContext());
+		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.buttons);
+		setContentView(R.layout.activity_questions_index);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		textViewDisplaying = (TextView) findViewById(R.id.displaying);
@@ -60,12 +64,12 @@ public class IndexActivity extends AbstractListViewActivity
 	
 	public void clickMyQuestions(View view) {
 		offset = 0;
-		url = "http://192.168.1.17:3000/questions/my.json";
+		url = BaseUrl.questionsMy;
 		(new LoadNextPage()).execute(url + "?page=1");
 	}
 	
 	public void clickAllQuestions(View view) {
-		url = "http://192.168.1.17:3000/questions.json";
+		url = BaseUrl.questions;
 		(new LoadNextPage()).execute(url + "?page=1");
 	}
 	

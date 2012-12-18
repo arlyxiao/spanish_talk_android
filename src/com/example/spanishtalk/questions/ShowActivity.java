@@ -5,6 +5,7 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,14 +14,15 @@ import android.widget.TextView;
 
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
-import com.example.logic.SpanishTalkBaseActivity;
+import com.example.logic.BaseActivity;
+import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
 
-public class ShowActivity extends SpanishTalkBaseActivity {
+public class ShowActivity extends Activity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		//checkLogin();
+		BaseActivity.checkLogin(getApplicationContext());
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_show);
@@ -47,7 +49,7 @@ public class ShowActivity extends SpanishTalkBaseActivity {
 
 		@Override
 		protected JSONObject doInBackground(Integer... questions) {
-			String url = question_show_url + "/" + Integer.toString(questions[0]) + ".json";
+			String url = BaseUrl.questionShow + "/" + Integer.toString(questions[0]) + ".json";
 			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), url);
 
 			if (response.getStatusLine().getStatusCode() == 200) {

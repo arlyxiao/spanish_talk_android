@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,10 +16,11 @@ import android.widget.EditText;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.SpanishTalkBaseActivity;
+import com.example.logic.BaseActivity;
+import com.example.logic.BaseUrl;
 import com.example.spanishtalk.questions.IndexActivity;
 
-public class LoginActivity extends SpanishTalkBaseActivity {
+public class LoginActivity extends Activity {
 	private EditText edit_text_email, edit_text_password;
 	String user_id, email, username, password;
 	public SessionManagement session;
@@ -47,7 +50,8 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 	}
 	
 	public void showRegister(View view) {
-		openActivity(RegisterActivity.class);
+		Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+		startActivity(intent);
 		finish();
 	}
 
@@ -62,10 +66,10 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 			params.put("user[email]", edit_text_email.getText().toString().trim());
 			params.put("user[password]", edit_text_password.getText().toString().trim());
 			
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(), login_url, params);
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
 			
 			if (response.getStatusLine().getStatusCode() == 200) {
-				saveUserSessionByResponse(response);
+				BaseActivity.saveUserSessionByResponse(getApplicationContext(), response);
 			}
 
 			return null;
@@ -76,10 +80,11 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		@Override
 	    protected void onPostExecute(Void result) {
 			if (session.getUserId() == null) {
-				showFormNotice("");
+				BaseActivity.showFormNotice(getApplicationContext(), "");
 				return;
 			}
-			openActivity(IndexActivity.class);
+			Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
+			startActivity(intent);
 			finish();
 
 	        super.onPostExecute(result);

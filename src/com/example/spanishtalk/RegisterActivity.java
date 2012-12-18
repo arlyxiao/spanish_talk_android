@@ -5,7 +5,8 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 
-
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,10 +19,11 @@ import com.example.lib.BaseDialog;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.SpanishTalkBaseActivity;
+import com.example.logic.BaseActivity;
+import com.example.logic.BaseUrl;
 import com.example.spanishtalk.questions.NewActivity;
 
-public class RegisterActivity extends SpanishTalkBaseActivity {
+public class RegisterActivity extends Activity {
 	private EditText edit_text_email, edit_text_username, edit_text_password,
 			edit_text_confirm_password;
 	private TextView email_error, username_error, password_error,
@@ -77,7 +79,8 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 	
 	
 	public void showLogin(View view) {
-		openActivity(LoginActivity.class);
+		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+		startActivity(intent);
 		finish();
 	}
 
@@ -138,10 +141,10 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString().trim());
 
-			HttpResponse response = HttpPack.sendPost(RegisterActivity.this, register_url, params);
+			HttpResponse response = HttpPack.sendPost(RegisterActivity.this, BaseUrl.register, params);
 			
 			if (response.getStatusLine().getStatusCode() == 200) {
-				saveUserSessionByResponse(response);
+				BaseActivity.saveUserSessionByResponse(getApplicationContext(), response);
 			}
 			return null;
 		}
@@ -152,7 +155,9 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 				BaseDialog.showSingleAlert("请填写正确的注册信息", RegisterActivity.this);
 				return;
 			}
-			openActivity(NewActivity.class);
+
+			Intent intent = new Intent(getApplicationContext(), NewActivity.class);
+			startActivity(intent);
 			finish();
 	    }
 

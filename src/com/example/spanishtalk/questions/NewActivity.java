@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,10 +23,11 @@ import android.widget.Toast;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.SpanishTalkBaseActivity;
-import com.example.spanishtalk.R; 
+import com.example.logic.BaseActivity;
+import com.example.logic.BaseUrl;
+import com.example.spanishtalk.R;
 
-public class NewActivity extends SpanishTalkBaseActivity {
+public class NewActivity extends Activity {
 
 	private EditText edit_text_title, edit_text_content;
 	String title, content;
@@ -33,7 +35,7 @@ public class NewActivity extends SpanishTalkBaseActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		checkLogin();
+		BaseActivity.checkLogin(getApplicationContext());
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_new);
@@ -84,7 +86,7 @@ public class NewActivity extends SpanishTalkBaseActivity {
 			params.put("question[title]", edit_text_title.getText().toString());
 			params.put("question[content]", edit_text_content.getText().toString());
 			
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(), question_create_url, params);
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.questionCreate, params);
 			
 			if (response.getStatusLine().getStatusCode() == 200) {
 
