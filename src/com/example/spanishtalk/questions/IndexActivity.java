@@ -3,7 +3,6 @@ package com.example.spanishtalk.questions;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
-import com.example.logic.BaseActivity;
+import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
 import com.example.tables.Question;
@@ -44,7 +43,7 @@ public class IndexActivity extends AbstractListViewActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		BaseActivity.checkLogin(getApplicationContext());
+		BaseAction.checkLogin(getApplicationContext());
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_questions_index);

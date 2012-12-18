@@ -19,7 +19,7 @@ import com.example.lib.BaseDialog;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.BaseActivity;
+import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.questions.NewActivity;
 
@@ -129,10 +129,10 @@ public class RegisterActivity extends Activity {
 		return checked;
 	}
 
-	public class PostRegisterTask extends AsyncTask<Void, Void, Void> {
+	public class PostRegisterTask extends AsyncTask<Void, Void, HttpResponse> {
 
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected HttpResponse doInBackground(Void... arg0) {
 
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("user[username]", edit_text_username.getText()
@@ -141,18 +141,23 @@ public class RegisterActivity extends Activity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString().trim());
 
-			HttpResponse response = HttpPack.sendPost(RegisterActivity.this, BaseUrl.register, params);
-			
-			if (response.getStatusLine().getStatusCode() == 200) {
-				BaseActivity.saveUserSessionByResponse(getApplicationContext(), response);
-			}
-			return null;
+			return HttpPack.sendPost(RegisterActivity.this, BaseUrl.register, params);
+			 
 		}
 		
 		@Override
-	    protected void onPostExecute(Void result) {
+	    protected void onPostExecute(HttpResponse response) {
+			if (response == null) {
+				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
+				return;
+			}
+			
+			if ( response.getStatusLine().getStatusCode() == 200) {
+				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
+			}
+			
 			if (session.getUserId() == null) {
-				BaseDialog.showSingleAlert("请填写正确的注册信息", RegisterActivity.this);
+				BaseAction.showFormNotice(getApplicationContext(), "请填写正确的注册信息");
 				return;
 			}
 

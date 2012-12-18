@@ -29,12 +29,15 @@
         android:id="@+id/lvQuestionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="5dp"
+        android:textSize="14dp" />
     
     <TextView
         android:id="@+id/lvQuestionCreatedAt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#123321"
+        android:textSize="12dp"
         android:layout_marginLeft="5dp" />
 
 </LinearLayout>

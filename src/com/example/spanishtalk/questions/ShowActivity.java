@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
-import com.example.logic.BaseActivity;
+import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
@@ -22,7 +22,7 @@ public class ShowActivity extends BaseEventActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		BaseActivity.checkLogin(getApplicationContext());
+		BaseAction.checkLogin(getApplicationContext());
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_show);

@@ -155,7 +155,7 @@ public class HttpPack {
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e("Tag", "Could not get HTML: " + e.getMessage());
 		}
 
 		return null;

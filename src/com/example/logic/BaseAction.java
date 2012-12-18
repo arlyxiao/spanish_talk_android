@@ -4,9 +4,7 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -14,7 +12,7 @@ import android.widget.Toast;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 
-public class BaseActivity {
+public class BaseAction {
 	
 	public static void checkLogin(Context context) {
 		SessionManagement session = new SessionManagement(context);

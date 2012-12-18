@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.logic.BaseActivity;
+import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.questions.IndexActivity;
 
@@ -55,10 +55,10 @@ public class LoginActivity extends Activity {
 		finish();
 	}
 
-	public class LoginTask extends AsyncTask<Void, Void, Void> {
+	public class LoginTask extends AsyncTask<Void, Void, HttpResponse> {
 
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected HttpResponse doInBackground(Void... arg0) {
 			edit_text_email = (EditText) findViewById(R.id.login_email);
 			edit_text_password = (EditText) findViewById(R.id.login_password);
 			
@@ -66,28 +66,32 @@ public class LoginActivity extends Activity {
 			params.put("user[email]", edit_text_email.getText().toString().trim());
 			params.put("user[password]", edit_text_password.getText().toString().trim());
 			
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
-			
-			if (response.getStatusLine().getStatusCode() == 200) {
-				BaseActivity.saveUserSessionByResponse(getApplicationContext(), response);
-			}
-
-			return null;
+			return HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
+		
 		}
 		
 	
 		
 		@Override
-	    protected void onPostExecute(Void result) {
+	    protected void onPostExecute(HttpResponse response) {
+			if (response == null) {
+				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
+				return;
+			}
+			
+			if ( response.getStatusLine().getStatusCode() == 200) {
+				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
+			}
+			
 			if (session.getUserId() == null) {
-				BaseActivity.showFormNotice(getApplicationContext(), "");
+				BaseAction.showFormNotice(getApplicationContext(), "");
 				return;
 			}
 			Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
 			startActivity(intent);
 			finish();
 
-	        super.onPostExecute(result);
+	        // super.onPostExecute(result);
 	    }
 
 	}
