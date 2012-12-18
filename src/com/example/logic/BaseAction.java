@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class BaseAction {
 		JSONObject user = HttpPack.getJsonByResponse(response);
 		try {
 			String username = user.getString("username");
+			Log.d("aadasdfasdf", username);
 			String user_id = user.getString("id");
 			String cookie = HttpPack.getCookieByResponse(response);
 			

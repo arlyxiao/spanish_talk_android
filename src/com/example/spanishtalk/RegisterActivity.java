@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.lib.BaseDialog;
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
@@ -73,7 +72,7 @@ public class RegisterActivity extends Activity {
 			}
 			return;
 		}
-		BaseDialog.showSingleAlert("当前网络连接不可用", this);
+		BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
 	
 	}
 	
@@ -141,8 +140,15 @@ public class RegisterActivity extends Activity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString().trim());
 
-			return HttpPack.sendPost(RegisterActivity.this, BaseUrl.register, params);
-			 
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
+			
+			if (response == null) {
+				return null;
+			}
+			if ( response.getStatusLine().getStatusCode() == 200) {
+				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
+			}
+			return response;			 
 		}
 		
 		@Override
@@ -150,10 +156,6 @@ public class RegisterActivity extends Activity {
 			if (response == null) {
 				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
 				return;
-			}
-			
-			if ( response.getStatusLine().getStatusCode() == 200) {
-				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
 			}
 			
 			if (session.getUserId() == null) {

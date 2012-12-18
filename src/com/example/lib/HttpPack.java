@@ -63,6 +63,7 @@ public class HttpPack {
 			reader = new BufferedReader(new InputStreamReader(response
 					.getEntity().getContent()));
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+				Log.d("ssss", s);
 				builder.append(s);
 			}
 

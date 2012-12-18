@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
@@ -46,7 +45,7 @@ public class LoginActivity extends Activity {
 			new LoginTask().execute();
 			return;
 		}
-		BaseDialog.showSingleAlert("网络连接超时", this);
+		BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
 	}
 	
 	public void showRegister(View view) {
@@ -59,6 +58,7 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected HttpResponse doInBackground(Void... arg0) {
+			
 			edit_text_email = (EditText) findViewById(R.id.login_email);
 			edit_text_password = (EditText) findViewById(R.id.login_password);
 			
@@ -66,10 +66,17 @@ public class LoginActivity extends Activity {
 			params.put("user[email]", edit_text_email.getText().toString().trim());
 			params.put("user[password]", edit_text_password.getText().toString().trim());
 			
-			return HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
+			
+			if (response == null) {
+				return null;
+			}
+			if ( response.getStatusLine().getStatusCode() == 200) {
+				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
+			}
+			return response;
 		
 		}
-		
 	
 		
 		@Override
@@ -77,10 +84,6 @@ public class LoginActivity extends Activity {
 			if (response == null) {
 				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
 				return;
-			}
-			
-			if ( response.getStatusLine().getStatusCode() == 200) {
-				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
 			}
 			
 			if (session.getUserId() == null) {
