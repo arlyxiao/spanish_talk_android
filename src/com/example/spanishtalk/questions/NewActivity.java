@@ -1,4 +1,4 @@
-package com.example.spanishtalk;
+package com.example.spanishtalk.questions;
 
 
 import java.util.HashMap;
@@ -23,9 +23,9 @@ import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.SpanishTalkBaseActivity;
+import com.example.spanishtalk.R; 
 
-
-public class QuestionNewActivity extends SpanishTalkBaseActivity {
+public class NewActivity extends SpanishTalkBaseActivity {
 
 	private EditText edit_text_title, edit_text_content;
 	String title, content;
@@ -57,7 +57,7 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 	public boolean validateQuestionForm(String title, String content) {
 		if (BaseUtils.is_str_blank(title) || BaseUtils.is_str_blank(content)) {
 			Context context = getApplicationContext();
-			Toast.makeText(context, "ÇëÌîÐ´ÕýÈ·µÄ±êÌâ»òÕßÄÚÈÝ", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "è¯·å¡«å†™æ­£ç¡®çš„æ ‡é¢˜è·Ÿå†…å®¹", Toast.LENGTH_SHORT).show();
 
 			return false;
 		}
@@ -125,7 +125,7 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 //
 //					}
 //
-//					// Êä³öÄ¿Ç°±¾µØÊý¾Ý¿âËùÓÐ¼ÇÂ¼
+//					// ï¿½ï¿½ï¿½Ä¿Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½Â¼
 //					SqliteLog.showAllQuestions(QuestionNewActivity.this);
 //				}
 //
@@ -136,15 +136,15 @@ public class QuestionNewActivity extends SpanishTalkBaseActivity {
 		@Override
 	    protected void onPostExecute(final Integer question_id) {
 		
-			AlertDialog.Builder builder = new AlertDialog.Builder(QuestionNewActivity.this);
-			builder.setMessage("·¢ËÍ³É¹¦")
+			AlertDialog.Builder builder = new AlertDialog.Builder(NewActivity.this);
+			builder.setMessage("")
 					.setCancelable(false)
-					.setPositiveButton("È·¶¨",
+					.setPositiveButton("ç¡®å®š",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
 									
-									Intent intent = new Intent(getApplicationContext(), QuestionShowActivity.class);
+									Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
 									intent.putExtra("question_id", question_id);
 									startActivity(intent);
 								}

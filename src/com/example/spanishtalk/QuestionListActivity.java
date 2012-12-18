@@ -22,6 +22,8 @@ import com.example.lib.CustomAdapter;
 import com.example.lib.HttpPack;
 import com.example.logic.QuestionRows;
 import com.example.logic.SpanishTalkBaseActivity;
+import com.example.spanishtalk.questions.NewActivity;
+import com.example.spanishtalk.questions.ShowActivity;
 
 
 public class QuestionListActivity extends SpanishTalkBaseActivity {
@@ -49,7 +51,7 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 			new GetQuestionsTask().execute(url);
 			return;
 		}
-		BaseDialog.showSingleAlert("当前网络链接不可用", this);
+		BaseDialog.showSingleAlert("", this);
     }
     
     public void refreshQuestions(View view) {
@@ -57,7 +59,7 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
     }
     
     public void clickAskQuestion(View view) {
-    	openActivity(QuestionNewActivity.class);
+    	openActivity(NewActivity.class);
 	}
     
     public void clickMyQuestions(View view) {
@@ -120,7 +122,7 @@ public class QuestionListActivity extends SpanishTalkBaseActivity {
 					//BaseDialog.showSingleAlert(row.getId(),
 					//		QuestionListActivity.this);
 					
-					Intent intent = new Intent(getApplicationContext(), QuestionShowActivity.class);
+					Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
 					intent.putExtra("question_id", Integer.parseInt(row.getId()));
 					startActivity(intent);
 				}

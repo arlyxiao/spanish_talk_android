@@ -1,4 +1,4 @@
-package com.example.spanishtalk;
+package com.example.spanishtalk.questions;
 
 
 import org.apache.http.HttpResponse;
@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.logic.SpanishTalkBaseActivity;
+import com.example.spanishtalk.R;
 
-public class QuestionShowActivity extends SpanishTalkBaseActivity {
+public class ShowActivity extends SpanishTalkBaseActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		checkLogin();
+		//checkLogin();
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_show);
@@ -32,7 +33,7 @@ public class QuestionShowActivity extends SpanishTalkBaseActivity {
 			new ShowQuestionTask().execute(question_id);
 			return;
 		}
-		BaseDialog.showSingleAlert("µ±Ç°ÍøÂçÁ¬½Ó²»¿ÉÓÃ", this);
+		BaseDialog.showSingleAlert("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½", this);
 	}
 
 	@Override

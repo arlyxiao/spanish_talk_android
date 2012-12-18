@@ -5,6 +5,7 @@ public class Question {
 	int _creator_id;
 	String _title;
 	String _content;
+	String _createdAt;
 
 	public Question() {
 
@@ -70,5 +71,13 @@ public class Question {
 	// setting content
 	public void setContent(String content) {
 		this._content = content;
+	}
+	
+	public void setCreatedAt(String _createdAt) {
+		this._createdAt = _createdAt;
+	}
+
+	public String getCreatedAt() {
+		return _createdAt.substring(0, 10);
 	}
 }

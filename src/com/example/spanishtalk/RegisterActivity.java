@@ -19,6 +19,7 @@ import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.SpanishTalkBaseActivity;
+import com.example.spanishtalk.questions.NewActivity;
 
 public class RegisterActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_username, edit_text_password,
@@ -67,9 +68,8 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 				clearErrorList();
 				
 				new PostRegisterTask().execute();
-				return;
 			}
-			
+			return;
 		}
 		BaseDialog.showSingleAlert("当前网络连接不可用", this);
 	
@@ -152,7 +152,7 @@ public class RegisterActivity extends SpanishTalkBaseActivity {
 				BaseDialog.showSingleAlert("请填写正确的注册信息", RegisterActivity.this);
 				return;
 			}
-			openActivity(QuestionNewActivity.class);
+			openActivity(NewActivity.class);
 			finish();
 	    }
 

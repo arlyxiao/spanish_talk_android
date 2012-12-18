@@ -15,6 +15,7 @@ import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.SpanishTalkBaseActivity;
+import com.example.spanishtalk.questions.IndexActivity;
 
 public class LoginActivity extends SpanishTalkBaseActivity {
 	private EditText edit_text_email, edit_text_password;
@@ -42,7 +43,7 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 			new LoginTask().execute();
 			return;
 		}
-		BaseDialog.showSingleAlert("当前网络链接不可用", this);
+		BaseDialog.showSingleAlert("缃戠粶杩炴帴瓒呮椂", this);
 	}
 	
 	public void showRegister(View view) {
@@ -75,10 +76,10 @@ public class LoginActivity extends SpanishTalkBaseActivity {
 		@Override
 	    protected void onPostExecute(Void result) {
 			if (session.getUserId() == null) {
-				showFormNotice("请填写正确的用户名或密码");
+				showFormNotice("");
 				return;
 			}
-			openActivity(QuestionListActivity.class);
+			openActivity(IndexActivity.class);
 			finish();
 
 	        super.onPostExecute(result);

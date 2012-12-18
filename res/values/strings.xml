@@ -31,5 +31,11 @@
     <string name="refresh_questions">随便看看</string>
     <string name="ask_question">提问</string>
     <string name="loading">加载中</string>
+   
+    <string name="display">总共 %2$s, 当前 %1$s</string>
+    <string name="first">首页</string>
+    <string name="previous">前一页</string>
+    <string name="next">下一页</string>
+    <string name="last">最后</string>
 
 </resources>

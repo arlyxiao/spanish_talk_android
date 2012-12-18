@@ -18,10 +18,7 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
-        <activity
-            android:name=".QuestionNewActivity"
-            android:label="@string/title_activity_question" >
-        </activity>
+        
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
@@ -29,21 +26,36 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
+            
+        </activity>
+        
+        
+        <activity
+            android:name=".questions.NewActivity"
+            android:label="@string/title_activity_question" >
+        </activity>
+        <activity
+            android:name =".questions.ShowActivity"
+            android:label="@string/title_activity_question_show" >
+        </activity>
+        <activity
+            android:name=".questions.IndexActivity"
+            android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".QuestionShowActivity"
-            android:label="@string/title_activity_question_show" >
-        </activity>
+        
+        
         <activity
             android:name=".QuestionListActivity"
             android:label="@string/title_activity_question_list" >
             
         </activity>
+        
+        
     </application>
 
 </manifest>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/topQuestionMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/Button01"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickAskQuestion"
+            android:text="@string/ask_question" />
+
+        <Button
+            android:id="@+id/Button02"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickMyQuestions"
+            android:text="@string/my_questions" />
+
+        <Button
+            android:id="@+id/Button03"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickAllQuestions"
+            android:text="@string/refresh_questions"
+            android:textColor="#a2a" />
+    </LinearLayout>
+    
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@+id/topQuestionMenu"
+        android:layout_above="@+id/buttonfirst"
+        android:drawSelectorOnTop="false"  >
+    </ListView>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/displaying"
+        android:layout_centerHorizontal="true"
+        android:indeterminateOnly="true" />
+
+    <Button
+        android:id="@+id/buttonfirst"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:enabled="true"
+        android:onClick="first"
+        android:text="@string/first" />
+
+    <Button
+        android:id="@+id/buttonprev"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/buttonfirst"
+        android:enabled="true"
+        android:onClick="previous"
+        android:text="@string/previous" />
+
+    <Button
+        android:id="@+id/buttonlast"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:enabled="true"
+        android:onClick="last"
+        android:text="@string/last" />
+
+    <Button
+        android:id="@+id/buttonnext"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/buttonlast"
+        android:enabled="true"
+        android:onClick="next"
+        android:text="@string/next" />
+
+    <TextView
+        android:id="@+id/displaying"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@android:id/list"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/buttonnext"
+        android:layout_toRightOf="@+id/buttonprev"
+        android:gravity="center_horizontal|center_vertical"
+        android:textSize="13sp" />
+
+</RelativeLayout>
