@@ -8,7 +8,6 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,10 +23,11 @@ import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseActivity;
+import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
 
-public class NewActivity extends Activity {
+public class NewActivity extends BaseEventActivity {
 
 	private EditText edit_text_title, edit_text_content;
 	String title, content;

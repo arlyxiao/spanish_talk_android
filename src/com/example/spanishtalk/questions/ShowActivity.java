@@ -5,7 +5,6 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,10 +14,11 @@ import android.widget.TextView;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.logic.BaseActivity;
+import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
 
-public class ShowActivity extends Activity {
+public class ShowActivity extends BaseEventActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
