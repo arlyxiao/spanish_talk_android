@@ -11,7 +11,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
@@ -21,6 +23,8 @@ import com.example.spanishtalk.questions.IndexActivity;
 
 public class LoginActivity extends Activity {
 	private EditText edit_text_email, edit_text_password;
+	private Button loginBtn;
+	private ProgressBar progressBar;
 	String user_id, email, username, password;
 	public SessionManagement session;
 
@@ -28,6 +32,9 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		loginBtn = (Button) findViewById(R.id.linkToLogin);
 		
 		session = new SessionManagement(getApplicationContext());
 		session.clear();
@@ -77,10 +84,21 @@ public class LoginActivity extends Activity {
 			return response;
 		
 		}
+		
+		@Override
+		protected void onPreExecute()
+		{
+			progressBar.setVisibility(View.VISIBLE);
+			loginBtn.setVisibility(View.INVISIBLE);
+			super.onPreExecute();
+		}
 	
 		
 		@Override
 	    protected void onPostExecute(HttpResponse response) {
+			progressBar.setVisibility(View.GONE);
+			loginBtn.setVisibility(View.VISIBLE);
+			
 			if (response == null) {
 				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
 				return;

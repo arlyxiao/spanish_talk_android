@@ -11,8 +11,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.lib.BaseUtils;
@@ -20,7 +22,7 @@ import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
-import com.example.spanishtalk.questions.NewActivity;
+import com.example.spanishtalk.questions.IndexActivity;
 
 public class RegisterActivity extends Activity {
 	private EditText edit_text_email, edit_text_username, edit_text_password,
@@ -28,6 +30,8 @@ public class RegisterActivity extends Activity {
 	private TextView email_error, username_error, password_error,
 			confirm_password_error;
 	private LinearLayout error_list;
+	private Button registerBtn;
+	private ProgressBar progressBar;
 	String email, username, password, confirm_password;
 	private SessionManagement session;
 
@@ -52,6 +56,9 @@ public class RegisterActivity extends Activity {
 		edit_text_username = (EditText) findViewById(R.id.reg_username);
 		edit_text_password = (EditText) findViewById(R.id.reg_password);
 		edit_text_confirm_password = (EditText) findViewById(R.id.reg_confirm_password);
+		
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		registerBtn = (Button) findViewById(R.id.linkToRegister);
 
 		error_list = (LinearLayout) findViewById(R.id.reg_error_show);
 		email_error = (TextView) findViewById(R.id.reg_email_error);
@@ -140,7 +147,7 @@ public class RegisterActivity extends Activity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString().trim());
 
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
+			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.register, params);
 			
 			if (response == null) {
 				return null;
@@ -152,7 +159,18 @@ public class RegisterActivity extends Activity {
 		}
 		
 		@Override
+		protected void onPreExecute()
+		{
+			progressBar.setVisibility(View.VISIBLE);
+			registerBtn.setVisibility(View.INVISIBLE);
+			super.onPreExecute();
+		}
+		
+		@Override
 	    protected void onPostExecute(HttpResponse response) {
+			progressBar.setVisibility(View.GONE);
+			registerBtn.setVisibility(View.VISIBLE);
+			
 			if (response == null) {
 				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
 				return;
@@ -163,7 +181,7 @@ public class RegisterActivity extends Activity {
 				return;
 			}
 
-			Intent intent = new Intent(getApplicationContext(), NewActivity.class);
+			Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
 			startActivity(intent);
 			finish();
 	    }
