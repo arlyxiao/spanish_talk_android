@@ -105,6 +105,7 @@ public class IndexActivity extends AbstractListViewActivity
 		protected String doInBackground(String... urls)
 		{
 			datasource = new QuestionDataSource(getApplicationContext(), urls[0]);
+		
 			try {
 				Thread.sleep(1000);
 				questionList = datasource.getData();
@@ -122,6 +123,7 @@ public class IndexActivity extends AbstractListViewActivity
 		@Override
 		protected void onPostExecute(String result)
 		{
+			
 			CustomArrayAdapter customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
 			customArrayAdapter.clear();
 			

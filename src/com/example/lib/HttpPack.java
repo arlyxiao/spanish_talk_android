@@ -63,7 +63,6 @@ public class HttpPack {
 			reader = new BufferedReader(new InputStreamReader(response
 					.getEntity().getContent()));
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-				Log.d("ssss", s);
 				builder.append(s);
 			}
 
@@ -149,8 +148,11 @@ public class HttpPack {
 			httppost.setHeader("User-Agent", "android");
 			httppost.setEntity(new UrlEncodedFormEntity(user_pairs, HTTP.UTF_8));
 			
-			return httpclient.execute(httppost, localContext);
-			
+			HttpResponse response = httpclient.execute(httppost, localContext);
+			if (response.getStatusLine().getStatusCode() == 401) {
+				return null;
+			}
+			return response;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
@@ -180,6 +182,9 @@ public class HttpPack {
 			httpget.setHeader("User-Agent", "android");
 			HttpResponse response = httpclient.execute(httpget);
 			
+			if (response.getStatusLine().getStatusCode() == 401) {
+				return null;
+			}
 			return response;
 
 		} catch (UnsupportedEncodingException e) {
