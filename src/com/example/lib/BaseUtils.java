@@ -41,22 +41,22 @@ public class BaseUtils {
 	public static String date_curront_time_String(long createTime) {
 		Calendar ca = Calendar.getInstance();
 		long nowTime = ca.getTimeInMillis();
-		long ss = (nowTime - createTime) / (1000); // ¹²¼ÆÃëÊý
-		int MM = (int) ss / 60; // ¹²¼Æ·ÖÖÓÊý
-		int hh = (int) ss / 3600; // ¹²¼ÆÐ¡Ê±Êý
-		int dd = (int) hh / 24; // ¹²¼ÆÌìÊý
+		long ss = (nowTime - createTime) / (1000); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		int MM = (int) ss / 60; // ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½
+		int hh = (int) ss / 3600; // ï¿½ï¿½ï¿½ï¿½Ð¡Ê±ï¿½ï¿½
+		int dd = (int) hh / 24; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-		String ji = "¸Õ·¢²¼";
+		String ji = "ï¿½Õ·ï¿½ï¿½ï¿½";
 		if (dd > 2) {
 			ji = date_string(createTime);
 		} else if (dd >= 1) {
-			ji = dd + " ÌìÇ°";
+			ji = dd + " ï¿½ï¿½Ç°";
 		} else if (hh >= 1) {
 			ji = hh + " Ð¡Ê±Ç°";
 		} else if (MM >= 1) {
-			ji = MM + " ·ÖÇ°";
+			ji = MM + " ï¿½ï¿½Ç°";
 		} else {
-			ji = ss + " ÃëÇ°";
+			ji = ss + " ï¿½ï¿½Ç°";
 		}
 		return ji;
 	}
@@ -139,7 +139,7 @@ public class BaseUtils {
 		return list;
 	}
 
-	// °Ñ×Ö½ÚÁ÷×ª»»³É×Ö·û´®
+	// ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 	public static String convert_stream_to_string(InputStream is) {
 		if (is != null) {
 			Writer writer = new StringWriter();
@@ -194,7 +194,6 @@ public class BaseUtils {
 		return count;
 	}
 
-	// ÅÐ¶Ï×Ö·û´®·Ç¿Õ
 	public static boolean is_str_blank(String str) {
 		int length;
 
@@ -210,20 +209,7 @@ public class BaseUtils {
 		return true;
 	}
 
-	// ¿ìËÙÏÔÊ¾Ò»¸ötoast
-	public static void toast(int string_resource_id) {
-		Toast toast = Toast.makeText(SpanishTalkApplication.context,
-				string_resource_id, Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.CENTER, 0, 0);
-		toast.show();
-	}
-
-	public static void toast(String string) {
-		Toast toast = Toast.makeText(SpanishTalkApplication.context, string,
-				Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.CENTER, 0, 0);
-		toast.show();
-	}
+	
 
 	public static Bitmap to_round_corner(Bitmap bitmap, int pixels) {
 
@@ -259,14 +245,14 @@ public class BaseUtils {
 
 	public static String get_file_path_from_image_uri(Uri uri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
-		// ºÃÏñÊÇandroid¶àÃ½ÌåÊý¾Ý¿âµÄ·â×°½Ó¿Ú£¬¾ßÌåµÄ¿´AndroidÎÄµµ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½androidï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ä·ï¿½×°ï¿½Ó¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Androidï¿½Äµï¿½
 		Cursor cursor = MediaStore.Images.Media.query(
 				SpanishTalkApplication.context.getContentResolver(), uri, proj);
-		// °´ÎÒ¸öÈËÀí½â Õâ¸öÊÇ»ñµÃÓÃ»§Ñ¡ÔñµÄÍ¼Æ¬µÄË÷ÒýÖµ
+		// ï¿½ï¿½ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½Ã»ï¿½Ñ¡ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 		int column_index = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-		// ½«¹â±êÒÆÖÁ¿ªÍ· £¬Õâ¸öºÜÖØÒª£¬²»Ð¡ÐÄºÜÈÝÒ×ÒýÆðÔ½½ç
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í· ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ð¡ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½
 		cursor.moveToFirst();
-		// ×îºó¸ù¾ÝË÷ÒýÖµ»ñÈ¡Í¼Æ¬Â·¾¶
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½È¡Í¼Æ¬Â·ï¿½ï¿½
 		return cursor.getString(column_index);
 	}
 

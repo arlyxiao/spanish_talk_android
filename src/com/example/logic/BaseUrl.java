@@ -7,5 +7,5 @@ public class BaseUrl {
 	public final static String questionsMy = "http://192.168.1.17:3000/questions/my.json";
 	public final static String questionCreate = "http://192.168.1.17:3000/questions.json";
 	public final static String questionShow = "http://192.168.1.17:3000/questions";
-	
+	public final static String answerCreate = "http://192.168.1.17:3000/questions";
 }

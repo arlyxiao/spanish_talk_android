@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,7 +53,8 @@ public class LoginActivity extends Activity {
 			new LoginTask().execute();
 			return;
 		}
-		BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
+		Context context = getApplicationContext();
+		BaseAction.showFormNotice(context, context.getString(R.string.network_error));
 	}
 	
 	public void showRegister(View view) {
@@ -96,19 +98,25 @@ public class LoginActivity extends Activity {
 		
 		@Override
 	    protected void onPostExecute(HttpResponse response) {
+			Context context = getApplicationContext();
 			progressBar.setVisibility(View.GONE);
 			loginBtn.setVisibility(View.VISIBLE);
 			
 			if (response == null) {
-				BaseAction.showFormNotice(getApplicationContext(), "网络连接超时");
+				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+				return;
+			}
+			
+			if ( response.getStatusLine().getStatusCode() == 404) {
+				BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
 				return;
 			}
 			
 			if (session.getUserId() == null) {
-				BaseAction.showFormNotice(getApplicationContext(), "");
+				BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
 				return;
 			}
-			Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
+			Intent intent = new Intent(context, IndexActivity.class);
 			startActivity(intent);
 			finish();
 
