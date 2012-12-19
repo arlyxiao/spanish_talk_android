@@ -11,9 +11,10 @@
             android:onClick="clickGoBack" />
         
         <Button
-            android:id="@+id/logout_btn"
+            android:id="@+id/link_to_question"
             style="@style/head_bar_button_logout"
-            android:onClick="clickLogout" />
+            android:text="@string/send_btn"
+            android:onClick="postQuestion" />
         
     </RelativeLayout>
 
@@ -43,11 +44,7 @@
             <requestFocus />
         </EditText>
 
-        <Button
-            android:id="@+id/link_to_question"
-            style="@style/general_layout_button"
-            android:onClick="postQuestion"
-            android:text="@string/click_question_button" />
+       
     </LinearLayout>
 
 </LinearLayout>

@@ -32,6 +32,7 @@
     <string name="incorrect_password">请填写正确的密码</string>
     <string name="incorrect_confirm_password">请填写正确的重复密码</string>
     <string name="answer_content_required">请填写内容</string>
+    <string name="new_question_required">请填写标题跟内容</string>
     
     
     <string name="title_activity_question">提问</string>
@@ -47,6 +48,7 @@
     <string name="loading">正在加载 &#8230;</string>
     <string name="empty_data">正在加载 &#8230;</string>
     
+    <string name="be_sent">发送成功</string>
     <string name="confirm_btn">确定</string>
     <string name="send_btn">发送</string>
     
@@ -56,6 +58,6 @@
     <string name="previous">前一页</string>
     <string name="next">下一页</string>
     <string name="last">最后</string>
-    <string name="title_activity_answer">AnswerActivity</string>
+    <string name="title_activity_answer">回答问题</string>
 
 </resources>

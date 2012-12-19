@@ -27,7 +27,7 @@ import com.example.spanishtalk.R;
 public class AnswerActivity extends BaseEventActivity {
 	private EditText aContent;
 	private Integer questionId;
-	private Button confirmBtn;
+	private Button sendBtn;
 	private ProgressBar progressBar;
 	
 	
@@ -38,7 +38,7 @@ public class AnswerActivity extends BaseEventActivity {
         
         aContent = (EditText) findViewById(R.id.input_answer_content);
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
-		confirmBtn = (Button) findViewById(R.id.link_to_answer);
+		sendBtn = (Button) findViewById(R.id.send_btn);
         
         Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
@@ -92,14 +92,14 @@ public class AnswerActivity extends BaseEventActivity {
  		protected void onPreExecute() {
 
  			progressBar.setVisibility(View.VISIBLE);
-			confirmBtn.setVisibility(View.INVISIBLE);
+ 			sendBtn.setVisibility(View.INVISIBLE);
  			super.onPreExecute();
  		}
 
  		@Override
  		protected void onPostExecute(JSONObject question) {
  			progressBar.setVisibility(View.GONE);
- 			confirmBtn.setVisibility(View.VISIBLE);
+ 			sendBtn.setVisibility(View.VISIBLE);
 
  			Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
 			intent.putExtra("question_id", questionId);
