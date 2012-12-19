@@ -30,13 +30,18 @@
     <string name="title_activity_question">提问</string>
     <string name="question_title">标题</string>
     <string name="question_content">请填写提问内容</string>
+    <string name="answer_content">请填写回答内容</string>
     <string name="click_question_button">确定</string>
     <string name="title_activity_question_show">当前问题</string>
     <string name="title_activity_question_list">问题列表</string>
     <string name="my_questions">我的问题</string>
     <string name="refresh_questions">随便看看</string>
     <string name="ask_question">提问</string>
-    <string name="loading">加载中</string>
+    <string name="loading">正在加载 &#8230;</string>
+    <string name="empty_data">正在加载 &#8230;</string>
+    
+    <string name="confirm_btn">确定</string>
+    <string name="cancel_btn">取消</string>
    
     <string name="display">总共 %2$s, 当前 %1$s</string>
     <string name="first">首页</string>

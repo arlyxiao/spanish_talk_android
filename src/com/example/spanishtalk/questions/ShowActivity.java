@@ -7,8 +7,9 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.lib.HttpPack;
@@ -18,6 +19,7 @@ import com.example.spanishtalk.R;
 
 public class ShowActivity extends BaseEventActivity {
 	private TextView qTitle, qContent, qCreatedAt;
+	private LinearLayout answerBox;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class ShowActivity extends BaseEventActivity {
 		qTitle = (TextView) findViewById(R.id.q_title);
 		qContent = (TextView) findViewById(R.id.q_content);
 		qCreatedAt = (TextView) findViewById(R.id.q_created_at);
+		answerBox = (LinearLayout) findViewById(R.id.answer_box);
 
 		if (HttpPack.hasConnected(this)) {
 			Intent myIntent = getIntent();
@@ -46,6 +49,16 @@ public class ShowActivity extends BaseEventActivity {
 		getMenuInflater().inflate(R.menu.activity_question_show, menu);
 		return true;
 	}
+	
+	public void showAnswer(View view) {
+		answerBox.setVisibility(View.VISIBLE);
+	}
+	
+	public void cancelAnswer(View view) {
+		answerBox.setVisibility(View.GONE);
+	}
+	
+	
 
 	public class ShowQuestionTask extends AsyncTask<Integer, Void, JSONObject> {
 
