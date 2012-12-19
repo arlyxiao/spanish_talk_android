@@ -57,7 +57,7 @@ public class AnswerActivity extends BaseEventActivity {
 		if (BaseUtils.is_str_blank(content)) {
 			Context context = getApplicationContext();
 			
-			Toast toast = Toast.makeText(context, "请填写正确的内容", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(context, R.string.answer_content_required, Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.CENTER, 0, 0);
 			toast.show();
 			return;
