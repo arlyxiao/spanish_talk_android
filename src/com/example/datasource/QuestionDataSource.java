@@ -34,7 +34,8 @@ public class QuestionDataSource
 	
 	public QuestionDataSource(Context context, String url)
 	{
-		JSONObject jsonData;
+		JSONObject question, creator;
+		String username, time;
 		
 		HttpResponse response = HttpPack.sendRequest(context, url);
 		JSONObject r = HttpPack.getJsonByResponse(response);
@@ -48,11 +49,16 @@ public class QuestionDataSource
 			
 			for (int i = 0 ; i <= SIZE; i++) {
 				Question qr = new Question();
-				jsonData = questions.getJSONObject(i);
+				question = questions.getJSONObject(i);
 				
-				qr.setID(Integer.parseInt(jsonData.getString("id")));
-				qr.setTitle(jsonData.getString("title"));
-				qr.setCreatedAt(jsonData.getString("created_at"));
+				qr.setID(Integer.parseInt(question.getString("id")));
+				qr.setTitle(question.getString("title"));
+				
+				creator = question.getJSONObject("creator");
+				username = creator.getString("username");
+				time = question.getString("created_at");
+				
+				qr.setCreatedAt(username + ", " + time.substring(0, 10));
 				
 				data.add(qr);
 			}

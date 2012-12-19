@@ -16,23 +16,33 @@
             android:onClick="clickLogout" />
     </RelativeLayout>
 
+   
+
     <LinearLayout
-        android:background="@drawable/nav_page"
+        style="@style/padding_10_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/question_title"
+            android:id="@+id/q_title"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:paddingBottom="8dp"
-            android:textColor="#000" />
-
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="8dp"
+            android:textSize="16dip"
+            android:text="Title" />
+        
         <TextView
-            android:id="@+id/question_content"
+            android:id="@+id/q_created_at"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000" />
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="8dp"
+            android:text="Time"  />
+        
+         <TextView
+             android:id="@+id/q_content"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:text="Content" />
 
         <Button
             android:id="@+id/link_to_answer"

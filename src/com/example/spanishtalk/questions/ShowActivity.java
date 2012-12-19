@@ -1,6 +1,5 @@
 package com.example.spanishtalk.questions;
 
-
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,34 +7,38 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
-import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
 
 public class ShowActivity extends BaseEventActivity {
-	
+	private TextView qTitle, qContent, qCreatedAt;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		BaseAction.checkLogin(getApplicationContext());
-		
+		// BaseAction.checkLogin(getApplicationContext());
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_show);
-		
+
+		qTitle = (TextView) findViewById(R.id.q_title);
+		qContent = (TextView) findViewById(R.id.q_content);
+		qCreatedAt = (TextView) findViewById(R.id.q_created_at);
+
 		if (HttpPack.hasConnected(this)) {
 			Intent myIntent = getIntent();
 			Bundle b = myIntent.getExtras();
 			Integer question_id = b.getInt("question_id");
-			
+
 			new ShowQuestionTask().execute(question_id);
 			return;
 		}
-		BaseDialog.showSingleAlert("��ǰ�������Ӳ�����", this);
+
 	}
 
 	@Override
@@ -43,14 +46,15 @@ public class ShowActivity extends BaseEventActivity {
 		getMenuInflater().inflate(R.menu.activity_question_show, menu);
 		return true;
 	}
-	
-	
+
 	public class ShowQuestionTask extends AsyncTask<Integer, Void, JSONObject> {
 
 		@Override
 		protected JSONObject doInBackground(Integer... questions) {
-			String url = BaseUrl.questionShow + "/" + Integer.toString(questions[0]) + ".json";
-			HttpResponse response = HttpPack.sendRequest(getApplicationContext(), url);
+			String url = BaseUrl.questionShow + "/"
+					+ Integer.toString(questions[0]) + ".json";
+			HttpResponse response = HttpPack.sendRequest(
+					getApplicationContext(), url);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return HttpPack.getJsonByResponse(response);
@@ -58,24 +62,28 @@ public class ShowActivity extends BaseEventActivity {
 
 			return null;
 		}
-		
-		
+
 		@Override
-	    protected void onPostExecute(JSONObject question) {			
+		protected void onPostExecute(JSONObject question) {
+			JSONObject creator;
+			String username;
 			try {
-				TextView q_title = (TextView) findViewById(R.id.question_title);
-				TextView q_content = (TextView) findViewById(R.id.question_content);
+				qTitle.setText(question.getString("title"));
+				qContent.setText(question.getString("content"));
 				
-				q_title.setText(question.getString("title"));
-				q_content.setText(question.getString("content"));
+				creator = question.getJSONObject("creator");
+				username = creator.getString("username");
 				
+				String time = question.getString("created_at").substring(0, 10);
+				
+				qCreatedAt.setText(username + ", " + time);
+
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
-	        super.onPostExecute(question);
-	    }
-	}
 
+			super.onPostExecute(question);
+		}
+	}
 
 }

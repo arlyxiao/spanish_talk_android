@@ -78,6 +78,6 @@ public class Question {
 	}
 
 	public String getCreatedAt() {
-		return _createdAt.substring(0, 10);
+		return _createdAt;
 	}
 }
