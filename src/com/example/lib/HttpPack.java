@@ -149,16 +149,17 @@ public class HttpPack {
 			httppost.setEntity(new UrlEncodedFormEntity(user_pairs, HTTP.UTF_8));
 			
 			HttpResponse response = httpclient.execute(httppost, localContext);
-			if (response.getStatusLine().getStatusCode() == 401) {
-				return null;
-			}
+		
 			return response;
 		} catch (UnsupportedEncodingException e) {
+			Log.e("Tag", "Unsupported encoding error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
+			Log.e("Tag", "Client Protocol error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
 			Log.e("Tag", "Could not get HTML: " + e.getMessage());
+			return null;
 		}
 
 		return null;

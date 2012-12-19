@@ -23,6 +23,7 @@ import com.example.logic.BaseUrl;
 import com.example.spanishtalk.questions.IndexActivity;
 
 public class LoginActivity extends Activity {
+	private Context context;
 	private EditText edit_text_email, edit_text_password;
 	private Button loginBtn;
 	private ProgressBar progressBar;
@@ -33,10 +34,10 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
+
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		loginBtn = (Button) findViewById(R.id.linkToLogin);
-		
+
 		session = new SessionManagement(getApplicationContext());
 		session.clear();
 	}
@@ -47,18 +48,13 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
-
 	public void doLogin(View view) {
-		if (HttpPack.hasConnected(this)) {
-			new LoginTask().execute();
-			return;
-		}
-		Context context = getApplicationContext();
-		BaseAction.showFormNotice(context, context.getString(R.string.network_error));
+		new LoginTask().execute();
 	}
-	
+
 	public void showRegister(View view) {
-		Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+		Intent intent = new Intent(getApplicationContext(),
+				RegisterActivity.class);
 		startActivity(intent);
 		finish();
 	}
@@ -67,50 +63,60 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected HttpResponse doInBackground(Void... arg0) {
-			
+			context = getApplicationContext();
 			edit_text_email = (EditText) findViewById(R.id.login_email);
 			edit_text_password = (EditText) findViewById(R.id.login_password);
-			
+
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("user[email]", edit_text_email.getText().toString().trim());
-			params.put("user[password]", edit_text_password.getText().toString().trim());
-			
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.login, params);
-			
+			params.put("user[email]", edit_text_email.getText().toString()
+					.trim());
+			params.put("user[password]", edit_text_password.getText()
+					.toString().trim());
+
+			HttpResponse response = HttpPack.sendPost(context, BaseUrl.login, params);
+
 			if (response == null) {
+				cancel(true);
 				return null;
 			}
-			if ( response.getStatusLine().getStatusCode() == 200) {
-				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
+				BaseAction.saveUserSessionByResponse(context, response);
 			}
 			return response;
-		
+
 		}
-		
+
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			progressBar.setVisibility(View.VISIBLE);
 			loginBtn.setVisibility(View.INVISIBLE);
+
+			if (!HttpPack.hasConnected(LoginActivity.this)) {
+				Context context = getApplicationContext();
+				BaseAction.showFormNotice(context,
+						context.getString(R.string.network_error));
+				cancel(true);
+				return;
+			}
+
 			super.onPreExecute();
 		}
-	
-		
+
 		@Override
-	    protected void onPostExecute(HttpResponse response) {
+		protected void onCancelled() {
+			progressBar.setVisibility(View.INVISIBLE);
+			loginBtn.setVisibility(View.VISIBLE);
+
+			Context context = getApplicationContext();
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+		}
+
+		@Override
+		protected void onPostExecute(HttpResponse response) {
 			Context context = getApplicationContext();
 			progressBar.setVisibility(View.GONE);
 			loginBtn.setVisibility(View.VISIBLE);
-			
-			if (response == null) {
-				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
-				return;
-			}
-			
-			if ( response.getStatusLine().getStatusCode() == 404) {
-				BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
-				return;
-			}
 			
 			if (session.getUserId() == null) {
 				BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
@@ -120,8 +126,8 @@ public class LoginActivity extends Activity {
 			startActivity(intent);
 			finish();
 
-	        // super.onPostExecute(result);
-	    }
+			// super.onPostExecute(result);
+		}
 
 	}
 }
