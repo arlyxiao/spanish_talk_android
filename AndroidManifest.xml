@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_questions" >
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -39,7 +39,7 @@
         </activity>
         <activity
             android:name=".questions.IndexActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_questions" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

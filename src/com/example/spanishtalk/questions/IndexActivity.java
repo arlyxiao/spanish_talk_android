@@ -40,6 +40,7 @@ public class IndexActivity extends AbstractListViewActivity
 	public QuestionDataSource datasource;
 	
 	private String url = BaseUrl.questions;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -123,6 +124,7 @@ public class IndexActivity extends AbstractListViewActivity
 		{
 			CustomArrayAdapter customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
 			customArrayAdapter.clear();
+			
 			for (Question qr : questionList) {
 				customArrayAdapter.add(qr);
 			}
@@ -186,8 +188,7 @@ public class IndexActivity extends AbstractListViewActivity
 	// 导航按钮
 	public void first(View v)
 	{
-		if (!loading)
-		{
+		if (!loading) {
 			offset = 0;
 			(new LoadNextPage()).execute(url + "?page=1");
 		}

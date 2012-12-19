@@ -36,6 +36,7 @@
             android:textColor="#a2a" />
     </LinearLayout>
     
+    
 
     <ListView
         android:id="@android:id/list"

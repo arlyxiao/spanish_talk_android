@@ -136,10 +136,10 @@ public final class R {
         public static final int server_connection_error=0x7f050004;
         public static final int title_activity_answer=0x7f050034;
         public static final int title_activity_login=0x7f050008;
-        public static final int title_activity_main=0x7f050003;
         public static final int title_activity_question=0x7f05001f;
         public static final int title_activity_question_list=0x7f050025;
         public static final int title_activity_question_show=0x7f050024;
+        public static final int title_activity_questions=0x7f050003;
         public static final int title_activity_register=0x7f050009;
         public static final int username=0x7f05000c;
     }
