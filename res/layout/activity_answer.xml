@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/body" >
+    
+    
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/head_bar" >
+
+        <Button
+            android:id="@+id/button1"
+            style="@style/head_bar_button_go_back_register"
+            android:onClick="clickGoBack" />
+        
+        <Button
+            android:id="@+id/logout_btn"
+            style="@style/head_bar_button_logout"
+            android:onClick="clickLogout" />
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/padding_10_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/q_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/input_answer_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/answer_content"
+            android:inputType="textMultiLine"
+            android:minHeight="100dip" >
+
+            <requestFocus />
+        </EditText>
+        
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/link_to_answer"
+            style="@style/general_layout_button"
+            android:onClick="doAnswer"
+            android:text="@string/confirm_btn" />
+    </LinearLayout>
+
+</LinearLayout>
