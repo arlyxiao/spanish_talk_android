@@ -1,5 +1,6 @@
 package com.example.spanishtalk.questions;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -40,12 +41,13 @@ public abstract class AbstractListViewActivity extends ListActivity
 			try
 			{
 				Thread.sleep(1500);
-			}
-			catch (InterruptedException e)
-			{
+				newData = datasource.getData();
+			} catch (InterruptedException e) {
 				Log.e("AbstractListActivity", e.getMessage());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			newData = datasource.getData();
+			
 			return null;
 		}
 

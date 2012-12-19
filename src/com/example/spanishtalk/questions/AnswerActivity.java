@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.lib.BaseUtils;
 import com.example.lib.HttpPack;
+import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
@@ -80,7 +81,12 @@ public class AnswerActivity extends BaseEventActivity {
  					+ Integer.toString(questions[0]) + "/answers.json";
  			HttpResponse response = HttpPack.sendPost(getApplicationContext(),
  					url, params);
-
+ 			
+ 			if (response == null) {
+				return null;
+			}
+ 			
+ 			
  			if (response.getStatusLine().getStatusCode() == 200) {
  				return HttpPack.getJsonByResponse(response);
  			}
@@ -98,8 +104,15 @@ public class AnswerActivity extends BaseEventActivity {
 
  		@Override
  		protected void onPostExecute(JSONObject question) {
+ 			Context context = getApplicationContext();
+ 			
  			progressBar.setVisibility(View.GONE);
  			sendBtn.setVisibility(View.VISIBLE);
+			
+			if (question == null) {
+				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+				return;
+			}
 
  			Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
 			intent.putExtra("question_id", questionId);

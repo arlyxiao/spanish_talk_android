@@ -1,5 +1,6 @@
 package com.example.spanishtalk.questions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class IndexActivity extends AbstractListViewActivity
 
 	private class LoadNextPage extends AsyncTask<String, Void, String>
 	{
-		private List<Question> newData = null;
+		private List<Question> questionList = null;
 
 		@Override
 		protected void onPreExecute()
@@ -105,11 +106,14 @@ public class IndexActivity extends AbstractListViewActivity
 			datasource = new QuestionDataSource(getApplicationContext(), urls[0]);
 			try {
 				Thread.sleep(1000);
-			}
-			catch (InterruptedException e) {
+				questionList = datasource.getData();
+			} catch (InterruptedException e) {
 				Log.e("PagingButtons", e.getMessage());
+			} catch (IOException e) {
+				Log.d("Data source error", e.getMessage());
+				e.printStackTrace();
 			}
-			newData = datasource.getData();
+			
 			
 			return null;
 		}
@@ -119,7 +123,7 @@ public class IndexActivity extends AbstractListViewActivity
 		{
 			CustomArrayAdapter customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
 			customArrayAdapter.clear();
-			for (Question qr : newData) {
+			for (Question qr : questionList) {
 				customArrayAdapter.add(qr);
 			}
 			customArrayAdapter.notifyDataSetChanged();

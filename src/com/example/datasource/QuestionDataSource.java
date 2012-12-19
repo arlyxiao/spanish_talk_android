@@ -1,5 +1,6 @@
 package com.example.datasource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.lib.HttpPack;
 import com.example.tables.Question;
@@ -38,6 +38,11 @@ public class QuestionDataSource
 		String username, time;
 		
 		HttpResponse response = HttpPack.sendRequest(context, url);
+		
+		if (response == null) {
+			return;
+		}
+		
 		JSONObject r = HttpPack.getJsonByResponse(response);
 		
 		data = new ArrayList<Question>(SIZE);
@@ -75,10 +80,12 @@ public class QuestionDataSource
 	}
 	
 
-	public List<Question> getData()
+	public List<Question> getData() throws IOException
 	{
 		List<Question> newList = new ArrayList<Question>();
-		
+		if (data == null) {
+			return newList;
+		}
 		newList.addAll(data);
 		return newList;		
 	}
