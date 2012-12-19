@@ -214,10 +214,12 @@ public class ShowActivity extends BaseEventActivity {
 				for (int i = 0; i < size; i++) {
 					Answer answer = new Answer();
 					JSONObject a = answers.getJSONObject(i);
+					JSONObject creator = a.getJSONObject("creator");
+					String username = creator.getString("username");
 					
 					answer.setID(Integer.parseInt(a.getString("id")));
 					answer.setContent(a.getString("content"));
-					answer.setCreatedAt(a.getString("created_at"));
+					answer.setCreatedAt(username + ", " + a.getString("created_at").substring(0, 10));
 					latestAnswers.add(answer);
 				}
 				

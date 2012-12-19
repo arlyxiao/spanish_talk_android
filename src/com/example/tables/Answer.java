@@ -5,7 +5,8 @@ public class Answer {
 	int _creator_id;
  	String _content;
 	String _createdAt;
-
+	User _creator;
+	String _username;
 	 
 	public int getID() {
 		return this._id;
@@ -22,6 +23,17 @@ public class Answer {
 	public void setCreatorId(int creator_id) {
 		this._creator_id = creator_id;
 	}
+	
+	public String getUsername() {
+		return this._username;
+	}
+
+	public void setUsername(String _username) {
+		this._username = _username;
+	}
+	
+	
+
 
 	public String getContent() {
 		return this._content;

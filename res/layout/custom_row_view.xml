@@ -17,7 +17,7 @@
         android:id="@+id/answer_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#C20000"
+        android:textColor="#3377AA"
         android:textSize="14sp"
         android:textStyle="bold"
         android:text="content" />

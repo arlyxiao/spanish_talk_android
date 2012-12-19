@@ -61,7 +61,7 @@ public class AnswerBaseAdapter extends BaseAdapter {
         String answerId = Integer.toString(answerList.get(position).getID());
         holder.answerId.setText(answerId);
         holder.content.setText(answerList.get(position).getContent());
-        holder.createdAt.setText(answerList.get(position).getCreatedAt().substring(0, 10));
+        holder.createdAt.setText(answerList.get(position).getCreatedAt());
         
  
         return convertView;
