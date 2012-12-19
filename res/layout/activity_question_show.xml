@@ -43,6 +43,26 @@
             android:layout_height="match_parent"
             android:text="@string/empty_data" />
     </LinearLayout>
+    
+    
+    <LinearLayout
+        android:id="@+id/answer_status_btn"
+        style="@style/padding_10_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+        
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:indeterminateOnly="true"  />
+     
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/answer_box"
@@ -74,6 +94,8 @@
 
                 <requestFocus />
             </EditText>
+            
+            
         </LinearLayout>
 
         <RelativeLayout

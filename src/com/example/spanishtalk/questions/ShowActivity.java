@@ -13,8 +13,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +28,10 @@ import com.example.spanishtalk.R;
 
 public class ShowActivity extends BaseEventActivity {
 	private TextView qTitle, qContent, qCreatedAt, qId;
-	private LinearLayout answerBox;
+	private LinearLayout answerBox, answerStatusBtn;
 	private EditText aContent;
 	private Integer questionId;
+	private ProgressBar progressBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,8 @@ public class ShowActivity extends BaseEventActivity {
 		qTitle = (TextView) findViewById(R.id.q_title);
 		qContent = (TextView) findViewById(R.id.q_content);
 		qCreatedAt = (TextView) findViewById(R.id.q_created_at);
-
+		
+		answerStatusBtn = (LinearLayout) findViewById(R.id.answer_status_btn);
 		answerBox = (LinearLayout) findViewById(R.id.answer_box);
 		aContent = (EditText) findViewById(R.id.answer_content);
 
@@ -127,7 +131,7 @@ public class ShowActivity extends BaseEventActivity {
 		@Override
 		protected JSONObject doInBackground(Integer... questions) {
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("answer[content]", qContent.getText().toString());
+			params.put("answer[content]", aContent.getText().toString());
 			
 			String url = BaseUrl.answerCreate + "/"
 					+ Integer.toString(questions[0]) + "/answers.json";
@@ -140,26 +144,22 @@ public class ShowActivity extends BaseEventActivity {
 
 			return null;
 		}
+		
+		
+		@Override
+		protected void onPreExecute()
+		{
+			answerBox.setVisibility(View.GONE);
+			answerStatusBtn.setVisibility(View.VISIBLE);
+			
+			super.onPreExecute();
+		}
 
 		@Override
 		protected void onPostExecute(JSONObject question) {
-			JSONObject creator;
-			String username;
-			try {
-				qTitle.setText(question.getString("title"));
-				qContent.setText(question.getString("content"));
-
-				creator = question.getJSONObject("creator");
-				username = creator.getString("username");
-
-				String time = question.getString("created_at").substring(0, 10);
-
-				qCreatedAt.setText(username + ", " + time);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
+			answerBox.setVisibility(View.GONE);
+			answerStatusBtn.setVisibility(View.INVISIBLE);
+			
 			super.onPostExecute(question);
 		}
 	}
