@@ -14,7 +14,8 @@
         <Button
             android:id="@+id/logout_btn"
             style="@style/head_bar_button_logout"
-            android:onClick="clickLogout" />
+            android:text="@string/send_btn"
+            android:onClick="doAnswer" />
         
     </RelativeLayout>
 
@@ -53,11 +54,6 @@
             android:indeterminateOnly="true"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/link_to_answer"
-            style="@style/general_layout_button"
-            android:onClick="doAnswer"
-            android:text="@string/confirm_btn" />
     </LinearLayout>
 
 </LinearLayout>
