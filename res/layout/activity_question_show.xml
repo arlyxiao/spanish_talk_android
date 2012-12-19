@@ -43,25 +43,23 @@
             android:layout_height="match_parent"
             android:text="@string/empty_data" />
     </LinearLayout>
-    
-    
+
     <LinearLayout
         android:id="@+id/answer_status_btn"
         style="@style/padding_10_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" >
-        
+
         <ProgressBar
             android:id="@+id/progressBar1"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:indeterminateOnly="true"  />
-     
+            android:layout_marginTop="5dp"
+            android:indeterminateOnly="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,7 +81,7 @@
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/answer_content"
+                android:id="@+id/input_answer_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -94,8 +92,6 @@
 
                 <requestFocus />
             </EditText>
-            
-            
         </LinearLayout>
 
         <RelativeLayout
@@ -115,6 +111,18 @@
                 android:onClick="cancelAnswer"
                 android:text="@string/cancel_btn" />
         </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answers_box"
+        style="@style/padding_10_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ListView
+            android:id="@+id/answer_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
     </LinearLayout>
 
 </LinearLayout>
