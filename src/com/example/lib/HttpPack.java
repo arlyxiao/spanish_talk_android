@@ -149,8 +149,17 @@ public class HttpPack {
 			httppost.setEntity(new UrlEncodedFormEntity(user_pairs, HTTP.UTF_8));
 			
 			HttpResponse response = httpclient.execute(httppost, localContext);
-		
+			
+			if (response == null) {
+				return null;
+			}
+			
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if ( statusCode != 200) {
+				return null;
+			}
 			return response;
+		
 		} catch (UnsupportedEncodingException e) {
 			Log.e("Tag", "Unsupported encoding error: " + e.getMessage());
 			e.printStackTrace();
@@ -184,19 +193,25 @@ public class HttpPack {
 			httpget.setHeader("User-Agent", "android");
 			HttpResponse response = httpclient.execute(httpget);
 			
-			if (response.getStatusLine().getStatusCode() == 401) {
+			if (response == null) {
+				return null;
+			}
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if ( statusCode != 200) {
 				return null;
 			}
 			return response;
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			return null;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
-		return null;
 	}
 }

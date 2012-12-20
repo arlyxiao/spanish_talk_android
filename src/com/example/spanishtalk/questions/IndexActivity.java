@@ -148,6 +148,10 @@ public class IndexActivity extends AbstractListViewActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
+			if (questionList.size() == 0) {
+				BaseAction.showFormNotice(context, context.getString(R.string.empty_data));
+				return;
+			}
 
 			CustomArrayAdapter customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
 			customArrayAdapter.clear();

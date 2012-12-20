@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.example.datasource.AnswerBaseAdapter;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
+import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
@@ -31,7 +33,7 @@ public class ShowActivity extends BaseEventActivity {
 	private LinearLayout answerBox;
 	
 	private Integer questionId;
-	private ArrayList<Answer> latestAnswers;
+	private ArrayList<Answer> answerList;
 	private ListView lv;
 
 	@Override
@@ -52,15 +54,7 @@ public class ShowActivity extends BaseEventActivity {
 		Bundle b = myIntent.getExtras();
 		questionId = b.getInt("question_id");
 
-
-		if (HttpPack.hasConnected(this)) {
-			
-			new ShowQuestionTask().execute(questionId);
-			
-			new GetAnswersTask().execute(questionId);
-		
-			return;
-		}
+		new ShowQuestionTask().execute(questionId);
 
 	}
 
@@ -80,7 +74,41 @@ public class ShowActivity extends BaseEventActivity {
 		answerBox.setVisibility(View.GONE);
 	}
 
-	 
+	public void getAnswers(JSONArray answers) {
+		answerList = new ArrayList<Answer>();
+
+		try {
+			Integer size = answers.length();
+			
+			for (int i = 0; i < size; i++) {
+				Answer answer = new Answer();
+				JSONObject a = answers.getJSONObject(i);
+				JSONObject creator = a.getJSONObject("creator");
+				String username = creator.getString("username");
+				
+				answer.setID(Integer.parseInt(a.getString("id")));
+				answer.setContent(a.getString("content"));
+				answer.setCreatedAt(username + ", " + a.getString("created_at").substring(0, 10));
+				answerList.add(answer);
+			}
+			
+			lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));				
+			
+			lv.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> a, View v, int position,
+						long id) {
+					Object o = lv.getItemAtPosition(position);
+					Answer fullObject = (Answer) o;
+					BaseDialog.showSingleAlert(fullObject.getContent(),
+							ShowActivity.this);
+				}
+			});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 
 	// 显示问题内容
 	public class ShowQuestionTask extends AsyncTask<Integer, Void, JSONObject> {
@@ -92,17 +120,47 @@ public class ShowActivity extends BaseEventActivity {
 			HttpResponse response = HttpPack.sendRequest(
 					getApplicationContext(), url);
 
-			if (response.getStatusLine().getStatusCode() == 200) {
+
+			if (response == null) {
+				cancel(true);
+				return null;
+			}
+			
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
 				return HttpPack.getJsonByResponse(response);
 			}
-
+			
+			cancel(true);
 			return null;
+		}
+		
+		
+		@Override
+		protected void onPreExecute() {
+
+			if (!HttpPack.hasConnected(ShowActivity.this)) {
+				Context context = getApplicationContext();
+				BaseAction.showFormNotice(context,
+						context.getString(R.string.network_error));
+				cancel(true);
+				return;
+			}
+
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onCancelled() {
+			Context context = getApplicationContext();
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
 		}
 
 		@Override
 		protected void onPostExecute(JSONObject question) {
 			JSONObject creator;
 			String username, time;
+			JSONArray answers;
 			try {
 				qTitle.setText(question.getString("title"));
 				qContent.setText(question.getString("content"));
@@ -112,6 +170,11 @@ public class ShowActivity extends BaseEventActivity {
 				time = question.getString("created_at").substring(0, 10);
 
 				qCreatedAt.setText(username + ", " + time);
+				
+				
+				// 显示回复列表
+				answers = question.getJSONArray("answers");
+				getAnswers(answers);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -122,68 +185,4 @@ public class ShowActivity extends BaseEventActivity {
 	}
 
 	
-
-	// 回复列表
-	public class GetAnswersTask extends AsyncTask<Integer, Void, JSONArray> {
-
-		@Override
-		protected JSONArray doInBackground(Integer... questions) {
-			String url = BaseUrl.answers + "/"
-					+ Integer.toString(questions[0]) + "/answers.json";
-			HttpResponse response = HttpPack.sendRequest(
-					getApplicationContext(), url);
-
-			if (response.getStatusLine().getStatusCode() == 200) {
-				return HttpPack.getJsonArrayByResponse(response);
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPreExecute() {
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onPostExecute(JSONArray answers) {
-			latestAnswers = new ArrayList<Answer>();
-
-			try {
-				Integer size = answers.length();
-				
-				for (int i = 0; i < size; i++) {
-					Answer answer = new Answer();
-					JSONObject a = answers.getJSONObject(i);
-					JSONObject creator = a.getJSONObject("creator");
-					String username = creator.getString("username");
-					
-					answer.setID(Integer.parseInt(a.getString("id")));
-					answer.setContent(a.getString("content"));
-					answer.setCreatedAt(username + ", " + a.getString("created_at").substring(0, 10));
-					latestAnswers.add(answer);
-				}
-				
-				lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), latestAnswers));				
-				
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> a, View v, int position,
-							long id) {
-						Object o = lv.getItemAtPosition(position);
-						Answer fullObject = (Answer) o;
-						BaseDialog.showSingleAlert(fullObject.getContent(),
-								ShowActivity.this);
-					}
-				});
-				
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			super.onPostExecute(answers);
-		}
-	}
-
 }
