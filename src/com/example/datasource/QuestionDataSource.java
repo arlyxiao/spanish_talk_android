@@ -52,7 +52,7 @@ public class QuestionDataSource
 			SIZE = questions.length();
 			
 			
-			for (int i = 0 ; i <= SIZE; i++) {
+			for (int i = 0 ; i < SIZE; i++) {
 				Question qr = new Question();
 				question = questions.getJSONObject(i);
 				
