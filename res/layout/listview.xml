@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -26,18 +26,43 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/lvQuestionTitle"
+        android:id="@+id/lv_question_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:text="" />
     
     <TextView
-        android:id="@+id/lvQuestionCreatedAt"
+        android:id="@+id/lv_question_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#123321"
+        android:layout_below="@+id/lv_question_title"
+        android:layout_marginLeft="5dp"
+        android:text=""
+        android:textColor="#3377AA"
+        android:textSize="12dp" />
+    
+    <TextView
+        android:id="@+id/lv_question_created_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3377AA"
         android:textSize="12dp"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/lv_question_title"
+        android:layout_toRightOf="@+id/lv_question_username"
+        android:text="" />
+    
+    <TextView
+        android:id="@+id/lv_answer_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text=""
+        android:textColor="#3377AA"
+        android:textSize="12dp"
+        android:layout_below="@+id/lv_question_title"
+        android:layout_alignParentRight="true" />
 
-</LinearLayout>
+</RelativeLayout>

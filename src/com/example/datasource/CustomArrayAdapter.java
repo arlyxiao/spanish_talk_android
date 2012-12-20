@@ -33,8 +33,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Question>
 			LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.listview, null);
 			holder.setID((TextView) convertView.findViewById(R.id.lvQuestionID));
-			holder.setTitle((TextView) convertView.findViewById(R.id.lvQuestionTitle));
-			holder.setCreatedAt((TextView) convertView.findViewById(R.id.lvQuestionCreatedAt));
+			holder.setTitle((TextView) convertView.findViewById(R.id.lv_question_title));
+			holder.setCreatedAt((TextView) convertView.findViewById(R.id.lv_question_created_at));
+			holder.setUsername((TextView) convertView.findViewById(R.id.lv_question_username));
+			holder.setAnswerCount((TextView) convertView.findViewById(R.id.lv_answer_count));
 			convertView.setTag(holder);
 		}
 		else
@@ -43,7 +45,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Question>
 		}
 		holder.getID().setText(Integer.toString(getItem(position).getID()));
 		holder.getTitle().setText(getItem(position).getTitle());
+		holder.getUsername().setText(getItem(position).getUsername());
 		holder.getCreatedAt().setText(getItem(position).getCreatedAt());
+		holder.getAnswerCount().setText(getItem(position).getAnswerCount());
 		
 		return convertView;
 	}

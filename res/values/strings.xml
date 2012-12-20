@@ -54,6 +54,7 @@
     <string name="be_sent">发送成功</string>
     <string name="confirm_btn">确定</string>
     <string name="send_btn">发送</string>
+    <string name="answers_for_count">回应</string>
     
     <string name="cancel_btn">取消</string>
     <string name="display">总共 %2$s, 当前 %1$s</string>

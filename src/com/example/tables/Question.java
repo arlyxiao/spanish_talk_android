@@ -1,11 +1,15 @@
 package com.example.tables;
 
+import android.widget.TextView;
+
 public class Question {
 	int _id;
 	int _creator_id;
 	String _title;
 	String _content;
 	String _createdAt;
+	String _answerCount;
+	String _username;
 
 	public Question() {
 
@@ -72,12 +76,31 @@ public class Question {
 	public void setContent(String content) {
 		this._content = content;
 	}
-	
+
 	public void setCreatedAt(String _createdAt) {
 		this._createdAt = _createdAt;
 	}
 
 	public String getCreatedAt() {
 		return _createdAt;
+	}
+
+	public void setAnswerCount(String _answerCount) {
+		this._answerCount = _answerCount;
+	}
+
+	public String getAnswerCount() {
+		return this._answerCount;
+	}
+	
+	
+	public String getUsername()
+	{
+		return _username;
+	}
+
+	public void setUsername(String username)
+	{
+		this._username = username;
 	}
 }

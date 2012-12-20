@@ -9,6 +9,10 @@ public class Holder
 	private TextView title;
 
 	private TextView createdAt;
+	
+	private TextView answerCount;
+	
+	private TextView username;
 
 	public TextView getID()
 	{
@@ -38,6 +42,27 @@ public class Holder
 	public void setCreatedAt(TextView createdAt)
 	{
 		this.createdAt = createdAt;
+	}
+	
+	public TextView getAnswerCount()
+	{
+		return answerCount;
+	}
+
+	public void setAnswerCount(TextView answerCount)
+	{
+		this.answerCount = answerCount;
+	}
+	
+	
+	public TextView getUsername()
+	{
+		return username;
+	}
+
+	public void setUsername(TextView username)
+	{
+		this.username = username;
 	}
 
 }

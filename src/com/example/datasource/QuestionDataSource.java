@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.example.lib.HttpPack;
+import com.example.spanishtalk.R;
 import com.example.tables.Question;
 
 
@@ -61,9 +62,16 @@ public class QuestionDataSource
 				
 				creator = question.getJSONObject("creator");
 				username = creator.getString("username");
-				time = question.getString("created_at");
+				qr.setUsername(username);
 				
-				qr.setCreatedAt(username + ", " + time.substring(0, 10));
+				
+				time = question.getString("created_at");
+				qr.setCreatedAt(time.substring(0, 10));
+				
+				
+				JSONArray answers = question.getJSONArray("answers");
+				String answerCount = Integer.toString(answers.length());
+				qr.setAnswerCount(answerCount + context.getString(R.string.answers_for_count));
 				
 				data.add(qr);
 			}
