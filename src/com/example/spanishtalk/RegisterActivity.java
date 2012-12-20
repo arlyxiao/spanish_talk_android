@@ -26,6 +26,7 @@ import com.example.logic.BaseUrl;
 import com.example.spanishtalk.questions.IndexActivity;
 
 public class RegisterActivity extends Activity {
+	private Context context;
 	private EditText edit_text_email, edit_text_username, edit_text_password,
 			edit_text_confirm_password;
 	private TextView email_error, username_error, password_error,
@@ -41,7 +42,7 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		load_ui();
-		
+				
 		session = new SessionManagement(getApplicationContext());
 		session.clear();
 	}
@@ -152,38 +153,49 @@ public class RegisterActivity extends Activity {
 			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.register, params);
 			
 			if (response == null) {
+				cancel(true);
 				return null;
 			}
-			if ( response.getStatusLine().getStatusCode() == 200) {
-				BaseAction.saveUserSessionByResponse(getApplicationContext(), response);
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
+				BaseAction.saveUserSessionByResponse(context, response);
 			}
-			return response;			 
+			return response;
 		}
 		
+	 
+		
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
+			context = getApplicationContext();
 			progressBar.setVisibility(View.VISIBLE);
 			registerBtn.setVisibility(View.INVISIBLE);
+
+			if (!HttpPack.hasConnected(RegisterActivity.this)) {
+				BaseAction.showFormNotice(context, context.getString(R.string.network_error));
+				cancel(true);
+				return;
+			}
+
 			super.onPreExecute();
 		}
+
+		@Override
+		protected void onCancelled() {
+			context = getApplicationContext();
+			progressBar.setVisibility(View.INVISIBLE);
+			registerBtn.setVisibility(View.VISIBLE);
+
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+		}
+		
 		
 		@Override
 	    protected void onPostExecute(HttpResponse response) {
-			Context context = getApplicationContext();
+			context = getApplicationContext();
 			
 			progressBar.setVisibility(View.GONE);
 			registerBtn.setVisibility(View.VISIBLE);
-			
-			if (response == null) {				
-				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
-				return;
-			}
-			
-			if ( response.getStatusLine().getStatusCode() == 404) {
-				BaseAction.showFormNotice(context, context.getString(R.string.register_form_error));
-				return;
-			}
 			
 			if (session.getUserId() == null) {
 				BaseAction.showFormNotice(context, context.getString(R.string.register_form_error));
