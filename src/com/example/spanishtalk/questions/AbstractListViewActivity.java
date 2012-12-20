@@ -24,7 +24,7 @@ import com.example.tables.Question;
 
 
 
-public abstract class AbstractListViewActivity extends ListActivity
+public class AbstractListViewActivity extends ListActivity
 {
 
 	protected QuestionDataSource datasource;
@@ -49,10 +49,10 @@ public abstract class AbstractListViewActivity extends ListActivity
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			Context context = getApplicationContext();
-
+			Log.d("aaaaa", "ffff");
 			HttpResponse response = HttpPack.sendRequest(context, BaseUrl.android);
 			if (response == null) {
-				cancel(true);
+				cancel(false);
 			}
 			return null;
 		}
@@ -60,10 +60,21 @@ public abstract class AbstractListViewActivity extends ListActivity
 		
 		@Override
 		protected void onCancelled() {
+			Log.d("0000000 ---", "adfadf");
 			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 			startActivity(intent);
 			finish();
 		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+		    if (isCancelled()) {
+		    	Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+				startActivity(intent);
+				finish();
+ 		    }
+		}
+
 
 	}
 	
@@ -76,6 +87,7 @@ public abstract class AbstractListViewActivity extends ListActivity
 		@Override
 		protected String doInBackground(String... arg0)
 		{
+			
 			try
 			{
 				Thread.sleep(1500);
@@ -91,7 +103,7 @@ public abstract class AbstractListViewActivity extends ListActivity
 
 		@Override
 		protected void onPostExecute(String result)
-		{
+		{			
 			CustomArrayAdapter customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
 			for (Question qr : newData) {
 				customArrayAdapter.add(qr);

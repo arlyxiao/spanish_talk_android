@@ -147,17 +147,20 @@ public class IndexActivity extends AbstractListViewActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (questionList.size() == 0) {
-				//BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
-				return;
-			}
-
 			CustomArrayAdapter customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
 			customArrayAdapter.clear();
-
-			for (Question qr : questionList) {
-				customArrayAdapter.add(qr);
+			
+			if (questionList.size() == 0) {
+				//BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+				updateDisplayingTextView();
+				return;
+			} else {
+				for (Question qr : questionList) {
+					customArrayAdapter.add(qr);
+				}
 			}
+
+			
 			customArrayAdapter.notifyDataSetChanged();
 
 			updateDisplayingTextView();
