@@ -8,7 +8,8 @@
         <Button
             android:id="@+id/button1"
             style="@style/head_bar_button_go_back_register"
-            android:onClick="clickGoBack" />
+            android:onClick="clickGoBack" 
+            android:text="@string/main_page" />
         
         <Button
             android:id="@+id/link_to_question"
@@ -17,6 +18,16 @@
             android:onClick="postQuestion" />
         
     </RelativeLayout>
+    
+    
+    <!--  
+    <include
+        android:id="@+id/top_bar"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/question_toolbar" />
+    -->
     
     <ProgressBar
             android:id="@+id/progressBar1"

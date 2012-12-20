@@ -59,8 +59,25 @@ public class IndexActivity extends AbstractListViewActivity {
 
 		setListAdapter(new CustomArrayAdapter(this, R.layout.listview,
 				new ArrayList<Question>()));
-
-		(new LoadNextPage()).execute(url + "?page=1");
+		
+		
+		String param_url = getUrlFromOtherActivity();
+		if (param_url == null) {
+			(new LoadNextPage()).execute(url + "?page=1");
+			return;
+		}
+		(new LoadNextPage()).execute(param_url + "?page=1");
+	}
+	
+	public String getUrlFromOtherActivity() {
+		Intent myIntent = getIntent();
+		Bundle b = myIntent.getExtras();
+		if (b == null) {
+			return null;
+		}
+		url = b.getString("url");
+		
+		return url;
 	}
 
 	public void clickMyQuestions(View view) {

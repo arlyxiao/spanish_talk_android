@@ -8,7 +8,8 @@
         <Button
             android:id="@+id/button1"
             style="@style/head_bar_button_go_back_register"
-            android:onClick="clickGoBack" />
+            android:onClick="clickGoBack"
+            android:text="@string/main_page" />
 
         <Button
             android:id="@+id/answer_btn"
@@ -16,6 +17,8 @@
             android:onClick="showAnswer"
             android:text="@string/click_answer_button" />
     </RelativeLayout>
+    
+    
 
     <LinearLayout
         style="@style/padding_10_body"

@@ -13,6 +13,9 @@ import android.view.View;
 
 import com.example.lib.HttpPack;
 import com.example.spanishtalk.LoginActivity;
+import com.example.spanishtalk.questions.IndexActivity;
+import com.example.spanishtalk.questions.NewActivity;
+import com.example.spanishtalk.questions.ShowActivity;
 
 public class BaseEventActivity extends Activity {
 	
@@ -24,7 +27,26 @@ public class BaseEventActivity extends Activity {
 	
 	
 	public void clickGoBack(View view) {
-		this.finish();
+		Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
+		intent.putExtra("url", BaseUrl.questions);
+		startActivity(intent);
+	}
+	
+	public void clickMyQuestions(View view) {
+		Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
+		intent.putExtra("url", BaseUrl.questionsMy);
+		startActivity(intent);
+	}
+
+	public void clickAllQuestions(View view) {
+		Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
+		intent.putExtra("url", BaseUrl.questions);
+		startActivity(intent);
+	}
+
+	public void clickAskQuestion(View view) {
+		Intent intent = new Intent(getApplicationContext(), NewActivity.class);
+		startActivity(intent);
 	}
 	
 	
