@@ -22,10 +22,12 @@ import com.example.lib.HttpPack;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.RegisterActivity;
 import com.example.tables.Question;
 
 public class IndexActivity extends AbstractListViewActivity {
-
+	private Context context;
+	
 	private int offset = 0;
 
 	private ProgressBar progressBar;
@@ -98,13 +100,7 @@ public class IndexActivity extends AbstractListViewActivity {
 	private class LoadNextPage extends AsyncTask<String, Void, String> {
 		private List<Question> questionList = null;
 
-		@Override
-		protected void onPreExecute() {
-			progressBar.setVisibility(View.VISIBLE);
-			loading = true;
-			super.onPreExecute();
-		}
-
+		
 		@Override
 		protected String doInBackground(String... urls) {
 			datasource = new QuestionDataSource(getApplicationContext(),
@@ -122,6 +118,33 @@ public class IndexActivity extends AbstractListViewActivity {
 
 			return null;
 		}
+		
+		
+		@Override
+		protected void onPreExecute() {
+ 			loading = true;
+ 			
+			context = getApplicationContext();
+			progressBar.setVisibility(View.VISIBLE);
+
+			if (!HttpPack.hasConnected(IndexActivity.this)) {
+				BaseAction.showFormNotice(context, context.getString(R.string.network_error));
+				cancel(true);
+				return;
+			}
+
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onCancelled() {
+			context = getApplicationContext();
+			progressBar.setVisibility(View.INVISIBLE);
+
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+		}
+		
+		
 
 		@Override
 		protected void onPostExecute(String result) {

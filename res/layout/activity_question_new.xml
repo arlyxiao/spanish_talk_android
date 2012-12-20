@@ -17,6 +17,17 @@
             android:onClick="postQuestion" />
         
     </RelativeLayout>
+    
+    <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
 
     <LinearLayout
         style="@style/padding_10_body"
@@ -43,7 +54,9 @@
 
             <requestFocus />
         </EditText>
-
+        
+        
+        
        
     </LinearLayout>
 

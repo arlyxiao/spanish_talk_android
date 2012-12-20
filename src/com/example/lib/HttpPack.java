@@ -154,15 +154,16 @@ public class HttpPack {
 		} catch (UnsupportedEncodingException e) {
 			Log.e("Tag", "Unsupported encoding error: " + e.getMessage());
 			e.printStackTrace();
+			return null;
 		} catch (ClientProtocolException e) {
 			Log.e("Tag", "Client Protocol error: " + e.getMessage());
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			Log.e("Tag", "Could not get HTML: " + e.getMessage());
 			return null;
 		}
 
-		return null;
 	}
 	
 	

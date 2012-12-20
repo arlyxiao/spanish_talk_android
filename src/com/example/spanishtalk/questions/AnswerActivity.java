@@ -83,6 +83,7 @@ public class AnswerActivity extends BaseEventActivity {
  					url, params);
  			
  			if (response == null) {
+ 				cancel(true);
 				return null;
 			}
  			
@@ -90,17 +91,35 @@ public class AnswerActivity extends BaseEventActivity {
  			if (response.getStatusLine().getStatusCode() == 200) {
  				return HttpPack.getJsonByResponse(response);
  			}
-
+ 			
+ 			cancel(true);
  			return null;
  		}
 
+ 		
+ 		
  		@Override
- 		protected void onPreExecute() {
+		protected void onPreExecute() {
+			progressBar.setVisibility(View.VISIBLE);
 
- 			progressBar.setVisibility(View.VISIBLE);
- 			sendBtn.setVisibility(View.INVISIBLE);
- 			super.onPreExecute();
- 		}
+			if (!HttpPack.hasConnected(AnswerActivity.this)) {
+				Context context = getApplicationContext();
+				BaseAction.showFormNotice(context,
+						context.getString(R.string.network_error));
+				cancel(true);
+				return;
+			}
+
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onCancelled() {
+			progressBar.setVisibility(View.INVISIBLE);
+
+			Context context = getApplicationContext();
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+		}
 
  		@Override
  		protected void onPostExecute(JSONObject question) {

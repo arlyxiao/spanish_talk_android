@@ -16,7 +16,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.lib.BaseUtils;
@@ -25,11 +27,14 @@ import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
+import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
 
 public class NewActivity extends BaseEventActivity {
 
 	private EditText edit_text_title, edit_text_content;
+	private Button sendBtn;
+	private ProgressBar progressBar;
 	String title, content;
 	Integer user_id;
 
@@ -52,6 +57,9 @@ public class NewActivity extends BaseEventActivity {
 	private void loadUi() {
 		edit_text_title = (EditText) findViewById(R.id.question_title);
 		edit_text_content = (EditText) findViewById(R.id.question_content);
+		
+		sendBtn = (Button) findViewById(R.id.link_to_question);
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
 		user_id = new SessionManagement(getApplicationContext()).getUserId();
 	}
@@ -72,18 +80,10 @@ public class NewActivity extends BaseEventActivity {
 		title = edit_text_title.getText().toString();
 		content = edit_text_content.getText().toString();
 
-		if (HttpPack.hasConnected(this)) {
-			if (validateQuestionForm(title, content)) {
-				// new QuestionsHandler(this).addQuestion(new Question(user_id,
-				// title,
-				// content));
-				new PostQuestionTask().execute();
-			}
-			return;
+		if (validateQuestionForm(title, content)) {
+			new PostQuestionTask().execute();
 		}
-		Context context = getApplicationContext();
-		BaseAction.showFormNotice(context,
-				context.getString(R.string.network_error));
+		
 	}
 
 	public class PostQuestionTask extends AsyncTask<Void, Void, JSONObject> {
@@ -97,64 +97,50 @@ public class NewActivity extends BaseEventActivity {
 
 			HttpResponse response = HttpPack.sendPost(getApplicationContext(),
 					BaseUrl.questionCreate, params);
-
+	
 			if (response == null) {
+				cancel(true);
 				return null;
 			}
-
-			if (response.getStatusLine().getStatusCode() == 200) {
+			
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
 				return HttpPack.getJsonByResponse(response);
 			}
-
+			
+			cancel(true);
 			return null;
-
-			// new Timer().schedule(new TimerTask() {
-			// @Override
-			// public void run() {
-			//
-			// QuestionsHandler db = new QuestionsHandler(
-			// QuestionNewActivity.this);
-			// List<Question> questions = db.getAllQuestions();
-			//
-			// if (HttpPack.hasConnected(QuestionNewActivity.this)) {
-			//
-			// for (Question cn : questions) {
-			// Map<String, String> params = new HashMap<String, String>();
-			// params.put("question[title]", cn.getTitle());
-			// params.put("question[content]", cn.getContent());
-			//
-			// HttpResponse response =
-			// HttpPack.sendPost(getApplicationContext(), question_create_url,
-			// params);
-			//
-			// if (response.getStatusLine().getStatusCode() == 200) {
-			// Question question = db.getQuestion(cn.getID());
-			// db.deleteQuestion(question);
-			// }
-			// }
-			//
-			// }
-			//
-			// SqliteLog.showAllQuestions(QuestionNewActivity.this);
-			// }
-			//
-			// }, 0, 5000);
-			// return null;
 		}
-
+		
 		@Override
-		protected void onPostExecute(JSONObject response) {
-			final Integer questionId;
-			Context context = getApplicationContext();
+		protected void onPreExecute() {
+			progressBar.setVisibility(View.VISIBLE);
 
-			if (response == null) {
+			if (!HttpPack.hasConnected(NewActivity.this)) {
+				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
-						context.getString(R.string.server_connection_error));
+						context.getString(R.string.network_error));
+				cancel(true);
 				return;
 			}
 
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onCancelled() {
+			progressBar.setVisibility(View.INVISIBLE);
+
+			Context context = getApplicationContext();
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject q) {
+			final Integer questionId;
+						
 			try {
-				questionId = response.getInt("question_id");
+				questionId = q.getInt("question_id");
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						NewActivity.this);
 				builder.setMessage(R.string.be_sent)
@@ -178,7 +164,7 @@ public class NewActivity extends BaseEventActivity {
 				e.printStackTrace();
 			}
 
-			super.onPostExecute(response);
+			super.onPostExecute(q);
 		}
 
 	}

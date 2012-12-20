@@ -105,10 +105,11 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected void onCancelled() {
+			Context context = getApplicationContext();
+			
 			progressBar.setVisibility(View.INVISIBLE);
 			loginBtn.setVisibility(View.VISIBLE);
 
-			Context context = getApplicationContext();
 			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
 		}
 

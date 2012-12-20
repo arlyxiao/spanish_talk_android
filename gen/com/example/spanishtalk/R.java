@@ -34,7 +34,7 @@ public final class R {
         public static final int buttonnext=0x7f07001b;
         public static final int buttonprev=0x7f070019;
         public static final int displaying=0x7f07001c;
-        public static final int input_answer_content=0x7f070003;
+        public static final int input_answer_content=0x7f070004;
         public static final int lblEmail=0x7f07000a;
         public static final int lblName=0x7f070009;
         public static final int linkToLogin=0x7f070008;
@@ -46,10 +46,10 @@ public final class R {
         public static final int lvQuestionID=0x7f07002b;
         public static final int lvQuestionTitle=0x7f07002c;
         public static final int menu_settings=0x7f07002e;
-        public static final int progressBar1=0x7f070004;
+        public static final int progressBar1=0x7f070002;
         public static final int q_content=0x7f070011;
         public static final int q_created_at=0x7f070010;
-        public static final int q_id=0x7f070002;
+        public static final int q_id=0x7f070003;
         public static final int q_title=0x7f07000f;
         public static final int question_content=0x7f07000d;
         public static final int question_title=0x7f07000c;

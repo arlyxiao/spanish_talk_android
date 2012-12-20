@@ -23,6 +23,17 @@
         style="@style/padding_10_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
+        
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/q_id"
@@ -43,16 +54,7 @@
             <requestFocus />
         </EditText>
         
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:indeterminateOnly="true"
-            android:visibility="gone" />
+        
 
     </LinearLayout>
 
