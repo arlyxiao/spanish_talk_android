@@ -18,12 +18,9 @@ import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
 import com.example.lib.HttpPack;
 import com.example.logic.BaseUrl;
-import com.example.logic.BaseEventActivity.CheckTask;
 import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
 import com.example.tables.Question;
-
-
 
 
 
