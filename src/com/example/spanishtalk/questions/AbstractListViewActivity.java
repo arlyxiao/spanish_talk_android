@@ -3,14 +3,23 @@ package com.example.spanishtalk.questions;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
+import com.example.lib.HttpPack;
+import com.example.logic.BaseUrl;
+import com.example.logic.BaseEventActivity.CheckTask;
+import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
 import com.example.tables.Question;
 
@@ -30,6 +39,38 @@ public abstract class AbstractListViewActivity extends ListActivity
 	protected View footerView;
 
 	protected boolean loading = false;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		new CheckTask().execute();
+	}
+	
+	
+	public class CheckTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			Context context = getApplicationContext();
+
+			HttpResponse response = HttpPack.sendRequest(context, BaseUrl.android);
+			if (response == null) {
+				cancel(true);
+			}
+			return null;
+		}
+		
+		
+		@Override
+		protected void onCancelled() {
+			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+			startActivity(intent);
+			finish();
+		}
+
+	}
+	
+	
 
 	protected class LoadNextPage extends AsyncTask<String, Void, String>
 	{

@@ -40,8 +40,6 @@ public class NewActivity extends BaseEventActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		BaseAction.checkLogin(getApplicationContext());
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_new);
 

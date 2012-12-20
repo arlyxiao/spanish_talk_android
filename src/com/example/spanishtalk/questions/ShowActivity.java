@@ -38,7 +38,6 @@ public class ShowActivity extends BaseEventActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// BaseAction.checkLogin(getApplicationContext());
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question_show);

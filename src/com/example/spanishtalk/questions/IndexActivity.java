@@ -46,8 +46,7 @@ public class IndexActivity extends AbstractListViewActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		BaseAction.checkLogin(getApplicationContext());
-
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_questions_index);
 
@@ -149,6 +148,7 @@ public class IndexActivity extends AbstractListViewActivity {
 		@Override
 		protected void onPostExecute(String result) {
 			if (questionList.size() == 0) {
+				//BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
 				return;
 			}
 

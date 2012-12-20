@@ -203,12 +203,15 @@ public class HttpPack {
 			return response;
 
 		} catch (UnsupportedEncodingException e) {
+			Log.d("Encoding : ", e.getMessage());
 			e.printStackTrace();
 			return null;
 		} catch (ClientProtocolException e) {
+			Log.d("ClientProtocolException : ", e.getMessage());
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
+			Log.d("IOException : ", e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
