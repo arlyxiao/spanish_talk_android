@@ -4,6 +4,7 @@ package com.example.logic;
 import org.apache.http.HttpResponse;
 
 import com.example.lib.HttpPack;
+import com.example.lib.SessionManagement;
 import com.example.spanishtalk.LoginActivity;
  
 import android.app.Activity;
@@ -43,6 +44,9 @@ public class BaseEventActivity extends Activity {
 		
 		@Override
 		protected void onCancelled() {
+			SessionManagement session = new SessionManagement(getApplicationContext());
+			session.clear();
+			
 			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 			startActivity(intent);
 			finish();

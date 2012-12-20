@@ -27,7 +27,6 @@ import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
-import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
 
 public class NewActivity extends BaseEventActivity {
