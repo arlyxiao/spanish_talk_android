@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.datasource.AnswerBaseAdapter;
@@ -31,7 +32,7 @@ import com.example.tables.Answer;
 public class ShowActivity extends BaseEventActivity {
 	private TextView qTitle, qContent, qCreatedAt;
 	private LinearLayout answerBox;
-	
+	private ProgressBar progressBar;
 	private Integer questionId;
 	private ArrayList<Answer> answerList;
 	private ListView lv;
@@ -48,6 +49,7 @@ public class ShowActivity extends BaseEventActivity {
 
  		
 		lv = (ListView) findViewById(R.id.answer_list_view);
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		
 		Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
@@ -137,7 +139,8 @@ public class ShowActivity extends BaseEventActivity {
 		
 		@Override
 		protected void onPreExecute() {
-
+			progressBar.setVisibility(View.VISIBLE);
+			
 			if (!HttpPack.hasConnected(ShowActivity.this)) {
 				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
@@ -151,12 +154,17 @@ public class ShowActivity extends BaseEventActivity {
 
 		@Override
 		protected void onCancelled() {
+			progressBar.setVisibility(View.GONE);
+			
 			Context context = getApplicationContext();
 			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
 		}
 
 		@Override
 		protected void onPostExecute(JSONObject question) {
+			progressBar.setVisibility(View.GONE);
+			
+			
 			JSONObject creator;
 			String username, time;
 			JSONArray answers;
