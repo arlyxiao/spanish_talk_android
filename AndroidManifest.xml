@@ -34,8 +34,7 @@
         </activity>
         <activity
             android:name=".questions.ShowActivity"
-            android:label="@string/title_activity_question_show"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:label="@string/title_activity_question_show" >
         </activity>
         <activity
             android:name=".questions.IndexActivity" >
