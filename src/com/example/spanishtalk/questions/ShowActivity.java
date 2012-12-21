@@ -128,8 +128,8 @@ public class ShowActivity extends BaseEventActivity {
                         public void onClick(DialogInterface dialog, int id) {
                         	Object o = lv.getItemAtPosition(position);
         					Answer currentAnswer = (Answer) o;
-                        	new DeleteAnswerTask().execute(currentAnswer.getID());
-                        	lv.invalidate();
+                        	new DeleteAnswerTask().execute(currentAnswer.getID(), position);
+                        	
                         }
                     })
                     .setNegativeButton(getApplicationContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -248,12 +248,14 @@ public class ShowActivity extends BaseEventActivity {
 	
 	
 	// 删除回答
-	public class DeleteAnswerTask extends AsyncTask<Integer, Void, Boolean> {
+	public class DeleteAnswerTask extends AsyncTask<Integer, Void, Integer> {
 
 		@Override
-		protected Boolean doInBackground(Integer... answers) {
+		protected Integer doInBackground(Integer... answers) {
+			Integer answerId = answers[0];
+			Integer position = answers[1];
 			String url = BaseUrl.answerDelete + "/"
-					+ Integer.toString(answers[0]) + ".json";
+					+ Integer.toString(answerId) + ".json";
 			HttpResponse response = HttpPack.sendDelete(
 					getApplicationContext(), url);
 
@@ -267,11 +269,11 @@ public class ShowActivity extends BaseEventActivity {
 			Integer statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == 200) {
 				Log.d("888888 0----", "9999999");
-				return true;
+				return position;
 			}
 			
 			cancel(true);
-			return false;
+			return null;
 		}
 		
 		
@@ -295,10 +297,23 @@ public class ShowActivity extends BaseEventActivity {
 		}
 
 		@Override
-		protected void onPostExecute(Boolean result) {
+		protected void onPostExecute(Integer position) {
+			Log.d("ppppp ---", Integer.toString(position));
+			for (Answer a: answerList) {
+				Log.d("test list ---", a.getContent());
+			}
 			
-			// ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
-			super.onPostExecute(result);
+			Log.d("a", answerList.size() + "");
+			answerList.remove((int)position);
+			Log.d("a", answerList.size() + "");
+			
+			
+			for (Answer a: answerList) {
+				Log.d("test mmmm ---", a.getContent());
+			}
+        	
+        	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
+			super.onPostExecute(position);
 		}
 	}
 
