@@ -230,7 +230,7 @@ public class ShowActivity extends BaseEventActivity {
 				
 				// 显示回复列表
 				answers = question.getJSONArray("answers");
-				qCount.setText(Integer.toString(answers.length()));
+				qCount.setText(Integer.toString(answers.length()) + getApplicationContext().getString(R.string.answers_for_count));
 				getAnswers(answers);
 
 			} catch (JSONException e) {
@@ -307,9 +307,7 @@ public class ShowActivity extends BaseEventActivity {
 
 		@Override
 		protected void onPostExecute(Integer position) {
-			
 			answerList.remove((int)position);
-		 
         	
         	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
 			super.onPostExecute(position);

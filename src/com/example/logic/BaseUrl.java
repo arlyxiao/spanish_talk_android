@@ -12,4 +12,5 @@ public class BaseUrl {
 	public final static String answers= "http://192.168.1.17:3000/questions";
 	
 	public final static String answerDelete= "http://192.168.1.17:3000/answers";
+	public final static String questionDelete= "http://192.168.1.17:3000/questions";
 }
