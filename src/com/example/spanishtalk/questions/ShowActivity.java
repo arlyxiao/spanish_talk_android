@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.example.datasource.AnswerBaseAdapter;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
+import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
@@ -97,6 +98,7 @@ public class ShowActivity extends BaseEventActivity {
 				Log.d("answers -----", username);
 				
 				answer.setID(Integer.parseInt(a.getString("id")));
+				answer.setCreatorId(a.getInt("creator_id"));
 				answer.setContent(a.getString("content"));
 				answer.setUsername(username);
 				answer.setCreatedAt(a.getString("created_at").substring(0, 10));
@@ -122,12 +124,19 @@ public class ShowActivity extends BaseEventActivity {
 
 	            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 	                    final int position, long id) {
+	            	final Object o = lv.getItemAtPosition(position);
+	            	final Answer currentAnswer = (Answer) o;
+	            	
+	            	SessionManagement session = new SessionManagement(getApplicationContext());
+	        		if (session.getUserId() != currentAnswer.getCreatorId()) {
+	        			return true;
+ 	        		}
+	            	
 	            	AlertDialog.Builder clearConfirmDialog = new AlertDialog.Builder(ShowActivity.this);
                     clearConfirmDialog.setMessage(getApplicationContext().getString(R.string.confirm_delete)).setCancelable(false)
                     .setPositiveButton(getApplicationContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                        	Object o = lv.getItemAtPosition(position);
-        					Answer currentAnswer = (Answer) o;
+                        	
                         	new DeleteAnswerTask().execute(currentAnswer.getID(), position);
                         	
                         }
@@ -298,19 +307,9 @@ public class ShowActivity extends BaseEventActivity {
 
 		@Override
 		protected void onPostExecute(Integer position) {
-			Log.d("ppppp ---", Integer.toString(position));
-			for (Answer a: answerList) {
-				Log.d("test list ---", a.getContent());
-			}
 			
-			Log.d("a", answerList.size() + "");
 			answerList.remove((int)position);
-			Log.d("a", answerList.size() + "");
-			
-			
-			for (Answer a: answerList) {
-				Log.d("test mmmm ---", a.getContent());
-			}
+		 
         	
         	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
 			super.onPostExecute(position);
