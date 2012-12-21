@@ -51,6 +51,7 @@ public class AnswerBaseAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.answerId = (TextView) convertView.findViewById(R.id.answer_id);
             holder.content = (TextView) convertView.findViewById(R.id.answer_content);
+            holder.username = (TextView) convertView.findViewById(R.id.answer_username);
             holder.createdAt = (TextView) convertView.findViewById(R.id.answer_created_at);
             convertView.setTag(holder);
         } else {
@@ -60,6 +61,7 @@ public class AnswerBaseAdapter extends BaseAdapter {
         String answerId = Integer.toString(answerList.get(position).getID());
         holder.answerId.setText(answerId);
         holder.content.setText(answerList.get(position).getContent());
+        holder.username.setText(answerList.get(position).getUsername());
         holder.createdAt.setText(answerList.get(position).getCreatedAt());
         
  
@@ -69,6 +71,7 @@ public class AnswerBaseAdapter extends BaseAdapter {
     static class ViewHolder {
     	TextView answerId;
         TextView content;
+        TextView username;
         TextView createdAt;
     }
 }

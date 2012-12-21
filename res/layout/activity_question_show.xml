@@ -17,46 +17,68 @@
             android:onClick="showAnswer"
             android:text="@string/click_answer_button" />
     </RelativeLayout>
-    
-    
 
-    <LinearLayout
+    <RelativeLayout
         style="@style/padding_10_body"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
+        android:layout_height="100dp"
+        android:background="#ededed" >
+
         <ProgressBar
             android:id="@+id/progressBar1"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:indeterminateOnly="true"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/q_title"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="16dip" />
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/q_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/q_title"
+            android:text=""
+            android:textColor="#3377AA"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/q_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/q_title"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/q_username"
+            android:text=""
+            android:textColor="#3377AA"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/q_created_at"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="8dp"
-            android:text="" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/q_title"
+            android:text=""
+            android:textColor="#3377AA"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/q_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
+            android:layout_height="match_parent"
+            android:layout_alignRight="@+id/q_created_at"
+            android:layout_below="@+id/q_username" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/answers_box"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -20,12 +20,37 @@
         android:textColor="#3377AA"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:text="content" />
+        android:text="" />
+    
+    <TextView
+        android:id="@+id/answer_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text=""
+        android:textColor="#becbcc"
+        android:textSize="12dp"
+        android:layout_below="@+id/answer_content" />
+    
+    <TextView
+        android:id="@+id/answer_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text=""
+        android:textColor="#becbcc"
+        android:textSize="12dp"
+        android:layout_below="@+id/answer_content"
+        android:layout_toRightOf="@+id/answer_username" />
  
     <TextView
         android:id="@+id/answer_created_at"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/answer_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="" />
  
- 
-</LinearLayout>
+
+</RelativeLayout>

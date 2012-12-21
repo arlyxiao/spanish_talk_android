@@ -40,29 +40,31 @@
         android:layout_below="@+id/lv_question_title"
         android:layout_marginLeft="5dp"
         android:text=""
-        android:textColor="#3377AA"
+        android:textColor="#becbcc"
         android:textSize="12dp" />
-    
-    <TextView
-        android:id="@+id/lv_question_created_at"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#3377AA"
-        android:textSize="12dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/lv_question_title"
-        android:layout_toRightOf="@+id/lv_question_username"
-        android:text="" />
     
     <TextView
         android:id="@+id/lv_answer_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:text=""
-        android:textColor="#3377AA"
+        android:textColor="#becbcc"
         android:textSize="12dp"
         android:layout_below="@+id/lv_question_title"
-        android:layout_alignParentRight="true" />
+        android:layout_toRightOf="@+id/lv_question_username" />
+    
+    <TextView
+        android:id="@+id/lv_question_created_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#becbcc"
+        android:textSize="12dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/lv_question_title"
+        android:layout_alignParentRight="true"
+        android:text="" />
+    
+    
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +31,7 @@ import com.example.spanishtalk.R;
 import com.example.tables.Answer;
 
 public class ShowActivity extends BaseEventActivity {
-	private TextView qTitle, qContent, qCreatedAt;
+	private TextView qTitle, qContent, qCreatedAt, qUsername, qCount;
 	private LinearLayout answerBox;
 	private ProgressBar progressBar;
 	private Integer questionId;
@@ -44,7 +45,9 @@ public class ShowActivity extends BaseEventActivity {
 		setContentView(R.layout.activity_question_show);
 
 		qTitle = (TextView) findViewById(R.id.q_title);
+		qUsername = (TextView) findViewById(R.id.q_username);
 		qContent = (TextView) findViewById(R.id.q_content);
+		qCount = (TextView) findViewById(R.id.q_count);
 		qCreatedAt = (TextView) findViewById(R.id.q_created_at);
 
  		
@@ -87,9 +90,12 @@ public class ShowActivity extends BaseEventActivity {
 				JSONObject creator = a.getJSONObject("creator");
 				String username = creator.getString("username");
 				
+				Log.d("answers -----", username);
+				
 				answer.setID(Integer.parseInt(a.getString("id")));
 				answer.setContent(a.getString("content"));
-				answer.setCreatedAt(username + ", " + a.getString("created_at").substring(0, 10));
+				answer.setUsername(username);
+				answer.setCreatedAt(a.getString("created_at").substring(0, 10));
 				answerList.add(answer);
 			}
 			
@@ -174,13 +180,16 @@ public class ShowActivity extends BaseEventActivity {
 
 				creator = question.getJSONObject("creator");
 				username = creator.getString("username");
+				qUsername.setText(username);
+				
+				
 				time = question.getString("created_at").substring(0, 10);
-
-				qCreatedAt.setText(username + ", " + time);
+				qCreatedAt.setText(time);
 				
 				
 				// 显示回复列表
 				answers = question.getJSONArray("answers");
+				qCount.setText(Integer.toString(answers.length()));
 				getAnswers(answers);
 
 			} catch (JSONException e) {
