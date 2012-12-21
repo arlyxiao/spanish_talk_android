@@ -15,6 +15,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
@@ -213,6 +214,54 @@ public class HttpPack {
 		} catch (IOException e) {
 			Log.d("IOException : ", e.getMessage());
 			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
+	
+	
+	
+	public static HttpResponse sendDelete(Context context, String url) {
+		CookieStore cookieStore = new BasicCookieStore();  
+        HttpContext localContext = new BasicHttpContext();
+        
+        localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpDelete httpdelete = new HttpDelete(url);
+		
+		
+		SessionManagement session = new SessionManagement(context);
+		if (session.getCookie() != null) {
+			httpdelete.setHeader("Cookie", session.getCookie());
+		}
+		
+		try {
+			httpdelete.setHeader("User-Agent", "android");
+			
+			HttpResponse response = httpclient.execute(httpdelete, localContext);
+			
+			if (response == null) {
+				return null;
+			}
+			
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if ( statusCode != 200) {
+				return null;
+			}
+			return response;
+		
+		} catch (UnsupportedEncodingException e) {
+			Log.e("Tag", "Unsupported encoding error: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		} catch (ClientProtocolException e) {
+			Log.e("Tag", "Client Protocol error: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			Log.e("Tag", "Could not get HTML: " + e.getMessage());
 			return null;
 		}
 

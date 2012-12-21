@@ -7,7 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -112,6 +116,34 @@ public class ShowActivity extends BaseEventActivity {
 				}
 			});
 			
+			
+			
+			lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+	            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+	                    final int position, long id) {
+	            	AlertDialog.Builder clearConfirmDialog = new AlertDialog.Builder(ShowActivity.this);
+                    clearConfirmDialog.setMessage(getApplicationContext().getString(R.string.confirm_delete)).setCancelable(false)
+                    .setPositiveButton(getApplicationContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        	Object o = lv.getItemAtPosition(position);
+        					Answer currentAnswer = (Answer) o;
+                        	new DeleteAnswerTask().execute(currentAnswer.getID());
+                        	lv.invalidate();
+                        }
+                    })
+                    .setNegativeButton(getApplicationContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alert = clearConfirmDialog.create();
+                    alert.show();
+
+	                return true;
+	            }
+	        }); 
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -197,6 +229,76 @@ public class ShowActivity extends BaseEventActivity {
 			}
 
 			super.onPostExecute(question);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 删除回答
+	public class DeleteAnswerTask extends AsyncTask<Integer, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Integer... answers) {
+			String url = BaseUrl.answerDelete + "/"
+					+ Integer.toString(answers[0]) + ".json";
+			HttpResponse response = HttpPack.sendDelete(
+					getApplicationContext(), url);
+
+
+			if (response == null) {
+				Log.d("4434343 ---", "uuuuu");
+				cancel(true);
+				return null;
+			}
+			
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
+				Log.d("888888 0----", "9999999");
+				return true;
+			}
+			
+			cancel(true);
+			return false;
+		}
+		
+		
+		@Override
+		protected void onPreExecute() {				
+			if (!HttpPack.hasConnected(ShowActivity.this)) {
+				Context context = getApplicationContext();
+				BaseAction.showFormNotice(context,
+						context.getString(R.string.network_error));
+				cancel(true);
+				return;
+			}
+
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onCancelled() {				
+			Context context = getApplicationContext();
+			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			
+			// ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
+			super.onPostExecute(result);
 		}
 	}
 
