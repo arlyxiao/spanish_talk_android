@@ -58,6 +58,7 @@ public class QuestionDataSource
 				question = questions.getJSONObject(i);
 				
 				qr.setID(Integer.parseInt(question.getString("id")));
+				qr.setCreatorId(Integer.parseInt(question.getString("creator_id")));
 				qr.setTitle(question.getString("title"));
 				
 				creator = question.getJSONObject("creator");

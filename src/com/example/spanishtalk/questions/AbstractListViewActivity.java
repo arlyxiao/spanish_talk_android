@@ -49,7 +49,6 @@ public class AbstractListViewActivity extends ListActivity
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			Context context = getApplicationContext();
-			Log.d("aaaaa", "ffff");
 			HttpResponse response = HttpPack.sendRequest(context, BaseUrl.android);
 			if (response == null) {
 				cancel(false);
@@ -60,7 +59,6 @@ public class AbstractListViewActivity extends ListActivity
 		
 		@Override
 		protected void onCancelled() {
-			Log.d("0000000 ---", "adfadf");
 			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 			startActivity(intent);
 			finish();

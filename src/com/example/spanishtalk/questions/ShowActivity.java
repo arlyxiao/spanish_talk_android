@@ -61,7 +61,7 @@ public class ShowActivity extends BaseEventActivity {
 		
 		Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
-		questionId = b.getInt("question_id");
+		questionId = b.getInt("questionId");
 
 		new ShowQuestionTask().execute(questionId);
 
@@ -75,7 +75,7 @@ public class ShowActivity extends BaseEventActivity {
 
 	public void showAnswer(View view) {
 		Intent intent = new Intent(getApplicationContext(), AnswerActivity.class);
-		intent.putExtra("question_id", questionId);
+		intent.putExtra("questionId", questionId);
 		startActivity(intent);
 	}
 

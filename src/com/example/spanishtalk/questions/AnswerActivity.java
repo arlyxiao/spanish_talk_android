@@ -44,7 +44,7 @@ public class AnswerActivity extends BaseEventActivity {
         
         Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
-		questionId = b.getInt("question_id");
+		questionId = b.getInt("questionId");
     }
 
     @Override
@@ -135,7 +135,7 @@ public class AnswerActivity extends BaseEventActivity {
 			}
 
  			Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
-			intent.putExtra("question_id", questionId);
+			intent.putExtra("questionId", questionId);
 			startActivity(intent);
 			
  			super.onPostExecute(question);

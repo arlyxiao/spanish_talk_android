@@ -23,7 +23,7 @@ public final class R {
         public static final int Button01=0x7f070017;
         public static final int Button02=0x7f070018;
         public static final int Button03=0x7f070019;
-        public static final int all_questions_btn=0x7f070038;
+        public static final int all_questions_btn=0x7f070039;
         public static final int answer_btn=0x7f07000e;
         public static final int answer_content=0x7f07002c;
         public static final int answer_count=0x7f07002e;
@@ -33,7 +33,7 @@ public final class R {
         public static final int answer_list_view=0x7f070015;
         public static final int answer_username=0x7f07002d;
         public static final int answers_box=0x7f070014;
-        public static final int ask_btn=0x7f070036;
+        public static final int ask_btn=0x7f070037;
         public static final int button1=0x7f070000;
         public static final int buttonfirst=0x7f07001a;
         public static final int buttonlast=0x7f07001c;
@@ -49,12 +49,13 @@ public final class R {
         public static final int login_email=0x7f070006;
         public static final int login_password=0x7f070007;
         public static final int lvQuestionID=0x7f070030;
-        public static final int lv_answer_count=0x7f070033;
-        public static final int lv_question_created_at=0x7f070034;
-        public static final int lv_question_title=0x7f070031;
-        public static final int lv_question_username=0x7f070032;
-        public static final int menu_settings=0x7f070039;
-        public static final int my_questions_btn=0x7f070037;
+        public static final int lv_answer_count=0x7f070034;
+        public static final int lv_question_created_at=0x7f070035;
+        public static final int lv_question_creator_id=0x7f070031;
+        public static final int lv_question_title=0x7f070032;
+        public static final int lv_question_username=0x7f070033;
+        public static final int menu_settings=0x7f07003a;
+        public static final int my_questions_btn=0x7f070038;
         public static final int progressBar1=0x7f070002;
         public static final int q_content=0x7f070013;
         public static final int q_count=0x7f070011;
@@ -63,7 +64,7 @@ public final class R {
         public static final int q_title=0x7f07000f;
         public static final int q_username=0x7f070010;
         public static final int question_content=0x7f07000d;
-        public static final int question_menus=0x7f070035;
+        public static final int question_menus=0x7f070036;
         public static final int question_title=0x7f07000c;
         public static final int reg_confirm_password=0x7f070023;
         public static final int reg_confirm_password_error=0x7f070029;

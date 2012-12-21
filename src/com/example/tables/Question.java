@@ -1,6 +1,5 @@
 package com.example.tables;
 
-import android.widget.TextView;
 
 public class Question {
 	int _id;

@@ -137,7 +137,7 @@ public class NewActivity extends BaseEventActivity {
 			final Integer questionId;
 						
 			try {
-				questionId = q.getInt("question_id");
+				questionId = q.getInt("questionId");
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						NewActivity.this);
 				builder.setMessage(R.string.be_sent)
@@ -150,7 +150,7 @@ public class NewActivity extends BaseEventActivity {
 										Intent intent = new Intent(
 												getApplicationContext(),
 												ShowActivity.class);
-										intent.putExtra("question_id",
+										intent.putExtra("questionId",
 												questionId);
 										startActivity(intent);
 									}
