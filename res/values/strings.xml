@@ -3,12 +3,10 @@
     <string name="app_name">SpanishTalk</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    
     <string name="main_page">主界面</string>
     <string name="confirm">确定</string>
     <string name="confirm_delete">是否删除</string>
     <string name="cancel">取消</string>
-    
     <string name="title_activity_questions">问题列表</string>
     <string name="server_connection_error">服务器连接超时</string>
     <string name="login_form_error">请填入正确的Email跟密码</string>
@@ -29,8 +27,6 @@
     <string name="click_register_button">注册</string>
     <string name="click_login_button">登录</string>
     <string name="click_answer_button">回答</string>
-    
-    
     <string name="incorrect_login_info">请填写好正确的用户名跟密码</string>
     <string name="disconnect_network">网络连接不上</string>
     <string name="incorrect_email">请填写正确 Email</string>
@@ -39,8 +35,6 @@
     <string name="incorrect_confirm_password">请填写正确的重复密码</string>
     <string name="answer_content_required">请填写内容</string>
     <string name="new_question_required">请填写标题跟内容</string>
-    
-    
     <string name="title_activity_question">提问</string>
     <string name="question_title">标题</string>
     <string name="question_content">请填写提问内容</string>
@@ -53,12 +47,10 @@
     <string name="ask_question">提问</string>
     <string name="loading">正在加载 &#8230;</string>
     <string name="empty_data">服务器没有返回数据 &#8230;</string>
-    
     <string name="be_sent">发送成功</string>
     <string name="confirm_btn">确定</string>
     <string name="send_btn">发送</string>
     <string name="answers_for_count">回应</string>
-    
     <string name="cancel_btn">取消</string>
     <string name="display">总共 %2$s, 当前 %1$s</string>
     <string name="first">首页</string>
@@ -66,5 +58,6 @@
     <string name="next">下一页</string>
     <string name="last">最后</string>
     <string name="title_activity_answer">回答问题</string>
+    <string name="title_activity_contact">ContactActivity</string>
 
 </resources>
