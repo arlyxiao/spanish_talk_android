@@ -108,12 +108,12 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 		 
 	}
 
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(LOG_TAG, "onDestroy called.");
-        if (contactCursor!=null) contactCursor.close();
-        vSearchBtn.removeTextChangedListener(this);
-	}
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Log.d(LOG_TAG, "onDestroy called.");
+//        if (contactCursor!=null) contactCursor.close();
+//        vSearchBtn.removeTextChangedListener(this);
+//	}
 
 	public void onClick(View v) {
 	}
@@ -154,8 +154,8 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 	
 	public void sendSMS(View view)
     {   
-		// String number = vSmsNumber.getText().toString();
-		String number = "13960418536";
+		String number = vSmsNumber.getText().toString();
+		// String number = "13960418536";
 		
 		Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
@@ -187,8 +187,7 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
         registerReceiver(new BroadcastReceiver(){
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-            	progressBar.setVisibility(View.INVISIBLE);
-            	vSearchBtn.setVisibility(View.VISIBLE);
+            	
             }
         }, new IntentFilter(SENT));
  
@@ -214,6 +213,12 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
                 		toast.show();
                         break;                        
                 }
+                
+                vSmsNumber.setText("");
+            	
+            	progressBar.setVisibility(View.GONE);
+            	vContactTitle.setVisibility(View.GONE);
+            	vSearchBtn.setVisibility(View.VISIBLE);
             }
         }, new IntentFilter(DELIVERED));        
  
