@@ -7,6 +7,7 @@
     <string name="confirm">确定</string>
     <string name="confirm_delete">是否删除</string>
     <string name="cancel">取消</string>
+    <string name="search">搜索</string>
     <string name="title_activity_questions">问题列表</string>
     <string name="server_connection_error">服务器连接超时</string>
     <string name="login_form_error">请填入正确的Email跟密码</string>
@@ -58,6 +59,6 @@
     <string name="next">下一页</string>
     <string name="last">最后</string>
     <string name="title_activity_answer">回答问题</string>
-    <string name="title_activity_contact">ContactActivity</string>
+    <string name="title_activity_contact">选择联系人</string>
 
 </resources>

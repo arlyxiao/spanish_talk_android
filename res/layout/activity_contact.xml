@@ -4,20 +4,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/head_bar" >
 
-<ListView android:id="@+id/contact_list"
-    android:layout_width="fill_parent"
-    android:layout_height="0dip"
-    android:layout_weight="1"
-    android:drawSelectorOnTop="false"
-    />
+        <Button
+            android:id="@+id/main_btn"
+            style="@style/head_bar_button_go_back_register"
+            android:onClick="clickGoBack"
+            android:text="@string/main_page" />
+        
 
-        <EditText
-            android:id="@+id/contact_search_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="" />
+        <Button
+            android:id="@+id/answer_btn"
+            style="@style/head_bar_button_logout"
+            android:onClick="sendSMS"
+            android:text="@string/send_btn" />
+    </RelativeLayout>
+    
+
+    <EditText
+        android:id="@+id/contact_search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search" />
+
+    <ListView
+        android:id="@+id/contact_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false" />
 
 </LinearLayout>
-
-

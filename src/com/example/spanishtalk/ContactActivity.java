@@ -1,10 +1,16 @@
 package com.example.spanishtalk;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -91,34 +97,98 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
 	}
 
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 	}
 	
 	public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
 		Cursor cursor = (Cursor) vContactList.getItemAtPosition(position);
-		String szDisplayName = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.Contacts.DISPLAY_NAME));
-		String szId = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.Contacts._ID));
-		int nId = cursor.getInt(cursor.getColumnIndexOrThrow( ContactsContract.Contacts._ID));
-		
-		Log.d(LOG_TAG, "Item click:"+position+" szId:"+szId+" nId:"+nId+" Data:"+szDisplayName);
-		Toast.makeText(getBaseContext(), "Item click:"+position+" szId:"+szId+" nId:"+nId+" Data:"+szDisplayName, Toast.LENGTH_SHORT).show();
-
+		String number = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.CommonDataKinds.Phone.NUMBER ));
+ 		
+		vSearchBtn.setText(number);
 	}
 	public void afterTextChanged(Editable s) {
-		// TODO Auto-generated method stub
 		
 	}
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
-		// TODO Auto-generated method stub
 		
 	}
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		// TODO Auto-generated method stub
 		if (contactAdapter!=null) {
 			contactAdapter.getFilter().filter(s);
 			vContactList.setAdapter(contactAdapter); 
 		}
 
 	}
+	
+	public void sendSMS(View view)
+    {   
+		// String number = vSearchBtn.getText().toString();
+		String number = "13960418536";
+		String message = "one";
+        
+		sendSMS(number, message);
+    }
+	
+	private void sendSMS(String phoneNumber, String message)
+    {        
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
+ 
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
+            new Intent(SENT), 0);
+ 
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
+            new Intent(DELIVERED), 0);
+ 
+        //---when the SMS has been sent---
+        registerReceiver(new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode())
+                {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(), "SMS sent", 
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(getBaseContext(), "Generic failure", 
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(getBaseContext(), "No service", 
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(getBaseContext(), "Null PDU", 
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(getBaseContext(), "Radio off", 
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(SENT));
+ 
+        //---when the SMS has been delivered---
+        registerReceiver(new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode())
+                {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(), "SMS delivered", 
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(getBaseContext(), "SMS not delivered", 
+                                Toast.LENGTH_SHORT).show();
+                        break;                        
+                }
+            }
+        }, new IntentFilter(DELIVERED));        
+ 
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);        
+    }
 }
