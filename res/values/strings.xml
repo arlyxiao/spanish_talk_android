@@ -15,6 +15,7 @@
     <string name="sms_sent">短信发送成功</string>
     <string name="sms_sent_error">短信无法发送, 请检查手机设备是否正常</string>
     <string name="sms_deliver_error">短信无法发送，请检查号码是否正确或者短信内容过长</string>
+    <string name="invalid_phone_number">号码无效</string>
     
     
     <string name="title_activity_questions">问题列表</string>

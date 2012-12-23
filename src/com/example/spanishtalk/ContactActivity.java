@@ -29,6 +29,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lib.BaseUtils;
 import com.example.logic.BaseEventActivity;
 
 public class ContactActivity extends BaseEventActivity implements OnClickListener, TextWatcher,OnItemClickListener {
@@ -108,12 +109,12 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 		 
 	}
 
-//    public void onDestroy() {
-//        super.onDestroy();
-//        Log.d(LOG_TAG, "onDestroy called.");
-//        if (contactCursor!=null) contactCursor.close();
-//        vSearchBtn.removeTextChangedListener(this);
-//	}
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy called.");
+        if (contactCursor!=null) contactCursor.close();
+        vSearchBtn.removeTextChangedListener(this);
+	}
 
 	public void onClick(View v) {
 	}
@@ -156,6 +157,15 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
     {   
 		String number = vSmsNumber.getText().toString();
 		// String number = "13960418536";
+		
+		if (BaseUtils.is_str_blank(number)) {
+			Toast toast = Toast.makeText(getBaseContext(), 
+        			getBaseContext().getString(R.string.invalid_phone_number), 
+        			Toast.LENGTH_SHORT);
+    		toast.setGravity(Gravity.TOP, 0, 0);
+    		toast.show();
+    		return;
+		}
 		
 		Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
