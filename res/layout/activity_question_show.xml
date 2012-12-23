@@ -10,6 +10,14 @@
             style="@style/head_bar_button_go_back_register"
             android:onClick="clickGoBack"
             android:text="@string/main_page" />
+        
+        <Button
+            android:id="@+id/sms_btn"
+            style="@style/head_bar_button_logout"
+            android:onClick="showContacts"
+            android:text="@string/sms"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="80dp" />
 
         <Button
             android:id="@+id/answer_btn"
@@ -61,6 +69,8 @@
             android:text=""
             android:textColor="#3377AA"
             android:textSize="12dp" />
+        
+       
 
         <TextView
             android:id="@+id/q_created_at"

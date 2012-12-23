@@ -32,6 +32,7 @@ import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
+import com.example.spanishtalk.ContactActivity;
 import com.example.spanishtalk.R;
 import com.example.tables.Answer;
 
@@ -71,6 +72,17 @@ public class ShowActivity extends BaseEventActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_question_show, menu);
 		return true;
+	}
+	
+	public void showContacts(View view) {
+		String title = qTitle.getText().toString();
+		String content = qContent.getText().toString();
+		
+		
+		Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+		intent.putExtra("title", title);
+		intent.putExtra("content", content);
+		startActivity(intent);
 	}
 
 	public void showAnswer(View view) {

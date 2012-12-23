@@ -41,7 +41,11 @@
             android:label="@string/title_activity_question_show" >
         </activity>
         <activity android:name=".questions.IndexActivity" >
-            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".questions.AnswerActivity"
@@ -50,11 +54,7 @@
         <activity
             android:name=".ContactActivity"
             android:label="@string/title_activity_contact" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
     </application>
 

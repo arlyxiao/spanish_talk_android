@@ -25,6 +25,10 @@ public class BaseEventActivity extends Activity {
 		new CheckTask().execute();
 	}
 	
+	public void returnPreviousPage(View view) {
+		this.finish();
+	}
+	
 	
 	public void clickGoBack(View view) {
 		Intent intent = new Intent(getApplicationContext(), IndexActivity.class);

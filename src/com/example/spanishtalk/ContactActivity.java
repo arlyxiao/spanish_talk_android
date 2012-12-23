@@ -14,23 +14,35 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class ContactActivity extends Activity implements OnClickListener, TextWatcher,OnItemClickListener {
+import com.example.logic.BaseEventActivity;
+
+public class ContactActivity extends BaseEventActivity implements OnClickListener, TextWatcher,OnItemClickListener {
 	final String 			LOG_TAG			= "SpanishTalk";
 	EditText				vSearchBtn;
 	ListView				vContactList;
 	
 	Cursor								contactCursor;
 	SimpleCursorAdapter 				contactAdapter;
+	
+	private ProgressBar progressBar;
+	private TextView vSmsNumber, vContactLabel, vCancelBtn;
+	private RelativeLayout vContactTitle;
+	private LinearLayout vContactBody;
 
 	
     /** Called when the activity is first created. */
@@ -38,12 +50,20 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
-        
+                
         Log.d(LOG_TAG, "onCreate called.");
         
         vContactList = (ListView) findViewById(R.id.contact_list);
         vSearchBtn = (EditText) findViewById(R.id.contact_search_btn);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        
+        vSmsNumber = (TextView) findViewById(R.id.sms_number);
+        vContactLabel = (TextView) findViewById(R.id.contact_label);
+        vCancelBtn = (TextView) findViewById(R.id.cancel_btn);
+        vContactTitle = (RelativeLayout) findViewById(R.id.contact_title);
+        vContactBody = (LinearLayout) findViewById(R.id.contact_body);
+        
+        vContactBody.requestFocus();
 		vContactList.setOnItemClickListener((OnItemClickListener) this);
 		vSearchBtn.addTextChangedListener((TextWatcher) this);
 
@@ -93,7 +113,6 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
         Log.d(LOG_TAG, "onDestroy called.");
         if (contactCursor!=null) contactCursor.close();
         vSearchBtn.removeTextChangedListener(this);
-
 	}
 
 	public void onClick(View v) {
@@ -101,12 +120,17 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
 	
 	public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
 		Cursor cursor = (Cursor) vContactList.getItemAtPosition(position);
+		String name = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME ));
 		String number = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.CommonDataKinds.Phone.NUMBER ));
- 		
-		vSearchBtn.setText(number);
+		
+		vSmsNumber.setText(number);
+		vContactLabel.setText(name + " " + number);
+		vContactTitle.setVisibility(View.VISIBLE);
+		
+		vSearchBtn.setText("");
+		vSearchBtn.setVisibility(View.GONE);
 	}
 	public void afterTextChanged(Editable s) {
-		
 	}
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
@@ -120,13 +144,32 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
 
 	}
 	
+	public void clearPhoneNumber(View view) {
+		vContactTitle.setVisibility(View.GONE);
+		
+		vSearchBtn.setText("");
+		vSearchBtn.setVisibility(View.VISIBLE);
+	}
+	
+	
 	public void sendSMS(View view)
     {   
-		// String number = vSearchBtn.getText().toString();
+		// String number = vSmsNumber.getText().toString();
 		String number = "13960418536";
-		String message = "one";
+		
+		Intent myIntent = getIntent();
+		Bundle b = myIntent.getExtras();
+		String title = b.getString("title");
+		String content = b.getString("content");
+		
+		String message = title + ", " + content;
         
+		progressBar.setVisibility(View.VISIBLE);
+		vSearchBtn.setText("");
+		vSearchBtn.setVisibility(View.GONE);
+		
 		sendSMS(number, message);
+		
     }
 	
 	private void sendSMS(String phoneNumber, String message)
@@ -144,29 +187,8 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
         registerReceiver(new BroadcastReceiver(){
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS sent", 
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(getBaseContext(), "Generic failure", 
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(getBaseContext(), "No service", 
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(getBaseContext(), "Null PDU", 
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(getBaseContext(), "Radio off", 
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
+            	progressBar.setVisibility(View.INVISIBLE);
+            	vSearchBtn.setVisibility(View.VISIBLE);
             }
         }, new IntentFilter(SENT));
  
@@ -174,15 +196,22 @@ public class ContactActivity extends Activity implements OnClickListener, TextWa
         registerReceiver(new BroadcastReceiver(){
             @Override
             public void onReceive(Context arg0, Intent arg1) {
+            	Toast toast;
                 switch (getResultCode())
                 {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS delivered", 
-                                Toast.LENGTH_SHORT).show();
+                    case Activity.RESULT_OK:                    	
+                    	toast = Toast.makeText(getBaseContext(), 
+                    			getBaseContext().getString(R.string.sms_sent), 
+                    			Toast.LENGTH_SHORT);
+                		toast.setGravity(Gravity.TOP, 0, 0);
+                		toast.show();
                         break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(), "SMS not delivered", 
-                                Toast.LENGTH_SHORT).show();
+                    case Activity.RESULT_CANCELED:                    	
+                    	toast = Toast.makeText(getBaseContext(), 
+                    			getBaseContext().getString(R.string.sms_deliver_error), 
+                    			Toast.LENGTH_SHORT);
+                		toast.setGravity(Gravity.TOP, 0, 0);
+                		toast.show();
                         break;                        
                 }
             }
