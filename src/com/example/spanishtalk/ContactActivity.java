@@ -106,8 +106,15 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
         });
         vContactList.setAdapter(contactAdapter); 
       //  cur.close();
+        
 		 
 	}
+    
+    public void onPause() {
+    	super.onPause();
+    	this.finish();
+    }
+    
 
     public void onDestroy() {
         super.onDestroy();
@@ -121,6 +128,8 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 	
 	public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
 		Cursor cursor = (Cursor) vContactList.getItemAtPosition(position);
+		
+		
 		String name = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME ));
 		String number = cursor.getString(cursor.getColumnIndexOrThrow( ContactsContract.CommonDataKinds.Phone.NUMBER ));
 		
@@ -128,7 +137,7 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 		vContactLabel.setText(name + " " + number);
 		vContactTitle.setVisibility(View.VISIBLE);
 		
-		vSearchBtn.setText("");
+		// vSearchBtn.setText("");
 		vSearchBtn.setVisibility(View.GONE);
 	}
 	public void afterTextChanged(Editable s) {
@@ -175,7 +184,6 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 		String message = title + ", " + content;
         
 		progressBar.setVisibility(View.VISIBLE);
-		vSearchBtn.setText("");
 		vSearchBtn.setVisibility(View.GONE);
 		
 		sendSMS(number, message);
@@ -183,7 +191,9 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
     }
 	
 	private void sendSMS(String phoneNumber, String message)
-    {        
+    {
+		vSmsNumber.setText("");
+		
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";
  
@@ -224,8 +234,6 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
                         break;                        
                 }
                 
-                vSmsNumber.setText("");
-            	
             	progressBar.setVisibility(View.GONE);
             	vContactTitle.setVisibility(View.GONE);
             	vSearchBtn.setVisibility(View.VISIBLE);
