@@ -156,6 +156,7 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 	
 	public void clearPhoneNumber(View view) {
 		vContactTitle.setVisibility(View.GONE);
+		progressBar.setVisibility(View.GONE);
 		
 		vSearchBtn.setText("");
 		vSearchBtn.setVisibility(View.VISIBLE);
@@ -192,7 +193,7 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
 	
 	private void sendSMS(String phoneNumber, String message)
     {
-		vSmsNumber.setText("");
+		
 		
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";
@@ -207,7 +208,10 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
         registerReceiver(new BroadcastReceiver(){
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-            	
+            	vSmsNumber.setText("");
+            	progressBar.setVisibility(View.GONE);
+            	vContactTitle.setVisibility(View.GONE);
+            	vSearchBtn.setVisibility(View.VISIBLE);
             }
         }, new IntentFilter(SENT));
  
@@ -234,13 +238,12 @@ public class ContactActivity extends BaseEventActivity implements OnClickListene
                         break;                        
                 }
                 
-            	progressBar.setVisibility(View.GONE);
-            	vContactTitle.setVisibility(View.GONE);
-            	vSearchBtn.setVisibility(View.VISIBLE);
+                
             }
         }, new IntentFilter(DELIVERED));        
  
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);        
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+        
     }
 }
