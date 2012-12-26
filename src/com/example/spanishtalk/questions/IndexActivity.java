@@ -326,9 +326,11 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
         			
             		break;
             	case 401:
+            		BaseAction.showFormNotice(context, context.getString(R.string.login_required));
             		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
     				startActivity(intent);
     				finish();
+    				break;
             	default:
             		BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
             		break;
