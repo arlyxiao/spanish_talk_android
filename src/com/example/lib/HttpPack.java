@@ -126,8 +126,9 @@ public class HttpPack {
 			cookie_store = cookie.getValue();
 		}
 		return cookie_store;
-	}
-
+	}	
+	
+	
 	public static HttpResponse sendPost(Context context, String url, Map<String, String> params) {
 		CookieStore cookieStore = new BasicCookieStore();  
         HttpContext localContext = new BasicHttpContext();
@@ -151,14 +152,6 @@ public class HttpPack {
 			
 			HttpResponse response = httpclient.execute(httppost, localContext);
 			
-			if (response == null) {
-				return null;
-			}
-			
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if ( statusCode != 200) {
-				return null;
-			}
 			return response;
 		
 		} catch (UnsupportedEncodingException e) {
@@ -175,7 +168,6 @@ public class HttpPack {
 		}
 
 	}
-	
 	
 	
 	public static HttpResponse sendRequest(Context context, String url) {

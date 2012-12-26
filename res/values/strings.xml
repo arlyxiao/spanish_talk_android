@@ -23,6 +23,7 @@
     <string name="login_form_error">请填入正确的Email跟密码</string>
     <string name="register_form_error">请填入正确的注册信息</string>
     <string name="network_error">请检查手机网络连接是否正确</string>
+    
     <string name="title_activity_login">登录</string>
     <string name="title_activity_register">注册</string>
     <string name="username">用户名</string>

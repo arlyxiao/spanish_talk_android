@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -74,15 +77,12 @@ public class LoginActivity extends Activity {
 					.toString().trim());
 
 			HttpResponse response = HttpPack.sendPost(context, BaseUrl.login, params);
-
+			
 			if (response == null) {
 				cancel(true);
 				return null;
 			}
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				BaseAction.saveUserSessionByResponse(context, response);
-			}
+			
 			return response;
 
 		}
@@ -119,16 +119,38 @@ public class LoginActivity extends Activity {
 			progressBar.setVisibility(View.GONE);
 			loginBtn.setVisibility(View.VISIBLE);
 			
-			if (session.getUserId() == null) {
-				BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
-				return;
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+            	case 200:  
+            		new saveSessionTask().execute(response);
+            		break;
+            	default:
+            		BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
+            		break;
 			}
-			Intent intent = new Intent(context, IndexActivity.class);
-			startActivity(intent);
-			finish();
+			
 
 			// super.onPostExecute(result);
 		}
 
+	}
+	
+	
+	
+	public class saveSessionTask extends AsyncTask<HttpResponse, Void, Void> {
+		@Override
+		protected Void doInBackground(HttpResponse... responses) {
+			BaseAction.saveUserSessionByResponse(getApplicationContext(), responses[0]);
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			if ( (session.getUserId() != null) && (session.getCookie() != null) ) {
+				Intent intent = new Intent(context, IndexActivity.class);
+    			startActivity(intent);
+    			finish();
+			}
+		}
 	}
 }

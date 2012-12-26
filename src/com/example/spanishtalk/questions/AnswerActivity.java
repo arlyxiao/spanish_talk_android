@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -24,6 +25,7 @@ import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.questions.NewActivity.saveQuestionTask;
 
 public class AnswerActivity extends BaseEventActivity {
 	private EditText aContent;
@@ -71,10 +73,10 @@ public class AnswerActivity extends BaseEventActivity {
     
     
  // 回复问题
- 	public class DoAnswerTask extends AsyncTask<Integer, Void, JSONObject> {
+ 	public class DoAnswerTask extends AsyncTask<Integer, Void, HttpResponse> {
 
  		@Override
- 		protected JSONObject doInBackground(Integer... questions) {
+ 		protected HttpResponse doInBackground(Integer... questions) {
  			Map<String, String> params = new HashMap<String, String>();
  			params.put("answer[content]", aContent.getText().toString());
 
@@ -88,13 +90,7 @@ public class AnswerActivity extends BaseEventActivity {
 				return null;
 			}
  			
- 			
- 			if (response.getStatusLine().getStatusCode() == 200) {
- 				return HttpPack.getJsonByResponse(response);
- 			}
- 			
- 			cancel(true);
- 			return null;
+ 			return response;
  		}
 
  		
@@ -122,23 +118,23 @@ public class AnswerActivity extends BaseEventActivity {
 			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
 		}
 
- 		@Override
- 		protected void onPostExecute(JSONObject question) {
- 			Context context = getApplicationContext();
- 			
- 			progressBar.setVisibility(View.GONE);
- 			sendBtn.setVisibility(View.VISIBLE);
+		@Override
+		protected void onPostExecute(HttpResponse response) {
 			
-			if (question == null) {
+			Context context = getApplicationContext();
+
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode != 200) {
+				progressBar.setVisibility(View.GONE);
 				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
-				return;
+			} else {
+				Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
+				intent.putExtra("questionId", questionId);
+				startActivity(intent);
 			}
 
- 			Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
-			intent.putExtra("questionId", questionId);
-			startActivity(intent);
-			
- 			super.onPostExecute(question);
- 		}
+			super.onPostExecute(response);
+		}
  	}
+ 	
 }

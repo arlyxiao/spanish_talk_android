@@ -23,6 +23,7 @@ import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
+import com.example.spanishtalk.LoginActivity.saveSessionTask;
 import com.example.spanishtalk.questions.IndexActivity;
 
 public class RegisterActivity extends Activity {
@@ -156,10 +157,7 @@ public class RegisterActivity extends Activity {
 				cancel(true);
 				return null;
 			}
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				BaseAction.saveUserSessionByResponse(context, response);
-			}
+		
 			return response;
 		}
 		
@@ -197,15 +195,34 @@ public class RegisterActivity extends Activity {
 			progressBar.setVisibility(View.GONE);
 			registerBtn.setVisibility(View.VISIBLE);
 			
-			if (session.getUserId() == null) {
-				BaseAction.showFormNotice(context, context.getString(R.string.register_form_error));
-				return;
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+            	case 200:  
+            		new saveSessionTask().execute(response);
+            		break;
+            	default:
+            		BaseAction.showFormNotice(context, context.getString(R.string.register_form_error));
+            		break;
 			}
-
-			Intent intent = new Intent(context, IndexActivity.class);
-			startActivity(intent);
-			finish();
 	    }
 
+	}
+	
+	
+	public class saveSessionTask extends AsyncTask<HttpResponse, Void, Void> {
+		@Override
+		protected Void doInBackground(HttpResponse... responses) {
+			BaseAction.saveUserSessionByResponse(getApplicationContext(), responses[0]);
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			if ( (session.getUserId() != null) && (session.getCookie() != null) ) {
+				Intent intent = new Intent(context, IndexActivity.class);
+    			startActivity(intent);
+    			finish();
+			}
+		}
 	}
 }

@@ -28,6 +28,7 @@ import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.RegisterActivity.saveSessionTask;
 
 public class NewActivity extends BaseEventActivity {
 
@@ -83,10 +84,10 @@ public class NewActivity extends BaseEventActivity {
 		
 	}
 
-	public class PostQuestionTask extends AsyncTask<Void, Void, JSONObject> {
+	public class PostQuestionTask extends AsyncTask<Void, Void, HttpResponse> {
 
 		@Override
-		protected JSONObject doInBackground(Void... arg0) {
+		protected HttpResponse doInBackground(Void... arg0) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("question[title]", edit_text_title.getText().toString());
 			params.put("question[content]", edit_text_content.getText()
@@ -100,13 +101,7 @@ public class NewActivity extends BaseEventActivity {
 				return null;
 			}
 			
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				return HttpPack.getJsonByResponse(response);
-			}
-			
-			cancel(true);
-			return null;
+			return response;
 		}
 		
 		@Override
@@ -126,44 +121,54 @@ public class NewActivity extends BaseEventActivity {
 
 		@Override
 		protected void onCancelled() {
-			progressBar.setVisibility(View.INVISIBLE);
+			progressBar.setVisibility(View.GONE);
 
 			Context context = getApplicationContext();
 			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
 		}
 
 		@Override
-		protected void onPostExecute(JSONObject q) {
-			final Integer questionId;
-						
-			try {
-				questionId = q.getInt("question_id");
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						NewActivity.this);
-				builder.setMessage(R.string.be_sent)
-						.setCancelable(false)
-						.setPositiveButton(R.string.confirm_btn,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
+		protected void onPostExecute(HttpResponse response) {
+			
+			Context context = getApplicationContext();
 
-										Intent intent = new Intent(
-												getApplicationContext(),
-												ShowActivity.class);
-										intent.putExtra("questionId",
-												questionId);
-										startActivity(intent);
-									}
-								});
-				builder.create().show();
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode != 200) {
+				progressBar.setVisibility(View.GONE);
+				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			} else {
+				new saveQuestionTask().execute(response);
+			}
+
+			super.onPostExecute(response);
+		}
+
+	}
+	
+	
+	
+	public class saveQuestionTask extends AsyncTask<HttpResponse, Void, JSONObject> {
+		@Override
+		protected JSONObject doInBackground(HttpResponse... responses) {
+			JSONObject q;
+			
+			q = HttpPack.getJsonByResponse(responses[0]);
+			
+			return q;
+		}
+		
+		@Override
+		protected void onPostExecute(JSONObject q) {
+			try {
+				int questionId = q.getInt("question_id");
+				Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
+				intent.putExtra("questionId", questionId);
+				startActivity(intent);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-
-			super.onPostExecute(q);
 		}
-
 	}
 
 }
