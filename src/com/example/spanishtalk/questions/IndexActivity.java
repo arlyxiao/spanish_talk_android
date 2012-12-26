@@ -61,6 +61,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 	private Integer questionId, creatorId;
 	private ArrayList<Question> questionList;
 	private ListView vQuestionList;
+	private TextView vListNotice;
 	private CustomArrayAdapter customArrayAdapter;
 
 	@Override
@@ -70,6 +71,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		setContentView(R.layout.activity_questions_index);
 		
 		vQuestionList = (ListView) findViewById(android.R.id.list);
+		vListNotice = (TextView) findViewById(R.id.list_notice);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		textViewDisplaying = (TextView) findViewById(R.id.displaying);
 		first = (Button) findViewById(R.id.buttonfirst);
@@ -269,6 +271,8 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 			loading = true;
 
 			context = getApplicationContext();
+			
+			vListNotice.setVisibility(View.GONE);
 			progressBar.setVisibility(View.VISIBLE);
 
 			if (!HttpPack.hasConnected(IndexActivity.this)) {
@@ -298,6 +302,15 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
             		customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
         			customArrayAdapter.clear();
         			
+        			if (questionList.size() == 0) {
+        				vListNotice.setVisibility(View.VISIBLE);
+        				vQuestionList.setVisibility(View.GONE);
+        				updateDisplayingTextView();
+        				return;
+        			}
+        			
+        			vListNotice.setVisibility(View.GONE);
+        			vQuestionList.setVisibility(View.VISIBLE);
         			for (Question qr : questionList) {
         				customArrayAdapter.add(qr);
         			}

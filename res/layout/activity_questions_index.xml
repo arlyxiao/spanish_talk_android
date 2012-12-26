@@ -47,6 +47,18 @@
         android:layout_above="@+id/buttonfirst"
         android:drawSelectorOnTop="false"  >
     </ListView>
+    
+    <TextView
+        android:id="@+id/list_notice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@+id/topQuestionMenu"
+        android:layout_above="@+id/buttonfirst"
+        android:textSize="16dp"
+        android:text="@string/empty_data"
+        android:gravity="center"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar1"

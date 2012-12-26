@@ -57,7 +57,7 @@
     <string name="refresh_questions">随便看看</string>
     <string name="ask_question">提问</string>
     <string name="loading">正在加载 &#8230;</string>
-    <string name="empty_data">服务器没有返回数据 &#8230;</string>
+    <string name="empty_data">暂时没有相关数据 &#8230;</string>
     <string name="be_sent">发送成功</string>
     <string name="confirm_btn">确定</string>
     <string name="send_btn">发送</string>
