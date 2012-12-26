@@ -19,6 +19,7 @@
     
     
     <string name="title_activity_questions">问题列表</string>
+    <string name="login_required">请重新登录</string>
     <string name="server_connection_error">服务器连接超时</string>
     <string name="login_form_error">请填入正确的Email跟密码</string>
     <string name="register_form_error">请填入正确的注册信息</string>

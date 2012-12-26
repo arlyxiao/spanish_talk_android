@@ -189,10 +189,7 @@ public class HttpPack {
 			if (response == null) {
 				return null;
 			}
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if ( statusCode != 200) {
-				return null;
-			}
+
 			return response;
 
 		} catch (UnsupportedEncodingException e) {

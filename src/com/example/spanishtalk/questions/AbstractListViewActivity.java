@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.datasource.CustomArrayAdapter;
@@ -118,7 +120,7 @@ public class AbstractListViewActivity extends ListActivity
 	{
 		textViewDisplaying = (TextView) findViewById(R.id.displaying);
 		String text = getString(R.string.display);
-		text = String.format(text, getListAdapter().getCount(), datasource.getSize());
+		text = String.format(text, getListAdapter().getCount(), datasource.getTotal());
 		textViewDisplaying.setText(text);
 	}
 
@@ -127,8 +129,10 @@ public class AbstractListViewActivity extends ListActivity
 	protected boolean load(int firstVisibleItem, int visibleItemCount, int totalItemCount)
 	{
 		boolean lastItem = firstVisibleItem + visibleItemCount == totalItemCount && getListView().getChildAt(visibleItemCount -1) != null && getListView().getChildAt(visibleItemCount-1).getBottom() <= getListView().getHeight();
-		boolean moreRows = getListAdapter().getCount() < datasource.getSize();
+		boolean moreRows = getListAdapter().getCount() < datasource.getTotal();
 		return moreRows && lastItem && !loading;
 		
 	}
+
+
 }

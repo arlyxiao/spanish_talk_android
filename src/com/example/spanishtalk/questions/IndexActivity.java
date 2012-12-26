@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,14 +29,17 @@ import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
+import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
+import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.RegisterActivity;
+import com.example.spanishtalk.LoginActivity.saveSessionTask;
 import com.example.spanishtalk.questions.ShowActivity.DeleteAnswerTask;
 import com.example.tables.Answer;
 import com.example.tables.Question;
 
-public class IndexActivity extends AbstractListViewActivity {
+public class IndexActivity extends AbstractListViewActivity implements OnItemLongClickListener{
 	private Context context;
 
 	private int offset = 0;
@@ -56,14 +60,16 @@ public class IndexActivity extends AbstractListViewActivity {
 
 	private Integer questionId, creatorId;
 	private ArrayList<Question> questionList;
+	private ListView vQuestionList;
 	private CustomArrayAdapter customArrayAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_questions_index);
-
+		
+		vQuestionList = (ListView) findViewById(android.R.id.list);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		textViewDisplaying = (TextView) findViewById(R.id.displaying);
 		first = (Button) findViewById(R.id.buttonfirst);
@@ -81,10 +87,6 @@ public class IndexActivity extends AbstractListViewActivity {
 			return;
 		}
 		(new LoadNextPage()).execute(param_url + "?page=1");
-		
-
-		
-
 		
 	}
 
@@ -114,6 +116,8 @@ public class IndexActivity extends AbstractListViewActivity {
 		Intent intent = new Intent(getApplicationContext(), NewActivity.class);
 		startActivity(intent);
 	}
+	
+	
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -129,6 +133,57 @@ public class IndexActivity extends AbstractListViewActivity {
 		Intent intent = new Intent(context, ShowActivity.class);
 		intent.putExtra("questionId", questionId);
 		startActivity(intent);
+	}
+	
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent,
+			View v, final int position, long id) {
+		questionId = ((Question) getListAdapter().getItem(
+				position)).getID();
+		creatorId = ((Question) getListAdapter().getItem(
+				position)).getCreatorId();
+		
+		SessionManagement session = new SessionManagement(
+				getApplicationContext());
+		if (session.getUserId() != creatorId) {
+			return true;
+		}
+
+		AlertDialog.Builder clearConfirmDialog = new AlertDialog.Builder(
+				IndexActivity.this);
+		clearConfirmDialog
+				.setMessage(
+						getApplicationContext().getString(
+								R.string.confirm_delete))
+				.setCancelable(false)
+				.setPositiveButton(
+						getApplicationContext().getString(
+								R.string.confirm),
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									DialogInterface dialog,
+									int id) {
+
+								new DeleteQuestionTask()
+										.execute(questionId, position);
+
+							}
+						})
+				.setNegativeButton(
+						getApplicationContext().getString(
+								R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									DialogInterface dialog,
+									int id) {
+								dialog.cancel();
+							}
+						});
+		AlertDialog alert = clearConfirmDialog.create();
+		alert.show();
+
+		return true;
 	}
 
 	// 删除回答
@@ -187,25 +242,26 @@ public class IndexActivity extends AbstractListViewActivity {
 		}
 	}
 
-	private class LoadNextPage extends AsyncTask<String, Void, String> {
+	private class LoadNextPage extends AsyncTask<String, Void, HttpResponse> {
 		private List<Question> questionList = null;
 
 		@Override
-		protected String doInBackground(String... urls) {
-			datasource = new QuestionDataSource(getApplicationContext(),
-					urls[0]);
+		protected HttpResponse doInBackground(String... urls) {
+			HttpResponse response = QuestionDataSource.sendRequest(context, urls[0]);
 
-			try {
-				Thread.sleep(1000);
-				questionList = datasource.getData();
-			} catch (InterruptedException e) {
-				Log.e("PagingButtons", e.getMessage());
-			} catch (IOException e) {
-				Log.d("Data source error", e.getMessage());
-				e.printStackTrace();
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			
+			if (statusCode == 200) {
+				try {
+    				Thread.sleep(1000);
+    				questionList = QuestionDataSource.getQuestions(getApplicationContext(), response);
+    				
+				} catch (InterruptedException e) {
+    				Log.e("PagingButtons", e.getMessage());
+    			}
 			}
 
-			return null;
+			return response;
 		}
 
 		@Override
@@ -235,92 +291,45 @@ public class IndexActivity extends AbstractListViewActivity {
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
-			customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
-			customArrayAdapter.clear();
+		protected void onPostExecute(HttpResponse response) {
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+            	case 200:
+            		customArrayAdapter = ((CustomArrayAdapter) getListAdapter());
+        			customArrayAdapter.clear();
+        			
+        			for (Question qr : questionList) {
+        				customArrayAdapter.add(qr);
+        			}
+ 
+        			customArrayAdapter.notifyDataSetChanged();
 
-			if (questionList.size() == 0) {
-				// BaseAction.showFormNotice(context,
-				// context.getString(R.string.server_connection_error));
-				updateDisplayingTextView();
-				return;
-			} else {
-				for (Question qr : questionList) {
-					customArrayAdapter.add(qr);
-				}
+        			updateDisplayingTextView();
+
+        			loading = false;
+        			
+        			vQuestionList.setLongClickable(true);
+        			vQuestionList.setOnItemLongClickListener(IndexActivity.this);
+        			
+            		break;
+            	case 401:
+            		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+    				startActivity(intent);
+    				finish();
+            	default:
+            		BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+            		break;
 			}
-
-			customArrayAdapter.notifyDataSetChanged();
-
-			updateDisplayingTextView();
-
-			loading = false;
-			
-			
-			
-			
-			IndexActivity.this.getListView().setLongClickable(true);
-			IndexActivity.this.getListView().setOnItemLongClickListener(
-					new OnItemLongClickListener() {
-						public boolean onItemLongClick(AdapterView<?> parent,
-								View v, final int position, long id) {
-							questionId = ((Question) getListAdapter().getItem(
-									position)).getID();
-							creatorId = ((Question) getListAdapter().getItem(
-									position)).getCreatorId();
-							
-							SessionManagement session = new SessionManagement(
-									getApplicationContext());
-							if (session.getUserId() != creatorId) {
-								return true;
-							}
-
-							AlertDialog.Builder clearConfirmDialog = new AlertDialog.Builder(
-									IndexActivity.this);
-							clearConfirmDialog
-									.setMessage(
-											getApplicationContext().getString(
-													R.string.confirm_delete))
-									.setCancelable(false)
-									.setPositiveButton(
-											getApplicationContext().getString(
-													R.string.confirm),
-											new DialogInterface.OnClickListener() {
-												public void onClick(
-														DialogInterface dialog,
-														int id) {
-
-													new DeleteQuestionTask()
-															.execute(questionId, position);
-
-												}
-											})
-									.setNegativeButton(
-											getApplicationContext().getString(
-													R.string.cancel),
-											new DialogInterface.OnClickListener() {
-												public void onClick(
-														DialogInterface dialog,
-														int id) {
-													dialog.cancel();
-												}
-											});
-							AlertDialog alert = clearConfirmDialog.create();
-							alert.show();
-
-							return true;
-						}
-					});
-		}
+		}	
 
 	}
 
 	@Override
 	protected void updateDisplayingTextView() {
+		
 		textViewDisplaying = (TextView) findViewById(R.id.displaying);
 		String text = getString(R.string.display);
-		text = String.format(text, getListAdapter().getCount(),
-				datasource.getSize());
+		text = String.format(text, getListAdapter().getCount(), QuestionDataSource.getTotal());
 		textViewDisplaying.setText(text);
 
 		updateButtons();
@@ -346,7 +355,7 @@ public class IndexActivity extends AbstractListViewActivity {
 	}
 
 	private int getLastPage() {
-		return (int) (Math.ceil((float) datasource.getSize() / PAGESIZE));
+		return (int) (Math.ceil((float) QuestionDataSource.getTotal() / PAGESIZE));
 	}
 
 	private int getCurrentPage() {
@@ -390,5 +399,8 @@ public class IndexActivity extends AbstractListViewActivity {
 					+ Integer.toString(page));
 		}
 	}
+
+
+	
 
 }

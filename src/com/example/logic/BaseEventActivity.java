@@ -13,6 +13,8 @@ import android.view.View;
 
 import com.example.lib.HttpPack;
 import com.example.spanishtalk.LoginActivity;
+import com.example.spanishtalk.R;
+import com.example.spanishtalk.LoginActivity.saveSessionTask;
 import com.example.spanishtalk.questions.IndexActivity;
 import com.example.spanishtalk.questions.NewActivity;
 import com.example.spanishtalk.questions.ShowActivity;
@@ -54,37 +56,39 @@ public class BaseEventActivity extends Activity {
 	}
 	
 	
-	public class CheckTask extends AsyncTask<Void, Void, Void> {
+	public class CheckTask extends AsyncTask<Void, Void, HttpResponse> {
 
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected HttpResponse doInBackground(Void... arg0) {
 			Context context = getApplicationContext();
 
 			HttpResponse response = HttpPack.sendRequest(context, BaseUrl.android);
 			if (response == null) {
-				
 				cancel(true);
+				return null;
 			}
-			return null;
+			return response;
 		}
 		
 		
 		@Override
 		protected void onCancelled() {
-			//SessionManagement session = new SessionManagement(getApplicationContext());
-			//session.clear();
 			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 			startActivity(intent);
 			finish();
 		}
 		
 		@Override
-		protected void onPostExecute(Void result) {
-		    if (isCancelled()) {
-		    	Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+		protected void onPostExecute(HttpResponse response) {
+			Context context = getApplicationContext();
+			Integer statusCode = response.getStatusLine().getStatusCode();
+			if ( (statusCode != 200) || isCancelled()) {
+				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 				startActivity(intent);
 				finish();
- 		    }
+				
+        		BaseAction.showFormNotice(context, context.getString(R.string.login_required));
+			}
 		}
 
 	}

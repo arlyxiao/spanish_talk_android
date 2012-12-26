@@ -20,7 +20,7 @@ public class QuestionDataSource
 {
 	private static QuestionDataSource datasource = null;
 	
-	private List<Question> data = null;
+	private static List<Question> data = null;
 	
 	private static int SIZE;
 	private static int TOTAL;
@@ -33,16 +33,23 @@ public class QuestionDataSource
 //		return datasource;
 //	}
 	
-	public QuestionDataSource(Context context, String url)
+	public static HttpResponse sendRequest(Context context, String url)
 	{
-		JSONObject question, creator;
-		String username, time;
+		
 		
 		HttpResponse response = HttpPack.sendRequest(context, url);
 		
 		if (response == null) {
-			return;
+			return null;
 		}
+		
+		return response;
+	}
+	
+	
+	public static List<Question> getQuestions(Context context, HttpResponse response) {
+		JSONObject question, creator;
+		String username, time;
 		
 		JSONObject r = HttpPack.getJsonByResponse(response);
 		
@@ -79,11 +86,12 @@ public class QuestionDataSource
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		return data;
 	}
 	
 	 
 	
-	public int getSize()
+	public static int getTotal()
 	{
 		return TOTAL;
 	}
