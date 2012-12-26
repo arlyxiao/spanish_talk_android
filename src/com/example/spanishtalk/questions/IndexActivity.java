@@ -183,22 +183,6 @@ public class IndexActivity extends AbstractListViewActivity {
 			customArrayAdapter.remove(question);
 			customArrayAdapter.notifyDataSetChanged();
 			
-//			Log.d("start list", "-----");
-//			for (Question q: questionList) {
-//				Log.d("list aaa ---", q.getContent());
-//			}
-//			Log.d("end list", "-----");
-//			
-//			questionList.remove((int)position);
-//			
-//			Log.d("start222 list", "-----");
-//			for (Question q: questionList) {
-//				Log.d("list aaa ---", q.getContent());
-//			}
-//			Log.d("end 2222list", "-----");
-//			
-//			
-//			adapter.notifyDataSetChanged();
 			super.onPostExecute(position);
 		}
 	}

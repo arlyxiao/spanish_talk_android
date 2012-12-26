@@ -282,14 +282,12 @@ public class ShowActivity extends BaseEventActivity {
 
 
 			if (response == null) {
-				Log.d("4434343 ---", "uuuuu");
 				cancel(true);
 				return null;
 			}
 			
 			Integer statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == 200) {
-				Log.d("888888 0----", "9999999");
 				return position;
 			}
 			
