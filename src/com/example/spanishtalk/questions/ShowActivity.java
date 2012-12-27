@@ -297,7 +297,6 @@ public class ShowActivity extends BaseEventActivity {
 
 		@Override
 		protected void onCancelled() {				
-			Context context = getApplicationContext();
 			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 

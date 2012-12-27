@@ -23,11 +23,13 @@ import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseUrl;
+import com.example.logic.HttpApi;
+import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.questions.IndexActivity;
 
 public class LoginActivity extends Activity {
 	private Context context;
-	private EditText edit_text_email, edit_text_password;
+	private EditText vEmail, vPassword;
 	private Button loginBtn;
 	private ProgressBar progressBar;
 	String user_id, email, username, password;
@@ -52,7 +54,39 @@ public class LoginActivity extends Activity {
 	}
 
 	public void doLogin(View view) {
-		new LoginTask().execute();
+		new SpanishTalkAsyncTask() {
+			
+			@Override
+			protected HttpResponse doPost() {
+				vEmail = (EditText) findViewById(R.id.login_email);
+				vPassword = (EditText) findViewById(R.id.login_password);
+				
+				String email = vEmail.getText().toString().trim();
+				String password = vPassword.getText().toString().trim();
+
+				HttpResponse response = HttpApi.doLogin(email, password);
+			
+				return response;
+			}
+			
+			@Override
+			protected void showNoticeView() {
+				progressBar.setVisibility(View.VISIBLE);
+				loginBtn.setVisibility(View.GONE);
+			}
+			
+			@Override
+			protected void hideNoticeView() {
+				progressBar.setVisibility(View.GONE);
+				loginBtn.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			protected void onSuccess(HttpResponse response) {
+				new saveSessionTask().execute(response);
+			}
+			
+		}.execute();
 	}
 
 	public void showRegister(View view) {
@@ -60,75 +94,6 @@ public class LoginActivity extends Activity {
 				RegisterActivity.class);
 		startActivity(intent);
 		finish();
-	}
-
-	public class LoginTask extends AsyncTask<Void, Void, HttpResponse> {
-
-		@Override
-		protected HttpResponse doInBackground(Void... arg0) {
-			context = getApplicationContext();
-			edit_text_email = (EditText) findViewById(R.id.login_email);
-			edit_text_password = (EditText) findViewById(R.id.login_password);
-
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("user[email]", edit_text_email.getText().toString()
-					.trim());
-			params.put("user[password]", edit_text_password.getText()
-					.toString().trim());
-
-			HttpResponse response = HttpPack.sendPost(BaseUrl.login, params);
-			
-			if (response == null) {
-				cancel(true);
-				return null;
-			}
-			
-			return response;
-
-		}
-
-		@Override
-		protected void onPreExecute() {
-			progressBar.setVisibility(View.VISIBLE);
-			loginBtn.setVisibility(View.INVISIBLE);
-
-			if (!HttpPack.hasConnected()) {
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-				cancel(true);
-				return;
-			}
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {			
-			progressBar.setVisibility(View.INVISIBLE);
-			loginBtn.setVisibility(View.VISIBLE);
-
-			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-		}
-
-		@Override
-		protected void onPostExecute(HttpResponse response) {
-			Context context = getApplicationContext();
-			progressBar.setVisibility(View.GONE);
-			loginBtn.setVisibility(View.VISIBLE);
-			
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			switch (statusCode) {
-            	case 200:  
-            		new saveSessionTask().execute(response);
-            		break;
-            	default:
-            		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.login_form_error));
-            		break;
-			}
-			
-
-			// super.onPostExecute(result);
-		}
-
 	}
 	
 	
@@ -143,7 +108,7 @@ public class LoginActivity extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			if ( (session.getUserId() != null) && (session.getCookie() != null) ) {
-				Intent intent = new Intent(context, IndexActivity.class);
+				Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
     			startActivity(intent);
     			finish();
 			}
