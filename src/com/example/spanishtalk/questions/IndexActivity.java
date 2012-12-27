@@ -124,7 +124,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Context context = getApplicationContext();
-		if (!HttpPack.hasConnected(this)) {
+		if (!HttpPack.hasConnected()) {
 			BaseDialog.showSingleAlert(
 					context.getString(R.string.network_error),
 					IndexActivity.this);
@@ -214,7 +214,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 
 		@Override
 		protected void onPreExecute() {
-			if (!HttpPack.hasConnected(IndexActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
 						context.getString(R.string.network_error));
@@ -273,7 +273,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 			vListNotice.setVisibility(View.GONE);
 			progressBar.setVisibility(View.VISIBLE);
 
-			if (!HttpPack.hasConnected(IndexActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				BaseAction.showFormNotice(context,
 						context.getString(R.string.network_error));
 				cancel(true);

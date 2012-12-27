@@ -199,7 +199,7 @@ public class ShowActivity extends BaseEventActivity {
 		protected void onPreExecute() {
 			progressBar.setVisibility(View.VISIBLE);
 			
-			if (!HttpPack.hasConnected(ShowActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
 						context.getString(R.string.network_error));
@@ -286,7 +286,7 @@ public class ShowActivity extends BaseEventActivity {
 		
 		@Override
 		protected void onPreExecute() {				
-			if (!HttpPack.hasConnected(ShowActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
 						context.getString(R.string.network_error));

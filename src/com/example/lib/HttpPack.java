@@ -29,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import com.example.spanishtalk.SpanishTalkApplication;
+
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Log;
@@ -37,7 +39,8 @@ import android.util.Log;
 
 
 public class HttpPack {
-	public static boolean hasConnected(Activity t) {
+	public static boolean hasConnected() {
+		Context t = SpanishTalkApplication.context;
 		final ConnectivityManager connMgr = (ConnectivityManager) t
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 

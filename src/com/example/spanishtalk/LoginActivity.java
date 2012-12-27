@@ -92,7 +92,7 @@ public class LoginActivity extends Activity {
 			progressBar.setVisibility(View.VISIBLE);
 			loginBtn.setVisibility(View.INVISIBLE);
 
-			if (!HttpPack.hasConnected(LoginActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
 						context.getString(R.string.network_error));

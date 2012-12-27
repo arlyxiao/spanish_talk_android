@@ -74,7 +74,7 @@ public class RegisterActivity extends Activity {
 	public void doRegister(View view) {
 		
 		// 先判断网络是否连接正常
-		if (HttpPack.hasConnected(this)) {
+		if (HttpPack.hasConnected()) {
 			if (validateRegisterForm()) {
 				clearErrorList();
 				
@@ -169,7 +169,7 @@ public class RegisterActivity extends Activity {
 			progressBar.setVisibility(View.VISIBLE);
 			registerBtn.setVisibility(View.INVISIBLE);
 
-			if (!HttpPack.hasConnected(RegisterActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				BaseAction.showFormNotice(context, context.getString(R.string.network_error));
 				cancel(true);
 				return;

@@ -107,7 +107,7 @@ public class NewActivity extends BaseEventActivity {
 		protected void onPreExecute() {
 			progressBar.setVisibility(View.VISIBLE);
 
-			if (!HttpPack.hasConnected(NewActivity.this)) {
+			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
 				BaseAction.showFormNotice(context,
 						context.getString(R.string.network_error));
