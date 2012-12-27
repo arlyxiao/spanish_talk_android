@@ -69,7 +69,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_questions_index);
-		
+				
 		vQuestionList = (ListView) findViewById(android.R.id.list);
 		vListNotice = (TextView) findViewById(R.id.list_notice);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -146,8 +146,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		creatorId = ((Question) getListAdapter().getItem(
 				position)).getCreatorId();
 		
-		SessionManagement session = new SessionManagement(
-				getApplicationContext());
+		SessionManagement session = new SessionManagement();
 		if (session.getUserId() != creatorId) {
 			return true;
 		}
@@ -197,8 +196,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 			Integer position = questions[1];
 			String url = BaseUrl.questionDelete + "/"
 					+ Integer.toString(questionId) + ".json";
-			HttpResponse response = HttpPack.sendDelete(
-					getApplicationContext(), url);
+			HttpResponse response = HttpPack.sendDelete(url);
 
 			if (response == null) {
 				cancel(true);
@@ -249,7 +247,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 
 		@Override
 		protected HttpResponse doInBackground(String... urls) {
-			HttpResponse response = QuestionDataSource.sendRequest(context, urls[0]);
+			HttpResponse response = QuestionDataSource.sendRequest(urls[0]);
 
 			Integer statusCode = response.getStatusLine().getStatusCode();
 			

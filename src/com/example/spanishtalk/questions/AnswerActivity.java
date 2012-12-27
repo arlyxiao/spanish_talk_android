@@ -82,8 +82,7 @@ public class AnswerActivity extends BaseEventActivity {
 
  			String url = BaseUrl.answerCreate + "/"
  					+ Integer.toString(questions[0]) + "/answers.json";
- 			HttpResponse response = HttpPack.sendPost(getApplicationContext(),
- 					url, params);
+ 			HttpResponse response = HttpPack.sendPost(url, params);
  			
  			if (response == null) {
  				cancel(true);

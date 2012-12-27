@@ -62,7 +62,7 @@ public class BaseEventActivity extends Activity {
 		protected HttpResponse doInBackground(Void... arg0) {
 			Context context = getApplicationContext();
 
-			HttpResponse response = HttpPack.sendRequest(context, BaseUrl.android);
+			HttpResponse response = HttpPack.sendRequest(BaseUrl.android);
 			if (response == null) {
 				cancel(true);
 				return null;

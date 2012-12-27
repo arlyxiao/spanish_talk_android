@@ -139,7 +139,7 @@ public class ShowActivity extends BaseEventActivity {
 	            	final Object o = lv.getItemAtPosition(position);
 	            	final Answer currentAnswer = (Answer) o;
 	            	
-	            	SessionManagement session = new SessionManagement(getApplicationContext());
+	            	SessionManagement session = new SessionManagement();
 	        		if (session.getUserId() != currentAnswer.getCreatorId()) {
 	        			return true;
  	        		}
@@ -177,8 +177,7 @@ public class ShowActivity extends BaseEventActivity {
 		protected JSONObject doInBackground(Integer... questions) {
 			String url = BaseUrl.questionShow + "/"
 					+ Integer.toString(questions[0]) + ".json";
-			HttpResponse response = HttpPack.sendRequest(
-					getApplicationContext(), url);
+			HttpResponse response = HttpPack.sendRequest(url);
 
 
 			if (response == null) {
@@ -258,16 +257,6 @@ public class ShowActivity extends BaseEventActivity {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 删除回答
 	public class DeleteAnswerTask extends AsyncTask<Integer, Void, Integer> {
 
@@ -277,8 +266,7 @@ public class ShowActivity extends BaseEventActivity {
 			Integer position = answers[1];
 			String url = BaseUrl.answerDelete + "/"
 					+ Integer.toString(answerId) + ".json";
-			HttpResponse response = HttpPack.sendDelete(
-					getApplicationContext(), url);
+			HttpResponse response = HttpPack.sendDelete(url);
 
 
 			if (response == null) {

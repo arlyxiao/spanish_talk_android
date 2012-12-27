@@ -41,7 +41,7 @@ public class LoginActivity extends Activity {
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		loginBtn = (Button) findViewById(R.id.linkToLogin);
 
-		session = new SessionManagement(getApplicationContext());
+		session = new SessionManagement();
 		session.clear();
 	}
 
@@ -76,7 +76,7 @@ public class LoginActivity extends Activity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString().trim());
 
-			HttpResponse response = HttpPack.sendPost(context, BaseUrl.login, params);
+			HttpResponse response = HttpPack.sendPost(BaseUrl.login, params);
 			
 			if (response == null) {
 				cancel(true);
@@ -140,7 +140,7 @@ public class LoginActivity extends Activity {
 	public class saveSessionTask extends AsyncTask<HttpResponse, Void, Void> {
 		@Override
 		protected Void doInBackground(HttpResponse... responses) {
-			BaseAction.saveUserSessionByResponse(getApplicationContext(), responses[0]);
+			BaseAction.saveUserSessionByResponse(responses[0]);
 			return null;
 		}
 		

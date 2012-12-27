@@ -50,8 +50,7 @@ public class AbstractListViewActivity extends ListActivity
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			Context context = getApplicationContext();
-			HttpResponse response = HttpPack.sendRequest(context, BaseUrl.android);
+			HttpResponse response = HttpPack.sendRequest(BaseUrl.android);
 			if (response == null) {
 				cancel(false);
 			}

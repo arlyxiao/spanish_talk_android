@@ -129,7 +129,7 @@ public class HttpPack {
 	}	
 	
 	
-	public static HttpResponse sendPost(Context context, String url, Map<String, String> params) {
+	public static HttpResponse sendPost(String url, Map<String, String> params) {
 		CookieStore cookieStore = new BasicCookieStore();  
         HttpContext localContext = new BasicHttpContext();
         
@@ -139,7 +139,7 @@ public class HttpPack {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		
-		SessionManagement session = new SessionManagement(context);
+		SessionManagement session = new SessionManagement();
 		if (session.getCookie() != null) {
 			// Log.d("Test Cookie: ", session.getCookie());
 			httppost.setHeader("Cookie", session.getCookie());
@@ -170,12 +170,12 @@ public class HttpPack {
 	}
 	
 	
-	public static HttpResponse sendRequest(Context context, String url) {
+	public static HttpResponse sendRequest(String url) {
         
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpGet httpget = new HttpGet(url);
 		
-		SessionManagement session = new SessionManagement(context);
+		SessionManagement session = new SessionManagement();
 		if (session.getCookie() != null) {
 			// Log.d("Test Cookie: ", session.getCookie());
 			httpget.setHeader("Cookie", session.getCookie());
@@ -211,7 +211,7 @@ public class HttpPack {
 	
 	
 	
-	public static HttpResponse sendDelete(Context context, String url) {
+	public static HttpResponse sendDelete(String url) {
 		CookieStore cookieStore = new BasicCookieStore();  
         HttpContext localContext = new BasicHttpContext();
         
@@ -221,7 +221,7 @@ public class HttpPack {
 		HttpDelete httpdelete = new HttpDelete(url);
 		
 		
-		SessionManagement session = new SessionManagement(context);
+		SessionManagement session = new SessionManagement();
 		if (session.getCookie() != null) {
 			httpdelete.setHeader("Cookie", session.getCookie());
 		}

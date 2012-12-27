@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
 import com.example.spanishtalk.LoginActivity;
+import com.example.spanishtalk.SpanishTalkApplication;
 
 public class SessionManagement {
 	// Shared Preferences
@@ -28,8 +30,8 @@ public class SessionManagement {
 	public static final String KEY_USERNAME = "username";
 	public static final String KEY_COOKIE = "cookie";
 
-	public SessionManagement(Context context) {
-		this._context = context;
+	public SessionManagement() {
+		this._context = SpanishTalkApplication.context;
 		pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 		editor = pref.edit();
 	}

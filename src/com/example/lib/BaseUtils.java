@@ -14,7 +14,8 @@ import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.Toast;
-import com.example.application.SpanishTalkApplication;
+
+import com.example.spanishtalk.SpanishTalkApplication;
 
 import java.io.*;
 import java.text.ParseException;

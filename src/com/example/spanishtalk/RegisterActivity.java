@@ -44,7 +44,7 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.activity_register);
 		load_ui();
 				
-		session = new SessionManagement(getApplicationContext());
+		session = new SessionManagement();
 		session.clear();
 	}
 
@@ -151,7 +151,7 @@ public class RegisterActivity extends Activity {
 			params.put("user[password]", edit_text_password.getText()
 					.toString().trim());
 
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(), BaseUrl.register, params);
+			HttpResponse response = HttpPack.sendPost(BaseUrl.register, params);
 			
 			if (response == null) {
 				cancel(true);
@@ -212,7 +212,7 @@ public class RegisterActivity extends Activity {
 	public class saveSessionTask extends AsyncTask<HttpResponse, Void, Void> {
 		@Override
 		protected Void doInBackground(HttpResponse... responses) {
-			BaseAction.saveUserSessionByResponse(getApplicationContext(), responses[0]);
+			BaseAction.saveUserSessionByResponse(responses[0]);
 			return null;
 		}
 		

@@ -33,11 +33,11 @@ public class QuestionDataSource
 //		return datasource;
 //	}
 	
-	public static HttpResponse sendRequest(Context context, String url)
+	public static HttpResponse sendRequest(String url)
 	{
 		
 		
-		HttpResponse response = HttpPack.sendRequest(context, url);
+		HttpResponse response = HttpPack.sendRequest(url);
 		
 		if (response == null) {
 			return null;

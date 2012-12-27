@@ -59,7 +59,7 @@ public class NewActivity extends BaseEventActivity {
 		sendBtn = (Button) findViewById(R.id.link_to_question);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
-		user_id = new SessionManagement(getApplicationContext()).getUserId();
+		user_id = new SessionManagement().getUserId();
 	}
 
 	public boolean validateQuestionForm(String title, String content) {
@@ -93,8 +93,7 @@ public class NewActivity extends BaseEventActivity {
 			params.put("question[content]", edit_text_content.getText()
 					.toString());
 
-			HttpResponse response = HttpPack.sendPost(getApplicationContext(),
-					BaseUrl.questionCreate, params);
+			HttpResponse response = HttpPack.sendPost(BaseUrl.questionCreate, params);
 	
 			if (response == null) {
 				cancel(true);

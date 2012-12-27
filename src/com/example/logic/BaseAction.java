@@ -15,15 +15,15 @@ import com.example.lib.SessionManagement;
 
 public class BaseAction {
 	
-	public static void checkLogin(Context context) {
-		SessionManagement session = new SessionManagement(context);
+	public static void checkLogin() {
+		SessionManagement session = new SessionManagement();
 		if ((session.getUserId() == null) || (session.getCookie() == null)) {
 			session.logoutUser();
 		}
 	}
 	
-	public static void clickLogout(Context context, View view) {
-		SessionManagement session = new SessionManagement(context);
+	public static void clickLogout(View view) {
+		SessionManagement session = new SessionManagement();
 		session.logoutUser();
 	}
 
@@ -36,7 +36,7 @@ public class BaseAction {
 	}
 
 	
-	public static void saveUserSessionByResponse(Context context, HttpResponse response) {
+	public static void saveUserSessionByResponse(HttpResponse response) {
 		JSONObject user = HttpPack.getJsonByResponse(response);
 		try {
 			String username = user.getString("username");
@@ -44,7 +44,7 @@ public class BaseAction {
 			String user_id = user.getString("id");
 			String cookie = HttpPack.getCookieByResponse(response);
 			
-			SessionManagement session = new SessionManagement(context);
+			SessionManagement session = new SessionManagement();
 			session.createLoginSession(user_id, username);
 			session.saveCookie(cookie);
 		} catch (JSONException e) {

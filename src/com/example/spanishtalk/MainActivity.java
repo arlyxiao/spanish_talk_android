@@ -17,8 +17,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		SessionManagement session = new SessionManagement(
-				getApplicationContext());
+		SessionManagement session = new SessionManagement();
 		TextView lblName = (TextView) findViewById(R.id.lblName);
 		TextView lblEmail = (TextView) findViewById(R.id.lblEmail);
 
