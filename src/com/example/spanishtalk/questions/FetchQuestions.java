@@ -42,7 +42,7 @@ public class FetchQuestions {
 				loading = true;
 				
 				vListNotice.setVisibility(View.GONE);
-				progressBar.setVisibility(View.VISIBLE);
+				//progressBar.setVisibility(View.VISIBLE);
 			}
 					
 		}.execute();

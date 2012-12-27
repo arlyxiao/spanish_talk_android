@@ -19,7 +19,7 @@ import com.example.spanishtalk.SpanishTalkApplication;
 
 public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, HttpResponse> {
 	private Context context = SpanishTalkApplication.context;
-	protected ProgressBar progressBar;
+	private ProgressBar progressBar;
 	
 	public SpanishTalkAsyncTask() {
     }
