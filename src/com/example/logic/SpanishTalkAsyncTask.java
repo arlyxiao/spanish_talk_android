@@ -4,6 +4,8 @@ import org.apache.http.HttpResponse;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.lib.HttpPack;
 import com.example.spanishtalk.R;
@@ -14,9 +16,15 @@ import com.example.spanishtalk.SpanishTalkApplication;
 
 public class SpanishTalkAsyncTask extends AsyncTask<Void, Void, HttpResponse> {
 	private Context context = SpanishTalkApplication.context;
+	private ProgressBar progressBar;
 	
+	public SpanishTalkAsyncTask() {
+    }
 	
-
+    public SpanishTalkAsyncTask(ProgressBar v) {
+    	progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
+    }
+    
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
 		HttpResponse response = doPost();
@@ -71,11 +79,11 @@ public class SpanishTalkAsyncTask extends AsyncTask<Void, Void, HttpResponse> {
 	}
 	
 	protected void showNoticeView() {
-		
+		progressBar.setVisibility(View.VISIBLE);
 	}
 	
 	protected void hideNoticeView() {
-		
+		progressBar.setVisibility(View.GONE);
 	}
 	
 	protected void onSuccess(HttpResponse response) {

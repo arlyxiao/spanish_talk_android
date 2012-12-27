@@ -24,4 +24,13 @@ public class HttpApi {
 		HttpResponse response = HttpPack.sendPost(BaseUrl.register, params);
 		return response;
 	}
+	
+	public static HttpResponse createQuestion(String title, String content) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("question[title]", title);
+		params.put("question[content]", content);
+
+		HttpResponse response = HttpPack.sendPost(BaseUrl.questionCreate, params);
+		return response;
+	}
 }

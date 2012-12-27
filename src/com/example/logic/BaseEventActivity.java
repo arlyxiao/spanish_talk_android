@@ -20,11 +20,14 @@ import com.example.spanishtalk.questions.NewActivity;
 import com.example.spanishtalk.questions.ShowActivity;
 
 public class BaseEventActivity extends Activity {
+	public Context context;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		new CheckTask().execute();
+		
+		context = getApplicationContext();
 	}
 	
 	public void returnPreviousPage(View view) {

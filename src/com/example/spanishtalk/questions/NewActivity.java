@@ -1,19 +1,14 @@
 package com.example.spanishtalk.questions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -26,14 +21,15 @@ import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
-import com.example.logic.BaseUrl;
+import com.example.logic.HttpApi;
+import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
-import com.example.spanishtalk.RegisterActivity.saveSessionTask;
+
 
 public class NewActivity extends BaseEventActivity {
-
-	private EditText edit_text_title, edit_text_content;
+	
+	private EditText vTitle, vContent;
 	private Button sendBtn;
 	private ProgressBar progressBar;
 	String title, content;
@@ -54,8 +50,8 @@ public class NewActivity extends BaseEventActivity {
 	}
 
 	private void loadUi() {
-		edit_text_title = (EditText) findViewById(R.id.question_title);
-		edit_text_content = (EditText) findViewById(R.id.question_content);
+		vTitle = (EditText) findViewById(R.id.question_title);
+		vContent = (EditText) findViewById(R.id.question_content);
 		
 		sendBtn = (Button) findViewById(R.id.link_to_question);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -65,10 +61,7 @@ public class NewActivity extends BaseEventActivity {
 
 	public boolean validateQuestionForm(String title, String content) {
 		if (BaseUtils.is_str_blank(title) || BaseUtils.is_str_blank(content)) {
-			Context context = getApplicationContext();
-			Toast.makeText(context, R.string.new_question_required,
-					Toast.LENGTH_SHORT).show();
-
+			BaseAction.showTopNotice(SpanishTalkApplication.context.getString(R.string.new_question_required));
 			return false;
 		}
 
@@ -76,83 +69,32 @@ public class NewActivity extends BaseEventActivity {
 	}
 
 	public void postQuestion(View view) {
-		title = edit_text_title.getText().toString();
-		content = edit_text_content.getText().toString();
+		title = vTitle.getText().toString();
+		content = vContent.getText().toString();
 
-		if (validateQuestionForm(title, content)) {
-			new PostQuestionTask().execute();
+		if (!validateQuestionForm(title, content)) {
+			return;
 		}
-		
-	}
-
-	public class PostQuestionTask extends AsyncTask<Void, Void, HttpResponse> {
-
-		@Override
-		protected HttpResponse doInBackground(Void... arg0) {
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("question[title]", edit_text_title.getText().toString());
-			params.put("question[content]", edit_text_content.getText()
-					.toString());
-
-			HttpResponse response = HttpPack.sendPost(BaseUrl.questionCreate, params);
-	
-			if (response == null) {
-				cancel(true);
-				return null;
+		new SpanishTalkAsyncTask(progressBar) {
+			@Override
+			protected HttpResponse doPost() {
+				HttpResponse response = HttpApi.createQuestion(title, content);
+				return response;
 			}
 			
-			return response;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			progressBar.setVisibility(View.VISIBLE);
-
-			if (!HttpPack.hasConnected()) {
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-				cancel(true);
-				return;
-			}
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {
-			progressBar.setVisibility(View.GONE);
-
-			Context context = getApplicationContext();
-			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-		}
-
-		@Override
-		protected void onPostExecute(HttpResponse response) {
-			
-			Context context = getApplicationContext();
-
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode != 200) {
-				progressBar.setVisibility(View.GONE);
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-			} else {
+			@Override
+			protected void onSuccess(HttpResponse response) {
 				new saveQuestionTask().execute(response);
 			}
-
-			super.onPostExecute(response);
-		}
-
+			
+		}.execute();
 	}
-	
-	
+
 	
 	public class saveQuestionTask extends AsyncTask<HttpResponse, Void, JSONObject> {
 		@Override
 		protected JSONObject doInBackground(HttpResponse... responses) {
-			JSONObject q;
-			
-			q = HttpPack.getJsonByResponse(responses[0]);
-			
-			return q;
+			return HttpPack.getJsonByResponse(responses[0]);
 		}
 		
 		@Override

@@ -63,7 +63,7 @@ public class AnswerActivity extends BaseEventActivity {
 			Context context = getApplicationContext();
 			
 			Toast toast = Toast.makeText(context, R.string.answer_content_required, Toast.LENGTH_SHORT);
-			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.setGravity(Gravity.TOP, 0, 0);
 			toast.show();
 			return;
 		}
