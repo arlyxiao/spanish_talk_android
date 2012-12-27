@@ -73,7 +73,7 @@ public class RegisterActivity extends Activity {
 			
 		clearErrorList();
 		
-		new SpanishTalkAsyncTask() {
+		new SpanishTalkAsyncTask<Void>() {
 			
 			@Override
 			protected HttpResponse doPost() {

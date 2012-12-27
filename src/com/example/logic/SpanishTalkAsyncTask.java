@@ -14,7 +14,7 @@ import com.example.spanishtalk.SpanishTalkApplication;
 
 
 
-public class SpanishTalkAsyncTask extends AsyncTask<Void, Void, HttpResponse> {
+public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, HttpResponse> {
 	private Context context = SpanishTalkApplication.context;
 	private ProgressBar progressBar;
 	
@@ -26,7 +26,7 @@ public class SpanishTalkAsyncTask extends AsyncTask<Void, Void, HttpResponse> {
     }
     
 	@Override
-	protected HttpResponse doInBackground(Void... arg0) {
+	protected HttpResponse doInBackground(TParams... arg0) {
 		HttpResponse response = doPost();
 		
 		if (response == null) {

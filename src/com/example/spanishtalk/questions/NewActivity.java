@@ -75,7 +75,7 @@ public class NewActivity extends BaseEventActivity {
 		if (!validateQuestionForm(title, content)) {
 			return;
 		}
-		new SpanishTalkAsyncTask(progressBar) {
+		new SpanishTalkAsyncTask<Void>(progressBar) {
 			@Override
 			protected HttpResponse doPost() {
 				HttpResponse response = HttpApi.createQuestion(title, content);

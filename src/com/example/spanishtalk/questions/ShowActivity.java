@@ -32,6 +32,8 @@ import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
+import com.example.logic.HttpApi;
+import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.ContactActivity;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
@@ -64,9 +66,59 @@ public class ShowActivity extends BaseEventActivity {
 		Intent myIntent = getIntent();
 		Bundle b = myIntent.getExtras();
 		questionId = b.getInt("questionId");
+		
+		
+		new SpanishTalkAsyncTask<Integer>(progressBar) {
+			@Override
+			protected HttpResponse doPost() {
+				HttpResponse response = HttpApi.getQuestion(questionId);
+				return response;
+			}
+			
+			@Override
+			protected void onSuccess(HttpResponse response) {
+				new showQuestionTask().execute(response);
+			}
+			
+		}.execute(questionId);
 
-		new ShowQuestionTask().execute(questionId);
+	}
+	
+	
+	
+	public class showQuestionTask extends AsyncTask<HttpResponse, Void, JSONObject> {
+		@Override
+		protected JSONObject doInBackground(HttpResponse... responses) {
+			return HttpPack.getJsonByResponse(responses[0]);
+		}
+		
+		@Override
+		protected void onPostExecute(JSONObject question) {
+			JSONObject creator;
+			String username, time;
+			JSONArray answers;
+			try {
+				qTitle.setText(question.getString("title"));
+				qContent.setText(question.getString("content"));
 
+				creator = question.getJSONObject("creator");
+				username = creator.getString("username");
+				qUsername.setText(username);
+				
+				
+				time = question.getString("created_at").substring(0, 10);
+				qCreatedAt.setText(time);
+				
+				
+				// 显示回复列表
+				answers = question.getJSONArray("answers");
+				qCount.setText(Integer.toString(answers.length()) + getApplicationContext().getString(R.string.answers_for_count));
+				getAnswers(answers);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -150,7 +202,28 @@ public class ShowActivity extends BaseEventActivity {
                     .setPositiveButton(getApplicationContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                         	
-                        	new DeleteAnswerTask().execute(currentAnswer.getID(), position);
+                        	// new DeleteAnswerTask().execute(currentAnswer.getID(), position);
+                        	
+                        	new SpanishTalkAsyncTask<Integer>() {
+                        		@Override
+                    			protected HttpResponse doPost() {
+                    				HttpResponse response = HttpApi.deleteAnswer(currentAnswer.getID());
+                    				return response;
+                    			}
+                    			
+                    			@Override
+                    			protected void onSuccess(HttpResponse response) {
+                    				answerList.remove((int)position);
+                    	        	
+                    	        	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
+                    			}
+                    			
+                    			protected void showNoticeView() {
+                     			}
+                    			
+                    			protected void hideNoticeView() {
+                     			}
+                        	}.execute(currentAnswer.getID());
                         	
                         }
                     })
@@ -171,143 +244,6 @@ public class ShowActivity extends BaseEventActivity {
 		}
 	}
 
-	// 显示问题内容
-	public class ShowQuestionTask extends AsyncTask<Integer, Void, JSONObject> {
-
-		@Override
-		protected JSONObject doInBackground(Integer... questions) {
-			String url = BaseUrl.questionShow + "/"
-					+ Integer.toString(questions[0]) + ".json";
-			HttpResponse response = HttpPack.sendRequest(url);
-
-
-			if (response == null) {
-				cancel(true);
-				return null;
-			}
-			
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				return HttpPack.getJsonByResponse(response);
-			}
-			
-			cancel(true);
-			return null;
-		}
-		
-		
-		@Override
-		protected void onPreExecute() {
-			progressBar.setVisibility(View.VISIBLE);
-			
-			if (!HttpPack.hasConnected()) {
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-				cancel(true);
-				return;
-			}
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {
-			progressBar.setVisibility(View.GONE);
-			
-			Context context = getApplicationContext();
-			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject question) {
-			progressBar.setVisibility(View.GONE);
-			
-			
-			JSONObject creator;
-			String username, time;
-			JSONArray answers;
-			try {
-				qTitle.setText(question.getString("title"));
-				qContent.setText(question.getString("content"));
-
-				creator = question.getJSONObject("creator");
-				username = creator.getString("username");
-				qUsername.setText(username);
-				
-				
-				time = question.getString("created_at").substring(0, 10);
-				qCreatedAt.setText(time);
-				
-				
-				// 显示回复列表
-				answers = question.getJSONArray("answers");
-				qCount.setText(Integer.toString(answers.length()) + getApplicationContext().getString(R.string.answers_for_count));
-				getAnswers(answers);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			super.onPostExecute(question);
-		}
-	}
-	
-	
-	
-	
-	
-	
-	// 删除回答
-	public class DeleteAnswerTask extends AsyncTask<Integer, Void, Integer> {
-
-		@Override
-		protected Integer doInBackground(Integer... answers) {
-			Integer answerId = answers[0];
-			Integer position = answers[1];
-			String url = BaseUrl.answerDelete + "/"
-					+ Integer.toString(answerId) + ".json";
-			HttpResponse response = HttpPack.sendDelete(url);
-
-
-			if (response == null) {
-				cancel(true);
-				return null;
-			}
-			
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				return position;
-			}
-			
-			cancel(true);
-			return null;
-		}
-		
-		
-		@Override
-		protected void onPreExecute() {				
-			if (!HttpPack.hasConnected()) {
-				Context context = getApplicationContext();
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-				cancel(true);
-				return;
-			}
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {				
-			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-		}
-
-		@Override
-		protected void onPostExecute(Integer position) {
-			answerList.remove((int)position);
-        	
-        	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
-			super.onPostExecute(position);
-		}
-	}
 
 	
 }

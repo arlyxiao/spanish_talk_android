@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
 	}
 
 	public void doLogin(View view) {
-		new SpanishTalkAsyncTask() {
+		new SpanishTalkAsyncTask<Void>() {
 			
 			@Override
 			protected HttpResponse doPost() {

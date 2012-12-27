@@ -45,4 +45,21 @@ public class HttpApi {
 		HttpResponse response = HttpPack.sendPost(url, params);
 		return response;
 	}
+	
+	
+	public static HttpResponse getQuestion(Integer questionId) {
+		String url = BaseUrl.questionShow + "/"
+				+ Integer.toString(questionId) + ".json";
+		HttpResponse response = HttpPack.sendRequest(url);
+		
+		return response;
+	}
+	
+	public static HttpResponse deleteAnswer(Integer answerId) {
+		String url = BaseUrl.answerDelete + "/"
+				+ Integer.toString(answerId) + ".json";
+		HttpResponse response = HttpPack.sendDelete(url);
+		
+		return response;
+	}
 }

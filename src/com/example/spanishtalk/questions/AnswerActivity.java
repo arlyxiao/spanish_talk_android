@@ -1,34 +1,24 @@
 package com.example.spanishtalk.questions;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.lib.BaseUtils;
-import com.example.lib.HttpPack;
 import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
-import com.example.logic.BaseUrl;
 import com.example.logic.HttpApi;
 import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
-import com.example.spanishtalk.questions.NewActivity.saveQuestionTask;
+
 
 public class AnswerActivity extends BaseEventActivity {
 	private EditText vContent;
@@ -66,7 +56,7 @@ public class AnswerActivity extends BaseEventActivity {
 			return;
 		}
 		
-		new SpanishTalkAsyncTask(progressBar) {
+		new SpanishTalkAsyncTask<Void>(progressBar) {
 			@Override
 			protected HttpResponse doPost() {
 				HttpResponse response = HttpApi.answerQuestion(questionId, content);
