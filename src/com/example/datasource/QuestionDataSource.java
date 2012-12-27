@@ -13,6 +13,7 @@ import android.content.Context;
 
 import com.example.lib.HttpPack;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.tables.Question;
 
 
@@ -25,18 +26,10 @@ public class QuestionDataSource
 	private static int SIZE;
 	private static int TOTAL;
 	
-//	public static QuestionDataSource getInstance(Context context, String url)
-//	{
-//		if (datasource == null) {
-//			datasource = new QuestionDataSource(context, url);
-//		}
-//		return datasource;
-//	}
+
 	
 	public static HttpResponse sendRequest(String url)
 	{
-		
-		
 		HttpResponse response = HttpPack.sendRequest(url);
 		
 		if (response == null) {
@@ -47,7 +40,7 @@ public class QuestionDataSource
 	}
 	
 	
-	public static List<Question> getQuestions(Context context, HttpResponse response) {
+	public static List<Question> getQuestions(HttpResponse response) {
 		JSONObject question, creator;
 		String username, time;
 		
@@ -79,7 +72,7 @@ public class QuestionDataSource
 				
 				JSONArray answers = question.getJSONArray("answers");
 				String answerCount = Integer.toString(answers.length());
-				qr.setAnswerCount(answerCount + context.getString(R.string.answers_for_count));
+				qr.setAnswerCount(answerCount + SpanishTalkApplication.context.getString(R.string.answers_for_count));
 				
 				data.add(qr);
 			}

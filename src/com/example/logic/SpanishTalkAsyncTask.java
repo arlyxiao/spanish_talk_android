@@ -2,12 +2,15 @@ package com.example.logic;
 
 import org.apache.http.HttpResponse;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.lib.HttpPack;
+import com.example.lib.SessionManagement;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
 
@@ -21,12 +24,14 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
 	public SpanishTalkAsyncTask() {
     }
 	
+	
     public SpanishTalkAsyncTask(ProgressBar v) {
     	progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
     }
     
 	@Override
 	protected HttpResponse doInBackground(TParams... arg0) {
+		
 		HttpResponse response = doPost();
 		
 		if (response == null) {
@@ -40,7 +45,7 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
 	@Override
 	protected void onPreExecute() {
 		showNoticeView();
-		
+				
 		if (!HttpPack.hasConnected()) {
 			BaseAction.showFormNotice(context.getString(R.string.network_error));
 			cancel(true);
@@ -65,6 +70,9 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
         	case 200:  
         		onSuccess(response);
         		break;
+        	case 401:
+        		loginRequired();
+        		break;
         	default:
         		BaseAction.showFormNotice(context.getString(R.string.login_form_error));
         		break;
@@ -87,6 +95,10 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
 	}
 	
 	protected void onSuccess(HttpResponse response) {
+		
+	}
+	
+	protected void loginRequired() {
 		
 	}
 

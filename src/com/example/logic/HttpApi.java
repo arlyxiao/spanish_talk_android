@@ -3,9 +3,19 @@ package com.example.logic;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpResponse;
+
+import android.util.Log;
+
 import com.example.lib.HttpPack;
 
 public class HttpApi {
+	public static HttpResponse testAndroidPage() {
+		Log.d(BaseUrl.android, "asdfaf");
+		HttpResponse response = HttpPack.sendRequest(BaseUrl.android);
+		return response;
+	}
+	
+	
 	public static HttpResponse doLogin(String email, String password) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("user[email]", email);

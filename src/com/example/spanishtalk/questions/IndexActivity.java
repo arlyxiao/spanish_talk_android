@@ -1,11 +1,11 @@
 package com.example.spanishtalk.questions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,32 +15,28 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.datasource.AnswerBaseAdapter;
 import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
 import com.example.lib.BaseDialog;
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
-import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
+import com.example.logic.CheckLogin;
+import com.example.logic.HttpApi;
+import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
-import com.example.spanishtalk.RegisterActivity;
 import com.example.spanishtalk.SpanishTalkApplication;
-import com.example.spanishtalk.LoginActivity.saveSessionTask;
-import com.example.tables.Answer;
 import com.example.tables.Question;
 
 public class IndexActivity extends AbstractListViewActivity implements OnItemLongClickListener{
-	private Context context;
 
 	private int offset = 0;
 
@@ -69,7 +65,8 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_questions_index);
-				
+	
+		
 		vQuestionList = (ListView) findViewById(android.R.id.list);
 		vListNotice = (TextView) findViewById(R.id.list_notice);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -226,7 +223,6 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 
 		@Override
 		protected void onCancelled() {
-			Context context = getApplicationContext();
 			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
@@ -252,7 +248,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 			if (statusCode == 200) {
 				try {
     				Thread.sleep(1000);
-    				questionList = QuestionDataSource.getQuestions(getApplicationContext(), response);
+    				questionList = QuestionDataSource.getQuestions(response);
     				
 				} catch (InterruptedException e) {
     				Log.e("PagingButtons", e.getMessage());
@@ -264,9 +260,9 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 
 		@Override
 		protected void onPreExecute() {
+			new CheckLogin(IndexActivity.this);
+			
 			loading = true;
-
-			context = getApplicationContext();
 			
 			vListNotice.setVisibility(View.GONE);
 			progressBar.setVisibility(View.VISIBLE);
@@ -282,7 +278,6 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 
 		@Override
 		protected void onCancelled() {
-			context = getApplicationContext();
 			progressBar.setVisibility(View.INVISIBLE);
 
 			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
