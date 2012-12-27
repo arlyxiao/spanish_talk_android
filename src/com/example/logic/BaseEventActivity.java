@@ -87,7 +87,7 @@ public class BaseEventActivity extends Activity {
 				startActivity(intent);
 				finish();
 				
-        		BaseAction.showFormNotice(context, context.getString(R.string.login_required));
+        		BaseAction.showFormNotice(context.getString(R.string.login_required));
 			}
 		}
 

@@ -34,6 +34,7 @@ import com.example.logic.BaseUrl;
 import com.example.spanishtalk.LoginActivity;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.RegisterActivity;
+import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.spanishtalk.LoginActivity.saveSessionTask;
 import com.example.spanishtalk.questions.ShowActivity.DeleteAnswerTask;
 import com.example.tables.Answer;
@@ -216,8 +217,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		protected void onPreExecute() {
 			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -228,8 +228,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		@Override
 		protected void onCancelled() {
 			Context context = getApplicationContext();
-			BaseAction.showFormNotice(context,
-					context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
@@ -274,8 +273,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 			progressBar.setVisibility(View.VISIBLE);
 
 			if (!HttpPack.hasConnected()) {
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -288,8 +286,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 			context = getApplicationContext();
 			progressBar.setVisibility(View.INVISIBLE);
 
-			BaseAction.showFormNotice(context,
-					context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
@@ -324,13 +321,13 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
         			
             		break;
             	case 401:
-            		BaseAction.showFormNotice(context, context.getString(R.string.login_required));
+            		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.login_required));
             		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
     				startActivity(intent);
     				finish();
     				break;
             	default:
-            		BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+            		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
             		break;
 			}
 		}	

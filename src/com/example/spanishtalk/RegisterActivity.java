@@ -82,8 +82,7 @@ public class RegisterActivity extends Activity {
 			}
 			return;
 		}
-		Context context = getApplicationContext();
-		BaseAction.showFormNotice(context, context.getString(R.string.network_error));
+		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 	
 	}
 	
@@ -170,7 +169,7 @@ public class RegisterActivity extends Activity {
 			registerBtn.setVisibility(View.INVISIBLE);
 
 			if (!HttpPack.hasConnected()) {
-				BaseAction.showFormNotice(context, context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -184,7 +183,7 @@ public class RegisterActivity extends Activity {
 			progressBar.setVisibility(View.INVISIBLE);
 			registerBtn.setVisibility(View.VISIBLE);
 
-			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 		
 		
@@ -201,7 +200,7 @@ public class RegisterActivity extends Activity {
             		new saveSessionTask().execute(response);
             		break;
             	default:
-            		BaseAction.showFormNotice(context, context.getString(R.string.register_form_error));
+            		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.register_form_error));
             		break;
 			}
 	    }

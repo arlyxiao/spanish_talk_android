@@ -28,6 +28,7 @@ import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.spanishtalk.RegisterActivity.saveSessionTask;
 
 public class NewActivity extends BaseEventActivity {
@@ -108,9 +109,7 @@ public class NewActivity extends BaseEventActivity {
 			progressBar.setVisibility(View.VISIBLE);
 
 			if (!HttpPack.hasConnected()) {
-				Context context = getApplicationContext();
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -123,7 +122,7 @@ public class NewActivity extends BaseEventActivity {
 			progressBar.setVisibility(View.GONE);
 
 			Context context = getApplicationContext();
-			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
@@ -134,7 +133,7 @@ public class NewActivity extends BaseEventActivity {
 			Integer statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
 				progressBar.setVisibility(View.GONE);
-				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 			} else {
 				new saveQuestionTask().execute(response);
 			}

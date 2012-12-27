@@ -93,9 +93,7 @@ public class LoginActivity extends Activity {
 			loginBtn.setVisibility(View.INVISIBLE);
 
 			if (!HttpPack.hasConnected()) {
-				Context context = getApplicationContext();
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -104,13 +102,11 @@ public class LoginActivity extends Activity {
 		}
 
 		@Override
-		protected void onCancelled() {
-			Context context = getApplicationContext();
-			
+		protected void onCancelled() {			
 			progressBar.setVisibility(View.INVISIBLE);
 			loginBtn.setVisibility(View.VISIBLE);
 
-			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
@@ -125,7 +121,7 @@ public class LoginActivity extends Activity {
             		new saveSessionTask().execute(response);
             		break;
             	default:
-            		BaseAction.showFormNotice(context, context.getString(R.string.login_form_error));
+            		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.login_form_error));
             		break;
 			}
 			

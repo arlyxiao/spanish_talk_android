@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
+import com.example.spanishtalk.SpanishTalkApplication;
 
 public class BaseAction {
 	
@@ -29,8 +30,8 @@ public class BaseAction {
 
 
 	
-	public static void showFormNotice(Context context, String message) {
-		Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+	public static void showFormNotice(String message) {
+		Toast toast = Toast.makeText(SpanishTalkApplication.context, message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
 	}

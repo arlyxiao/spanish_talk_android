@@ -25,6 +25,7 @@ import com.example.logic.BaseAction;
 import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.spanishtalk.questions.NewActivity.saveQuestionTask;
 
 public class AnswerActivity extends BaseEventActivity {
@@ -100,8 +101,7 @@ public class AnswerActivity extends BaseEventActivity {
 
 			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -114,7 +114,7 @@ public class AnswerActivity extends BaseEventActivity {
 			progressBar.setVisibility(View.INVISIBLE);
 
 			Context context = getApplicationContext();
-			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
@@ -125,7 +125,7 @@ public class AnswerActivity extends BaseEventActivity {
 			Integer statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
 				progressBar.setVisibility(View.GONE);
-				BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 			} else {
 				Intent intent = new Intent(getApplicationContext(), ShowActivity.class);
 				intent.putExtra("questionId", questionId);

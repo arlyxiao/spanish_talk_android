@@ -34,6 +34,7 @@ import com.example.logic.BaseEventActivity;
 import com.example.logic.BaseUrl;
 import com.example.spanishtalk.ContactActivity;
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.tables.Answer;
 
 public class ShowActivity extends BaseEventActivity {
@@ -200,9 +201,7 @@ public class ShowActivity extends BaseEventActivity {
 			progressBar.setVisibility(View.VISIBLE);
 			
 			if (!HttpPack.hasConnected()) {
-				Context context = getApplicationContext();
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -215,7 +214,7 @@ public class ShowActivity extends BaseEventActivity {
 			progressBar.setVisibility(View.GONE);
 			
 			Context context = getApplicationContext();
-			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
@@ -288,8 +287,7 @@ public class ShowActivity extends BaseEventActivity {
 		protected void onPreExecute() {				
 			if (!HttpPack.hasConnected()) {
 				Context context = getApplicationContext();
-				BaseAction.showFormNotice(context,
-						context.getString(R.string.network_error));
+				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
 				cancel(true);
 				return;
 			}
@@ -300,7 +298,7 @@ public class ShowActivity extends BaseEventActivity {
 		@Override
 		protected void onCancelled() {				
 			Context context = getApplicationContext();
-			BaseAction.showFormNotice(context, context.getString(R.string.server_connection_error));
+			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
 		}
 
 		@Override
