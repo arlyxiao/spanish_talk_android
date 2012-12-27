@@ -26,7 +26,7 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
 	
 	
     public SpanishTalkAsyncTask(ProgressBar v) {
-    	progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
+    	progressBar = v;
     }
     
 	@Override
