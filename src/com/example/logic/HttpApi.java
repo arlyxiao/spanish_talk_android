@@ -72,4 +72,12 @@ public class HttpApi {
 		
 		return response;
 	}
+	
+	
+	public static HttpResponse deleteQuestion(Integer questionId) {
+		String url = BaseUrl.questionDelete + "/"
+				+ Integer.toString(questionId) + ".json";
+		HttpResponse response = HttpPack.sendDelete(url);
+		return response;
+	}
 }

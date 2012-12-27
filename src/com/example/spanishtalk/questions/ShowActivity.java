@@ -202,7 +202,6 @@ public class ShowActivity extends BaseEventActivity {
                     .setPositiveButton(getApplicationContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                         	
-                        	// new DeleteAnswerTask().execute(currentAnswer.getID(), position);
                         	
                         	new SpanishTalkAsyncTask<Integer>() {
                         		@Override

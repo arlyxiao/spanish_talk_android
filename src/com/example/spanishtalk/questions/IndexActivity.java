@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.datasource.AnswerBaseAdapter;
 import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
 import com.example.lib.BaseDialog;
@@ -163,8 +164,28 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 									DialogInterface dialog,
 									int id) {
 
-								new DeleteQuestionTask()
-										.execute(questionId, position);
+							
+								
+								new SpanishTalkAsyncTask<Void>() {
+	                        		@Override
+	                    			protected HttpResponse doPost() {
+	                    				HttpResponse response = HttpApi.deleteQuestion(questionId);
+	                    				return response;
+	                    			}
+	                    			
+	                    			@Override
+	                    			protected void onSuccess(HttpResponse response) {
+	                    				Question question = ((Question) getListAdapter().getItem(position));
+	                    				customArrayAdapter.remove(question);
+	                    				customArrayAdapter.notifyDataSetChanged();
+	                    			}
+	                    			
+	                    			protected void showNoticeView() {
+	                     			}
+	                    			
+	                    			protected void hideNoticeView() {
+	                     			}
+	                        	}.execute();
 
 							}
 						})
@@ -184,57 +205,7 @@ public class IndexActivity extends AbstractListViewActivity implements OnItemLon
 		return true;
 	}
 
-	// 删除回答
-	public class DeleteQuestionTask extends AsyncTask<Integer, Void, Integer> {
 
-		@Override
-		protected Integer doInBackground(Integer... questions) {
-			Integer questionId = questions[0];
-			Integer position = questions[1];
-			String url = BaseUrl.questionDelete + "/"
-					+ Integer.toString(questionId) + ".json";
-			HttpResponse response = HttpPack.sendDelete(url);
-
-			if (response == null) {
-				cancel(true);
-				return null;
-			}
-
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				return position;
-			}
-
-			cancel(true);
-			return null;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			if (!HttpPack.hasConnected()) {
-				Context context = getApplicationContext();
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-				cancel(true);
-				return;
-			}
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {
-			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-		}
-
-		@Override
-		protected void onPostExecute(Integer position) {
-			Question question = ((Question) getListAdapter().getItem(position));
-			customArrayAdapter.remove(question);
-			customArrayAdapter.notifyDataSetChanged();
-			
-			super.onPostExecute(position);
-		}
-	}
 
 	private class LoadNextPage extends AsyncTask<String, Void, HttpResponse> {
 		private List<Question> questionList = null;
