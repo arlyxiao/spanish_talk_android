@@ -90,14 +90,4 @@ public class QuestionDataSource
 	}
 	
 
-	public List<Question> getData() throws IOException
-	{
-		List<Question> newList = new ArrayList<Question>();
-		if (data == null) {
-			return newList;
-		}
-		newList.addAll(data);
-		return newList;		
-	}
-
 }

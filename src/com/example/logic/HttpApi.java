@@ -6,6 +6,7 @@ import org.apache.http.HttpResponse;
 
 import android.util.Log;
 
+import com.example.datasource.QuestionDataSource;
 import com.example.lib.HttpPack;
 
 public class HttpApi {
@@ -53,6 +54,13 @@ public class HttpApi {
 					+ Integer.toString(questionId) + "/answers.json";
 
 		HttpResponse response = HttpPack.sendPost(url, params);
+		return response;
+	}
+	
+	
+	public static HttpResponse getQuestions(String url) {
+		HttpResponse response = QuestionDataSource.sendRequest(url);
+		
 		return response;
 	}
 	
