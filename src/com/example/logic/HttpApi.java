@@ -33,4 +33,16 @@ public class HttpApi {
 		HttpResponse response = HttpPack.sendPost(BaseUrl.questionCreate, params);
 		return response;
 	}
+	
+	
+	public static HttpResponse answerQuestion(Integer questionId, String content) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("answer[content]", content);
+		
+		String url = BaseUrl.answerCreate + "/"
+					+ Integer.toString(questionId) + "/answers.json";
+
+		HttpResponse response = HttpPack.sendPost(url, params);
+		return response;
+	}
 }
