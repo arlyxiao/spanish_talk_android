@@ -1,11 +1,8 @@
 package com.example.spanishtalk;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,16 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
-import com.example.logic.BaseUrl;
 import com.example.logic.HttpApi;
 import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.questions.IndexActivity;
 
 public class LoginActivity extends Activity {
-	private Context context;
 	private EditText vEmail, vPassword;
 	private Button loginBtn;
 	private ProgressBar progressBar;

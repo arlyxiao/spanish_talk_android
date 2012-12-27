@@ -31,7 +31,7 @@
     <string name="email">Email</string>
     <string name="password">密码</string>
     <string name="confirm_password">确认密码</string>
-    <string name="reg_hint_email">daniel@example.com</string>
+    <string name="reg_hint_email">name@example.com</string>
     <string name="reg_hint_username">请输入4个以上英文字符</string>
     <string name="reg_hint_password">请输入至少4位密码</string>
     <string name="reg_hint_confirm_password">确认密码</string>

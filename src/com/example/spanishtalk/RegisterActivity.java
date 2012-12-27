@@ -1,12 +1,9 @@
 package com.example.spanishtalk;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,17 +16,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.lib.BaseUtils;
-import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseAction;
-import com.example.logic.BaseUrl;
-import com.example.spanishtalk.LoginActivity.saveSessionTask;
+import com.example.logic.HttpApi;
+import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.questions.IndexActivity;
 
 public class RegisterActivity extends Activity {
-	private Context context;
-	private EditText edit_text_email, edit_text_username, edit_text_password,
-			edit_text_confirm_password;
+	private EditText vEmail, vUsername, vPassword,
+			vConfirmPassword;
 	private TextView email_error, username_error, password_error,
 			confirm_password_error;
 	private LinearLayout error_list;
@@ -55,10 +50,10 @@ public class RegisterActivity extends Activity {
 	}
 
 	private void load_ui() {
-		edit_text_email = (EditText) findViewById(R.id.reg_email);
-		edit_text_username = (EditText) findViewById(R.id.reg_username);
-		edit_text_password = (EditText) findViewById(R.id.reg_password);
-		edit_text_confirm_password = (EditText) findViewById(R.id.reg_confirm_password);
+		vEmail = (EditText) findViewById(R.id.reg_email);
+		vUsername = (EditText) findViewById(R.id.reg_username);
+		vPassword = (EditText) findViewById(R.id.reg_password);
+		vConfirmPassword = (EditText) findViewById(R.id.reg_confirm_password);
 		
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		registerBtn = (Button) findViewById(R.id.linkToRegister);
@@ -72,18 +67,43 @@ public class RegisterActivity extends Activity {
 	}
 
 	public void doRegister(View view) {
-		
-		// 先判断网络是否连接正常
-		if (HttpPack.hasConnected()) {
-			if (validateRegisterForm()) {
-				clearErrorList();
-				
-				new PostRegisterTask().execute();
-			}
+		if (!validateRegisterForm()) {
 			return;
 		}
-		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-	
+			
+		clearErrorList();
+		
+		new SpanishTalkAsyncTask() {
+			
+			@Override
+			protected HttpResponse doPost() {
+				String email = vEmail.getText().toString().trim();
+				String username = vUsername.getText().toString().trim();
+				String password = vPassword.getText().toString().trim();
+
+				HttpResponse response = HttpApi.doRegister(email, username, password);
+			
+				return response;
+			}
+			
+			@Override
+			protected void showNoticeView() {
+				progressBar.setVisibility(View.VISIBLE);
+				registerBtn.setVisibility(View.GONE);
+			}
+			
+			@Override
+			protected void hideNoticeView() {
+				progressBar.setVisibility(View.GONE);
+				registerBtn.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			protected void onSuccess(HttpResponse response) {
+				new saveSessionTask().execute(response);
+			}
+			
+		}.execute();
 	}
 	
 	
@@ -102,10 +122,10 @@ public class RegisterActivity extends Activity {
 
 	public boolean validateRegisterForm() {
 		boolean checked = true;
-		email = edit_text_email.getText().toString();
-		username = edit_text_username.getText().toString();
-		password = edit_text_password.getText().toString();
-		confirm_password = edit_text_confirm_password.getText().toString();
+		email = vEmail.getText().toString();
+		username = vUsername.getText().toString();
+		password = vPassword.getText().toString();
+		confirm_password = vConfirmPassword.getText().toString();
 
 
 		if (BaseUtils.is_str_blank(email)) {
@@ -137,75 +157,6 @@ public class RegisterActivity extends Activity {
 		}
 		return checked;
 	}
-
-	public class PostRegisterTask extends AsyncTask<Void, Void, HttpResponse> {
-
-		@Override
-		protected HttpResponse doInBackground(Void... arg0) {
-
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("user[username]", edit_text_username.getText()
-					.toString().trim());
-			params.put("user[email]", edit_text_email.getText().toString().trim());
-			params.put("user[password]", edit_text_password.getText()
-					.toString().trim());
-
-			HttpResponse response = HttpPack.sendPost(BaseUrl.register, params);
-			
-			if (response == null) {
-				cancel(true);
-				return null;
-			}
-		
-			return response;
-		}
-		
-	 
-		
-		@Override
-		protected void onPreExecute() {
-			context = getApplicationContext();
-			progressBar.setVisibility(View.VISIBLE);
-			registerBtn.setVisibility(View.INVISIBLE);
-
-			if (!HttpPack.hasConnected()) {
-				BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.network_error));
-				cancel(true);
-				return;
-			}
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {
-			context = getApplicationContext();
-			progressBar.setVisibility(View.INVISIBLE);
-			registerBtn.setVisibility(View.VISIBLE);
-
-			BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.server_connection_error));
-		}
-		
-		
-		@Override
-	    protected void onPostExecute(HttpResponse response) {
-			context = getApplicationContext();
-			
-			progressBar.setVisibility(View.GONE);
-			registerBtn.setVisibility(View.VISIBLE);
-			
-			Integer statusCode = response.getStatusLine().getStatusCode();
-			switch (statusCode) {
-            	case 200:  
-            		new saveSessionTask().execute(response);
-            		break;
-            	default:
-            		BaseAction.showFormNotice(SpanishTalkApplication.context.getString(R.string.register_form_error));
-            		break;
-			}
-	    }
-
-	}
 	
 	
 	public class saveSessionTask extends AsyncTask<HttpResponse, Void, Void> {
@@ -218,7 +169,7 @@ public class RegisterActivity extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			if ( (session.getUserId() != null) && (session.getCookie() != null) ) {
-				Intent intent = new Intent(context, IndexActivity.class);
+				Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
     			startActivity(intent);
     			finish();
 			}
