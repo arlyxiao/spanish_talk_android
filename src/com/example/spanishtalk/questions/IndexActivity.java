@@ -31,7 +31,7 @@ public class IndexActivity extends QuestionListActivity implements OnItemLongCli
 					IndexActivity.this);
 			return;
 		}
-		questionId = ((Question) getListAdapter().getItem(position)).getID();
+		questionId = ((Question) getListAdapter().getItem(position)).id;
 
 		Intent intent = new Intent(context, ShowActivity.class);
 		intent.putExtra("questionId", questionId);

@@ -61,9 +61,9 @@ public class QuestionsHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_CREATOR_ID, question.getCreatorId());
-		values.put(KEY_TITLE, question.getTitle());
-		values.put(KEY_CONTENT, question.getContent());
+		values.put(KEY_CREATOR_ID, question.creator_id);
+		values.put(KEY_TITLE, question.title);
+		values.put(KEY_CONTENT, question.content);
 
 		Integer id = (int) db.insert(TABLE_QUESTIONS, null, values);
 		db.close();
@@ -103,10 +103,10 @@ public class QuestionsHandler extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				Question question = new Question();
-				question.setID(Integer.parseInt(cursor.getString(0)));
-				question.setCreatorId(Integer.parseInt(cursor.getString(1)));
-				question.setTitle(cursor.getString(2));
-				question.setContent(cursor.getString(3));
+				question.id = Integer.parseInt(cursor.getString(0));
+				question.creator_id = Integer.parseInt(cursor.getString(1));
+				question.title = cursor.getString(2);
+				question.content = cursor.getString(3);
 				// Adding question to list
 				questionList.add(question);
 			} while (cursor.moveToNext());
@@ -122,19 +122,19 @@ public class QuestionsHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_TITLE, question.getTitle());
-		values.put(KEY_CONTENT, question.getContent());
+		values.put(KEY_TITLE, question.title);
+		values.put(KEY_CONTENT, question.content);
 
 		// updating row
 		return db.update(TABLE_QUESTIONS, values, KEY_ID + " = ?",
-				new String[] { String.valueOf(question.getID()) });
+				new String[] { String.valueOf(question.id) });
 	}
 
 	// Deleting single question
 	public void deleteQuestion(Question question) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_QUESTIONS, KEY_ID + " = ?",
-				new String[] { String.valueOf(question.getID()) });
+				new String[] { String.valueOf(question.id) });
 		db.close();
 	}
 

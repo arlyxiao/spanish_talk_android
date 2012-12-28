@@ -90,7 +90,6 @@ public class ShowActivity extends BaseEventActivity {
 	public class showQuestionTask extends AsyncTask<HttpResponse, Void, String> {
 		@Override
 		protected String doInBackground(HttpResponse... responses) {
-			// return HttpPack.getJsonByResponse(responses[0]);
 			return HttpPack.getResponse(responses[0]);
 		}
 		

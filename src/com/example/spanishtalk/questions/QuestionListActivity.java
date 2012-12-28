@@ -111,9 +111,9 @@ public class QuestionListActivity extends ListActivity implements OnItemLongClic
 	public boolean onItemLongClick(AdapterView<?> parent,
 			View v, final int position, long id) {
 		questionId = ((Question) getListAdapter().getItem(
-				position)).getID();
+				position)).id;
 		creatorId = ((Question) getListAdapter().getItem(
-				position)).getCreatorId();
+				position)).creator_id;
 		
 		SessionManagement session = new SessionManagement();
 		if (session.getUserId() != creatorId) {

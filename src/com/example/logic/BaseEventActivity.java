@@ -1,25 +1,14 @@
 package com.example.logic;
 
 
-import org.apache.http.HttpResponse;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
-import com.example.lib.HttpPack;
-import com.example.spanishtalk.LoginActivity;
-import com.example.spanishtalk.R;
-import com.example.spanishtalk.LoginActivity.saveSessionTask;
-import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.spanishtalk.questions.IndexActivity;
 import com.example.spanishtalk.questions.NewActivity;
-import com.example.spanishtalk.questions.ShowActivity;
 
 public class BaseEventActivity extends Activity {
 	

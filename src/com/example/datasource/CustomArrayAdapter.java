@@ -3,6 +3,7 @@ package com.example.datasource;
 import java.util.List;
 
 import com.example.spanishtalk.R;
+import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.tables.Question;
 
 import android.content.Context;
@@ -43,11 +44,17 @@ public class CustomArrayAdapter extends ArrayAdapter<Question>
 		{
 			holder = (Holder) convertView.getTag();
 		}
-		holder.getID().setText(Integer.toString(getItem(position).getID()));
-		holder.getTitle().setText(getItem(position).getTitle());
-		holder.getUsername().setText(getItem(position).getUsername());
-		holder.getCreatedAt().setText(getItem(position).getCreatedAt());
-		holder.getAnswerCount().setText(getItem(position).getAnswerCount());
+
+		
+		holder.getID().setText(Integer.toString(getItem(position).id));
+		holder.getTitle().setText(getItem(position).title);
+		holder.getUsername().setText(getItem(position).creator.username);
+		holder.getCreatedAt().setText(getItem(position).created_at);
+		
+		String answersCount = Integer.toString(getItem(position).answers.size());
+		holder.getAnswerCount().setText(answersCount +
+				SpanishTalkApplication.context.getString(R.string.answers_for_count));
+		
 		
 		return convertView;
 	}

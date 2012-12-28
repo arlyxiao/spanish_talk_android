@@ -16,8 +16,8 @@ public class SqliteLog {
 		List<Question> questions = db.getAllQuestions();
 
 		for (Question cn : questions) {
-			String log = "Id: " + cn.getID() + " ,Name: " + cn.getTitle()
-					+ " ,Content: " + cn.getContent();
+			String log = "Id: " + cn.id + " ,Name: " + cn.title
+					+ " ,Content: " + cn.content;
 			// Writing Questions to log
 			Log.d("Title: ", log);
 		}
