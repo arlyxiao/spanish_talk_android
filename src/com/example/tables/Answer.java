@@ -1,53 +1,26 @@
 package com.example.tables;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 public class Answer {
-	int _id;
-	int _creator_id;
- 	String _content;
-	String _createdAt;
-	User _creator;
-	String _username;
-	 
-	public int getID() {
-		return this._id;
-	}
-
-	public void setID(int id) {
-		this._id = id;
-	}
-
-	public int getCreatorId() {
-		return this._creator_id;
-	}
-
-	public void setCreatorId(int creator_id) {
-		this._creator_id = creator_id;
-	}
 	
-	public String getUsername() {
-		return this._username;
-	}
-
-	public void setUsername(String _username) {
-		this._username = _username;
-	}
+	public int id;
+	public int creator_id;
+	public String content;
+	public User creator;
+	public String created_at;
 	
 	
-
-
-	public String getContent() {
-		return this._content;
-	}
-
-	public void setContent(String content) {
-		this._content = content;
-	}
-	
-	public void setCreatedAt(String _createdAt) {
-		this._createdAt = _createdAt;
-	}
-
-	public String getCreatedAt() {
-		return _createdAt;
+	public static ArrayList<Answer> build_by_json(String answer_json) {
+		Gson gson = new Gson();
+		
+		Type collectionType = new TypeToken<ArrayList<Answer>>(){}.getType();
+		ArrayList<Answer> answers = gson.fromJson(answer_json, collectionType);
+		
+		return answers;
 	}
 }

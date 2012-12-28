@@ -1,10 +1,7 @@
 package com.example.logic;
 
 import org.apache.http.HttpResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.widget.Toast;
 
 import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
-import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.tables.User;
 

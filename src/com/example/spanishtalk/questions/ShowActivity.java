@@ -96,7 +96,6 @@ public class ShowActivity extends BaseEventActivity {
 		protected void onPostExecute(JSONObject question) {
 			JSONObject creator;
 			String username, time;
-			JSONArray answers;
 			try {
 				qTitle.setText(question.getString("title"));
 				qContent.setText(question.getString("content"));
@@ -111,9 +110,11 @@ public class ShowActivity extends BaseEventActivity {
 				
 				
 				// 显示回复列表
-				answers = question.getJSONArray("answers");
-				qCount.setText(Integer.toString(answers.length()) + getApplicationContext().getString(R.string.answers_for_count));
-				getAnswers(answers);
+				String answers_json = question.getString("answers");
+				answerList = Answer.build_by_json(answers_json);
+				qCount.setText(Integer.toString(answerList.size()) + getApplicationContext().getString(R.string.answers_for_count));
+
+				getAnswers(answerList);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -148,99 +149,73 @@ public class ShowActivity extends BaseEventActivity {
 		answerBox.setVisibility(View.GONE);
 	}
 
-	public void getAnswers(JSONArray answers) {
-		answerList = new ArrayList<Answer>();
+	public void getAnswers(final ArrayList<Answer> answerList) {
+		
 
-		try {
-			Integer size = answers.length();
-			
-			for (int i = 0; i < size; i++) {
-				Answer answer = new Answer();
-				JSONObject a = answers.getJSONObject(i);
-				JSONObject creator = a.getJSONObject("creator");
-				String username = creator.getString("username");
+		lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));				
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> a, View v, int position,
+					long id) {
 				
-				Log.d("answers -----", username);
-				
-				answer.setID(Integer.parseInt(a.getString("id")));
-				answer.setCreatorId(a.getInt("creator_id"));
-				answer.setContent(a.getString("content"));
-				answer.setUsername(username);
-				answer.setCreatedAt(a.getString("created_at").substring(0, 10));
-				answerList.add(answer);
 			}
-			
-			lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));				
-			
-			lv.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> a, View v, int position,
-						long id) {
-					Object o = lv.getItemAtPosition(position);
-					Answer fullObject = (Answer) o;
-					BaseDialog.showSingleAlert(fullObject.getContent(),
-							ShowActivity.this);
+		});
+		
+		
+		
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+		    public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+		            final int position, long id) {
+		    	final Object o = lv.getItemAtPosition(position);
+		    	final Answer currentAnswer = (Answer) o;
+		    	
+		    	SessionManagement session = new SessionManagement();
+				if (session.getUserId() != currentAnswer.creator_id) {
+					return true;
 				}
-			});
-			
-			
-			
-			lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+		    	
+		    	AlertDialog.Builder clearConfirmDialog = new AlertDialog.Builder(ShowActivity.this);
+		        clearConfirmDialog.setMessage(getApplicationContext().getString(R.string.confirm_delete)).setCancelable(false)
+		        .setPositiveButton(getApplicationContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+		            public void onClick(DialogInterface dialog, int id) {
+		            	
+		            	
+		            	new SpanishTalkAsyncTask<Void>() {
+		            		@Override
+		        			protected HttpResponse doPost() {
+		        				HttpResponse response = HttpApi.deleteAnswer(currentAnswer.id);
+		        				return response;
+		        			}
+		        			
+		        			@Override
+		        			protected void onSuccess(HttpResponse response) {
+		        				answerList.remove((int)position);
+		        	        	
+		        	        	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
+		        			}
+		        			
+		        			protected void showNoticeView() {
+		         			}
+		        			
+		        			protected void hideNoticeView() {
+		         			}
+		            	}.execute();
+		            	
+		            }
+		        })
+		        .setNegativeButton(getApplicationContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+		            public void onClick(DialogInterface dialog, int id) {
+		                dialog.cancel();
+		            }
+		        });
+		        AlertDialog alert = clearConfirmDialog.create();
+		        alert.show();
 
-	            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-	                    final int position, long id) {
-	            	final Object o = lv.getItemAtPosition(position);
-	            	final Answer currentAnswer = (Answer) o;
-	            	
-	            	SessionManagement session = new SessionManagement();
-	        		if (session.getUserId() != currentAnswer.getCreatorId()) {
-	        			return true;
- 	        		}
-	            	
-	            	AlertDialog.Builder clearConfirmDialog = new AlertDialog.Builder(ShowActivity.this);
-                    clearConfirmDialog.setMessage(getApplicationContext().getString(R.string.confirm_delete)).setCancelable(false)
-                    .setPositiveButton(getApplicationContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        	
-                        	
-                        	new SpanishTalkAsyncTask<Integer>() {
-                        		@Override
-                    			protected HttpResponse doPost() {
-                    				HttpResponse response = HttpApi.deleteAnswer(currentAnswer.getID());
-                    				return response;
-                    			}
-                    			
-                    			@Override
-                    			protected void onSuccess(HttpResponse response) {
-                    				answerList.remove((int)position);
-                    	        	
-                    	        	lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));
-                    			}
-                    			
-                    			protected void showNoticeView() {
-                     			}
-                    			
-                    			protected void hideNoticeView() {
-                     			}
-                        	}.execute(currentAnswer.getID());
-                        	
-                        }
-                    })
-                    .setNegativeButton(getApplicationContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alert = clearConfirmDialog.create();
-                    alert.show();
-
-	                return true;
-	            }
-	        }); 
-			
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		        return true;
+		    }
+		});
 	}
 
 

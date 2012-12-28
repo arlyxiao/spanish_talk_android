@@ -25,7 +25,7 @@ public class AnswerBaseAdapter extends BaseAdapter {
         
         Log.d(" -------- Answer Header start --------", "----");
 		for (Answer h : answerList) {
-			Log.d(h.getContent(), "sssssss");
+			Log.d(h.content, "sssssss");
 		}
 		Log.d(" -------- Answer Header end --------", "----");
 		
@@ -59,13 +59,13 @@ public class AnswerBaseAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         
-        String answerId = Integer.toString(answerList.get(position).getID());
-        String creatorId = Integer.toString(answerList.get(position).getCreatorId());
+        String answerId = Integer.toString(answerList.get(position).id);
+        String creatorId = Integer.toString(answerList.get(position).creator_id);
         holder.answerId.setText(answerId);
         holder.creatorId.setText(creatorId);
-        holder.content.setText(answerList.get(position).getContent());
-        holder.username.setText(answerList.get(position).getUsername());
-        holder.createdAt.setText(answerList.get(position).getCreatedAt());
+        holder.content.setText(answerList.get(position).content);
+        holder.username.setText(answerList.get(position).creator.username);
+        holder.createdAt.setText(answerList.get(position).created_at);
         
  
         return convertView;
