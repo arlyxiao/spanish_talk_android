@@ -73,8 +73,14 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
         	case 401:
         		loginRequired();
         		break;
+        	case 404:
+        		BaseAction.showFormNotice(context.getString(R.string.server_connection_error));
+        		break;
+        	case 500:
+        		BaseAction.showFormNotice(context.getString(R.string.server_connection_error));
+        		break;
         	default:
-        		BaseAction.showFormNotice(context.getString(R.string.login_form_error));
+        		loginRequired();
         		break;
 		}
 		
