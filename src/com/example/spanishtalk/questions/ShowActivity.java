@@ -38,6 +38,7 @@ import com.example.spanishtalk.ContactActivity;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
 import com.example.tables.Answer;
+import com.example.tables.Question;
 
 public class ShowActivity extends BaseEventActivity {
 	private TextView qTitle, qContent, qCreatedAt, qUsername, qCount;
@@ -86,39 +87,29 @@ public class ShowActivity extends BaseEventActivity {
 	
 	
 	
-	public class showQuestionTask extends AsyncTask<HttpResponse, Void, JSONObject> {
+	public class showQuestionTask extends AsyncTask<HttpResponse, Void, String> {
 		@Override
-		protected JSONObject doInBackground(HttpResponse... responses) {
-			return HttpPack.getJsonByResponse(responses[0]);
+		protected String doInBackground(HttpResponse... responses) {
+			// return HttpPack.getJsonByResponse(responses[0]);
+			return HttpPack.getResponse(responses[0]);
 		}
 		
 		@Override
-		protected void onPostExecute(JSONObject question) {
-			JSONObject creator;
-			String username, time;
-			try {
-				qTitle.setText(question.getString("title"));
-				qContent.setText(question.getString("content"));
+		protected void onPostExecute(String question_json) {
+			Question question = Question.build_by_json(question_json);
+			
+			qTitle.setText(question.title);
+			qContent.setText(question.content);
+			qUsername.setText(question.creator.username);
+			qCreatedAt.setText(question.created_at.substring(0, 10));
+			
+			
+			// 显示回复列表
+			ArrayList<Answer> answerList = question.answers;
+			qCount.setText(Integer.toString(answerList.size()) + 
+					getApplicationContext().getString(R.string.answers_for_count));
 
-				creator = question.getJSONObject("creator");
-				username = creator.getString("username");
-				qUsername.setText(username);
-				
-				
-				time = question.getString("created_at").substring(0, 10);
-				qCreatedAt.setText(time);
-				
-				
-				// 显示回复列表
-				String answers_json = question.getString("answers");
-				answerList = Answer.build_by_json(answers_json);
-				qCount.setText(Integer.toString(answerList.size()) + getApplicationContext().getString(R.string.answers_for_count));
-
-				getAnswers(answerList);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			getAnswers(answerList);
 		}
 	}
 
@@ -150,8 +141,6 @@ public class ShowActivity extends BaseEventActivity {
 	}
 
 	public void getAnswers(final ArrayList<Answer> answerList) {
-		
-
 		lv.setAdapter(new AnswerBaseAdapter(getApplicationContext(), answerList));				
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -161,9 +150,7 @@ public class ShowActivity extends BaseEventActivity {
 				
 			}
 		});
-		
-		
-		
+
 		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 		    public boolean onItemLongClick(AdapterView<?> arg0, View arg1,

@@ -15,11 +15,11 @@ public class Answer {
 	public String created_at;
 	
 	
-	public static ArrayList<Answer> build_by_json(String answer_json) {
+	public static ArrayList<Answer> build_list_by_json(String answers_json) {
 		Gson gson = new Gson();
 		
 		Type collectionType = new TypeToken<ArrayList<Answer>>(){}.getType();
-		ArrayList<Answer> answers = gson.fromJson(answer_json, collectionType);
+		ArrayList<Answer> answers = gson.fromJson(answers_json, collectionType);
 		
 		return answers;
 	}
