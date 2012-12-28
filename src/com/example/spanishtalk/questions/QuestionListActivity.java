@@ -18,6 +18,7 @@ import com.example.datasource.CustomArrayAdapter;
 import com.example.datasource.QuestionDataSource;
 import com.example.lib.SessionManagement;
 import com.example.logic.BaseUrl;
+import com.example.logic.CheckLogin;
 import com.example.logic.HttpApi;
 import com.example.logic.SpanishTalkAsyncTask;
 import com.example.spanishtalk.R;
@@ -51,6 +52,8 @@ public class QuestionListActivity extends ListActivity implements OnItemLongClic
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		new CheckLogin(this);
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_questions_index);

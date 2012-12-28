@@ -1,7 +1,5 @@
 package com.example.lib;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,9 +34,9 @@ public class SessionManagement {
 		editor = pref.edit();
 	}
 
-	public void createLoginSession(String user_id, String username) {
+	public void createLoginSession(int user_id, String username) {
 		editor.putBoolean(IS_LOGIN, true);
-		editor.putString(KEY_USER_ID, user_id);
+		editor.putInt(KEY_USER_ID, user_id);
 		editor.putString(KEY_USERNAME, username);
 		
 		editor.commit();
@@ -47,15 +45,6 @@ public class SessionManagement {
 	public void saveCookie(String cookie) {
 		editor.putString(KEY_COOKIE, cookie);
 		editor.commit();
-	}
-
-	public HashMap<String, String> getUserDetails() {
-		HashMap<String, String> user = new HashMap<String, String>();
-		user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
-		user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
-		user.put(KEY_COOKIE, pref.getString(KEY_COOKIE, null));
-
-		return user;
 	}
 
 	public void checkLogin() {
@@ -98,16 +87,12 @@ public class SessionManagement {
 		return pref.getBoolean(IS_LOGIN, false);
 	}
 
-	public Integer getUserId() {
-		String user_id = getUserDetails().get(SessionManagement.KEY_USER_ID);
-		if (user_id != null) {
-			return Integer.parseInt(user_id);
-		}
-		return null;
+	public int getUserId() {
+		return pref.getInt(KEY_USER_ID, 0);
 	}
 	
 	public String getCookie() {
-		return getUserDetails().get(SessionManagement.KEY_COOKIE);
+		return pref.getString(KEY_COOKIE, null);
 	}
 
 }

@@ -101,7 +101,7 @@ public class LoginActivity extends Activity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if ( (session.getUserId() != null) && (session.getCookie() != null) ) {
+			if ( (session.getUserId() != 0) && (session.getCookie() != null) ) {
 				Intent intent = new Intent(getApplicationContext(), IndexActivity.class);
     			startActivity(intent);
     			finish();

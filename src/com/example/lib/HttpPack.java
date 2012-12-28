@@ -58,6 +58,28 @@ public class HttpPack {
 		return false;
 
 	}
+	
+	
+	public static String getResponse(HttpResponse response) {
+		StringBuilder builder = new StringBuilder();
+
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new InputStreamReader(response
+					.getEntity().getContent()));
+			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
+				builder.append(s);
+			}
+
+			return builder.toString();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 
 	public static JSONObject getJsonByResponse(HttpResponse response) {
 		StringBuilder builder = new StringBuilder();

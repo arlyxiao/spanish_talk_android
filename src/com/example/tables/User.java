@@ -1,26 +1,17 @@
 package com.example.tables;
 
 
+import com.google.gson.Gson;
+
 
 public class User {
-	int _id;
-  	String _username;
+  	public int id;
+	public String username;
 	
-	 
-	public int getID() {
-		return this._id;
+	public static User build_by_json(String user_json) {
+		Gson gson = new Gson();
+		
+		return gson.fromJson(user_json, User.class);
 	}
-
-	public void setID(int id) {
-		this._id = id;
-	}
-
-	public String getUsername() {
-		return this._username;
-	}
-
-	public void setUsername(String _username) {
-		this._username = _username;
-	}
-
+	
 }

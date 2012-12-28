@@ -14,15 +14,10 @@ import com.example.lib.HttpPack;
 import com.example.lib.SessionManagement;
 import com.example.spanishtalk.R;
 import com.example.spanishtalk.SpanishTalkApplication;
+import com.example.tables.User;
 
 public class BaseAction {
 	
-	public static void checkLogin() {
-		SessionManagement session = new SessionManagement();
-		if ((session.getUserId() == null) || (session.getCookie() == null)) {
-			session.logoutUser();
-		}
-	}
 	
 	public static void clickLogout(View view) {
 		SessionManagement session = new SessionManagement();
@@ -45,18 +40,15 @@ public class BaseAction {
 
 	
 	public static void saveUserSessionByResponse(HttpResponse response) {
-		JSONObject user = HttpPack.getJsonByResponse(response);
-		try {
-			String username = user.getString("username");
-			Log.d("aadasdfasdf", username);
-			String user_id = user.getString("id");
-			String cookie = HttpPack.getCookieByResponse(response);
-			
-			SessionManagement session = new SessionManagement();
-			session.createLoginSession(user_id, username);
-			session.saveCookie(cookie);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		String user_json = HttpPack.getResponse(response);
+		User u = User.build_by_json(user_json);
+		String username = u.username;
+		int user_id = u.id;
+		
+		String cookie = HttpPack.getCookieByResponse(response);
+		
+		SessionManagement session = new SessionManagement();
+		session.createLoginSession(user_id, username);
+		session.saveCookie(cookie);
 	}
 }
