@@ -49,7 +49,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Question>
 		holder.getID().setText(Integer.toString(getItem(position).id));
 		holder.getTitle().setText(getItem(position).title);
 		holder.getUsername().setText(getItem(position).creator.username);
-		holder.getCreatedAt().setText(getItem(position).created_at);
+		holder.getCreatedAt().setText(getItem(position).created_at.substring(0, 10));
 		
 		String answersCount = Integer.toString(getItem(position).answers.size());
 		holder.getAnswerCount().setText(answersCount +
