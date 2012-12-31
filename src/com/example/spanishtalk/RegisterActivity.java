@@ -43,12 +43,6 @@ public class RegisterActivity extends Activity {
 		session.clear();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_register, menu);
-		return true;
-	}
-
 	private void load_ui() {
 		vEmail = (EditText) findViewById(R.id.reg_email);
 		vUsername = (EditText) findViewById(R.id.reg_username);

@@ -43,11 +43,6 @@ public class NewActivity extends BaseEventActivity {
 		loadUi();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_question, menu);
-		return true;
-	}
 
 	private void loadUi() {
 		vTitle = (EditText) findViewById(R.id.question_title);

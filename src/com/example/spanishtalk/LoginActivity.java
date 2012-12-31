@@ -41,11 +41,7 @@ public class LoginActivity extends Activity {
 		session.clear();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_login, menu);
-		return true;
-	}
+	
 
 	public void doLogin(View view) {
 		new SpanishTalkAsyncTask<Void>() {

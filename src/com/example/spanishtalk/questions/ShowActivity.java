@@ -112,11 +112,6 @@ public class ShowActivity extends BaseEventActivity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_question_show, menu);
-		return true;
-	}
 	
 	public void showContacts(View view) {
 		String title = qTitle.getText().toString();

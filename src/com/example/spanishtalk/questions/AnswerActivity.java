@@ -42,11 +42,6 @@ public class AnswerActivity extends BaseEventActivity {
 		questionId = b.getInt("questionId");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_answer, menu);
-        return true;
-    }
     
     
     public void doAnswer(View view) {
