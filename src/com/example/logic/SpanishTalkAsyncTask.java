@@ -44,6 +44,7 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
 	
 	@Override
 	protected void onPreExecute() {
+		super.onPreExecute();
 		showNoticeView();
 				
 		if (!HttpPack.hasConnected()) {
@@ -51,8 +52,6 @@ public class SpanishTalkAsyncTask<TParams> extends AsyncTask<TParams, Void, Http
 			cancel(true);
 			return;
 		}
-
-		super.onPreExecute();
 	}
 
 	@Override

@@ -50,9 +50,7 @@ public class HttpPack {
 		final android.net.NetworkInfo mobile = connMgr
 				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-		if (wifi.isAvailable()) {
-			return true;
-		} else if (mobile.isAvailable()) {
+		if ( mobile.isAvailable()) {
 			return true;
 		}
 		return false;
