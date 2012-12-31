@@ -54,7 +54,7 @@
     <string name="title_activity_question_show">当前问题</string>
     <string name="title_activity_question_list">问题列表</string>
     <string name="my_questions">我的问题</string>
-    <string name="refresh_questions">随便看看</string>
+    <string name="all_questions">随便看看</string>
     <string name="ask_question">提问</string>
     <string name="loading">正在加载 &#8230;</string>
     <string name="empty_data">暂时没有相关数据 &#8230;</string>

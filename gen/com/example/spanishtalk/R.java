@@ -20,10 +20,7 @@ public final class R {
         public static final int nav_page=0x7f020006;
     }
     public static final class id {
-        public static final int Button01=0x7f070021;
-        public static final int Button02=0x7f070022;
-        public static final int Button03=0x7f070023;
-        public static final int all_questions_btn=0x7f070046;
+        public static final int all_questions_btn=0x7f070022;
         public static final int answer_btn=0x7f070007;
         public static final int answer_content=0x7f070039;
         public static final int answer_count=0x7f07003b;
@@ -33,7 +30,7 @@ public final class R {
         public static final int answer_list_view=0x7f07001f;
         public static final int answer_username=0x7f07003a;
         public static final int answers_box=0x7f07001e;
-        public static final int ask_btn=0x7f070044;
+        public static final int ask_question_btn=0x7f070023;
         public static final int button1=0x7f070000;
         public static final int buttonfirst=0x7f070024;
         public static final int buttonlast=0x7f070027;
@@ -64,8 +61,8 @@ public final class R {
         public static final int lv_question_title=0x7f07003f;
         public static final int lv_question_username=0x7f070040;
         public static final int main_btn=0x7f070005;
-        public static final int menu_settings=0x7f070047;
-        public static final int my_questions_btn=0x7f070045;
+        public static final int menu_settings=0x7f070043;
+        public static final int my_question_btn=0x7f070021;
         public static final int progressBar1=0x7f070002;
         public static final int q_content=0x7f07001d;
         public static final int q_count=0x7f07001b;
@@ -74,7 +71,6 @@ public final class R {
         public static final int q_title=0x7f070019;
         public static final int q_username=0x7f07001a;
         public static final int question_content=0x7f070017;
-        public static final int question_menus=0x7f070043;
         public static final int question_title=0x7f070016;
         public static final int reg_confirm_password=0x7f07002e;
         public static final int reg_confirm_password_error=0x7f070034;
@@ -106,7 +102,6 @@ public final class R {
         public static final int custom_row_view=0x7f030009;
         public static final int footer=0x7f03000a;
         public static final int listview=0x7f03000b;
-        public static final int question_toolbar=0x7f03000c;
     }
     public static final class menu {
         public static final int activity_answer=0x7f060000;
@@ -119,6 +114,7 @@ public final class R {
         public static final int activity_register=0x7f060007;
     }
     public static final class string {
+        public static final int all_questions=0x7f050032;
         public static final int answer_content=0x7f05002d;
         public static final int answer_content_required=0x7f050028;
         public static final int answers_for_count=0x7f050039;
@@ -161,7 +157,6 @@ public final class R {
         public static final int previous=0x7f05003d;
         public static final int question_content=0x7f05002c;
         public static final int question_title=0x7f05002b;
-        public static final int refresh_questions=0x7f050032;
         public static final int reg_hint_confirm_password=0x7f05001e;
         public static final int reg_hint_email=0x7f05001b;
         public static final int reg_hint_password=0x7f05001d;

@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    style="@style/body" >
     
-    <LinearLayout
+    
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/topQuestionMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        style="@style/head_bar" >
 
         <Button
-            android:id="@+id/Button01"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="clickAskQuestion"
-            android:text="@string/ask_question" />
-
-        <Button
-            android:id="@+id/Button02"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/head_bar_button_go_back_register"
+            android:id="@+id/my_question_btn"
             android:onClick="clickMyQuestions"
             android:text="@string/my_questions" />
 
         <Button
-            android:id="@+id/Button03"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/head_bar_button_logout"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="80dp"
+            android:id="@+id/all_questions_btn"
             android:onClick="clickAllQuestions"
-            android:text="@string/refresh_questions"
-            android:textColor="#a2a" />
-    </LinearLayout>
+            android:text="@string/all_questions" />
+
+        <Button
+            style="@style/head_bar_button_logout"
+            android:id="@+id/ask_question_btn"
+            android:onClick="clickAskQuestion"
+            android:text="@string/ask_question" />
+        
+    </RelativeLayout>
     
-    
+     
 
     <ListView
         android:id="@android:id/list"
